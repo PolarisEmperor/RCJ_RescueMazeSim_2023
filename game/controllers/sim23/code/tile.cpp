@@ -128,10 +128,8 @@ void getTile(Bot *bot, unsigned int tile) {
 				case South: if (t >= COLS * (ROWS - 1)) continue;
 				case West:  if ((t + 1) % COLS == 0) continue;
 			}
-			printf("BRUH %d\n", field[t].bits);
 			if (field[t].bits & (1 << j)) { // check bit
-				printf("bit %d of dir %d\n", j, i);
-				printf("%d\n", neighbors[j]);
+
 				//printf("setting bit\n");
 				field[neighbors[j]].bits |= moveBits(1 << j, 2); // set bit
 				//printf("%d %d\n", i, j);
@@ -139,7 +137,7 @@ void getTile(Bot *bot, unsigned int tile) {
 			}
 		}
 	}
-	printf("cur %d east %d north %d\n", field[tile].bits, field[tile + 1].bits, field[tile - COLS].bits);
+	
 	//printf("top left: %d\n", field[directions[North]].bits);
 	//printf("top right: %d\n", field[directions[East]].bits);
 	//printf("bottom right: %d\n", field[directions[South]].bits);

@@ -16,25 +16,22 @@ int bfs(Bot *bot, unsigned int tile) {
 	//	if (neighbor != -1 && !field[neighbor].visited) return neighbor;
 	//}
 
-	neighbor = -1;
+	//neighbor = -1;
+	
+	// reset parent and worker arrays
 	memset(worker, -1, fieldSize * sizeof(worker[0]));
 	memset(parent, -1, fieldSize * sizeof(parent[0]));
 
 	*cur = tile; // add first tile to worker array
 	parent[*cur] = *cur;
 	while (*cur > 0 && cur < &worker[fieldSize]) {
-		
 		target = -1;
-		printf("cur %d\n", *cur);
+
 		// check all directions
 		for (int i = North; i <= West; i++) {	
 			neighbor = findNeighbor(*cur, i); // find neighbor
-			printf("%d neighbor = %d\n", i, neighbor);
 			if (neighbor >= 0) { // valid neighbor
-				//printf("neighbor = %d\n", neighbor);
-				printf("parent of neighbor = %d\n", parent[neighbor]);
 				if (parent[neighbor] < 0) {
-					
 					parent[neighbor] = *cur; // neighbor came from cur
 					*next++ = neighbor; // add neighbor to worker array
 				}
@@ -42,7 +39,6 @@ int bfs(Bot *bot, unsigned int tile) {
 				// if neighbor is unvisited, return it
 				if (!field[neighbor].visited && target == -1) {
 					target = neighbor;
-					//printf("target = %d\n", neighbor);
 					//return neighbor;
 				}
 			}
