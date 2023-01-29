@@ -660,7 +660,7 @@ Robot {
             }
             Transform {
             translation 0.0 0.0185 0.0
-            rotation -0.5858 0.5858 0.5858 2.09
+            rotation -1 0 0 1.57
             children [
             Gyro {
             rotation 0.577 -0.577 -0.577 2.09
@@ -676,7 +676,7 @@ Robot {
             
             Transform {
             translation 0.0 0.0185 0.0
-            rotation -0.5858 0.5858 0.5858 2.09
+            rotation -1 0 0 1.57
             children [
             GPS {
             rotation 0.577 -0.577 -0.577 2.09

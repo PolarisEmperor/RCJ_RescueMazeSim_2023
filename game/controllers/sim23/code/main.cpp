@@ -15,18 +15,23 @@ int main(int argc, char **argv) {
 
 	// SIMULATION LOOP
 	while (bot.update()) {
-		getTile(&bot, cur);
-		//printf("doing bfs\n");
-		target = bfs(&bot, cur); // do bfs
-		printf("cur = %d target = %d\n", cur, target);
-		if (target != -1 && cur != target) {
-			cur = move2Tile(&bot, cur, target);
-		}
-		else {
-			printf("i need to go home! start tile = %d\n", start);
-			move2Tile(&bot, cur, start);
-			break;
-		}
+		//getTile(&bot, cur);
+		////printf("doing bfs\n");
+		//target = bfs(&bot, cur); // do bfs
+		//printf("cur = %d target = %d\n", cur, target);
+		//if (target != -1 && cur != target) {
+		//	cur = move2Tile(&bot, cur, target);
+		//}
+		//else {
+		//	printf("i need to go home! start tile = %d\n", start);
+		//	move2Tile(&bot, cur, start);
+		//	break;
+		//}
+
+		
+		bot.turn(90);
+		break;
+
 
 		//getTile(&bot, cur);
 		
