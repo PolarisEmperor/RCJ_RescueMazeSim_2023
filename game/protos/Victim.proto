@@ -1,0 +1,62 @@
+#VRML_SIM R2022b utf8
+# tags: static
+PROTO Victim [
+    field SFVec3f    translation       0 0 0
+    field SFRotation rotation          0 0 0 0
+    field SFBool     found             FALSE
+    field SFString   name              "Victim"
+    field SFString   type              "harmed"
+    field SFInt32    scoreWorth        10
+	field SFBool     room4	           FALSE
+]
+{
+    %{
+        if fields.type.value == "harmed" then
+            if fields.found.value then
+                filename = "\"./textures/victim_harmed_found.png\""   
+            else
+                filename = "\"./textures/victim_harmed_not_found.png\"" 
+            end
+        end
+        if fields.type.value == "unharmed" then
+            if fields.found.value then
+                filename = "\"./textures/victim_unharmed_found.png\""   
+            else
+                filename = "\"./textures/victim_unharmed_not_found.png\"" 
+            end
+        end
+        if fields.type.value == "stable" then
+            if fields.found.value then
+                filename = "\"./textures/victim_stable_found.png\""   
+            else
+                filename = "\"./textures/victim_stable_not_found.png\"" 
+            end
+        end
+
+    }%
+    Transform{
+        translation IS translation
+        rotation IS rotation
+        children [
+            Solid {
+                translation 0 0 0
+                rotation 0 0.707105 0.707108 3.14159
+                children [
+                    Shape {
+                        appearance Appearance {
+                            texture DEF human0texture ImageTexture {
+                                url [ %{= filename}% ]
+                            }
+                        }
+                        geometry DEF VICTIMPLANE Box {
+                            size 0.016 0.0001 0.016
+                        }
+                        isPickable  FALSE
+                    }
+                ]
+                name IS name
+            }
+        ]
+    }
+}
+
