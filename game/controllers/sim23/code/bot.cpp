@@ -119,8 +119,8 @@ int Bot::move(float cm, float spd) {
 	if (cm > 0) {
 		while (update() && getEncL() < cm * encpercm) {
 
-			if (getLidar(3, 0) <= 5.7 || getLidar(3, 496) <= 5.8 || getLidar(3, 15) <= 5.8) 
-				break;
+			//if (getLidar(3, 0) <= 5.7 || getLidar(3, 496) <= 5.8 || getLidar(3, 15) <= 5.8) 
+			//	break;
 			tileColor = getColor(camB->getWidth() / 2, 25);
 			if (tileColor == 2) { // bottom cam sees black
 				hole = true;

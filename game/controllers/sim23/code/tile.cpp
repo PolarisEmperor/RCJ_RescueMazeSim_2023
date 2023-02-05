@@ -160,37 +160,9 @@ void getTile(Bot *bot, unsigned int tile) {
 	//printf("bits = %d\n", field[tile].bits);
 
 	field[tile].visited = 1;
-}
-
-// Check if valid neighbor
-int findNeighbor(unsigned int tile, int dir) {
-	unsigned int neighbors[] = { tile - COLS, tile + 1, tile + COLS, tile - 1 }; // tiles to the north, east, south, west
-
-	//if ((field[tile].bits & (1 << dir)) == 0) { // check that there is no wall on the respective side of the current node
-	//	return neighbors[dir]; // return neighbor
-	//}
-	
-	switch (dir) {
-		case North:
-			if ((field[tile].bits & (1 << North)) == 0 && (field[neighbors[East]].bits & (1 << North)) == 0 && (field[neighbors[North]].bits & (1 << East)) == 0) {
-				return neighbors[dir];
-			}
-			break;
-		case East:
-			if ((field[neighbors[East]].bits & (1 << East)) == 0 && (field[neighbors[South] + 1].bits & (1 << East)) == 0 && (field[neighbors[East] + 1].bits & (1 << South)) == 0) {
-				return neighbors[dir];
-			}
-			break;
-		case South:
-			if ((field[neighbors[South]].bits & (1 << South)) == 0 && (field[neighbors[South] + 1].bits & (1 << South)) == 0 && (field[neighbors[South] + COLS].bits & (1 << East)) == 0) {
-				return neighbors[dir];
-			}
-			break;
-		case West:
-			if ((field[tile].bits & (1 << West)) == 0 && (field[neighbors[South]].bits & (1 << West)) == 0 && (field[neighbors[West]].bits & (1 << South)) == 0) {
-				return neighbors[dir];
-			}
-			break;
+	if (room == 1) {
+		for (int i = 1; i < sizeof(directions) / sizeof(directions[0]); i++) {
+			field[directions[i]].visited = 1;
+		}
 	}
-	return -1; // Tile is not a neighbor
 }

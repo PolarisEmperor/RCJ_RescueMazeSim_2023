@@ -4,6 +4,7 @@
 
 typedef unsigned char ubyte;
 
+// Old struct
 //struct Tile {
 //	union {
 //		struct {
@@ -36,6 +37,6 @@ const unsigned int ROWS = 40;
 const unsigned int COLS = 40;
 const unsigned int fieldSize = ROWS * COLS;
 extern Tile field[fieldSize];
+extern int room;
 
 void getTile(Bot *, unsigned int);
-int findNeighbor(unsigned int, int);
