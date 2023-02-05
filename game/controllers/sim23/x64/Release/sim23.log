@@ -1,8 +1,8 @@
 ﻿  main.cpp
   Generating code
 C:\Users\pl\Documents\Robotics\Webots\RCJ_RescueMazeSim_2023\game\controllers\sim23\code\bot.cpp(83): warning C4715: 'Bot::getDirection': not all control paths return a value
-  14 of 502 functions ( 2.8%) were compiled, the rest were copied from previous compilation.
+  24 of 522 functions ( 4.6%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+    79 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   sim23.vcxproj -> C:\Users\pl\Documents\Robotics\Webots\RCJ_RescueMazeSim_2023\game\controllers\sim23\sim23.exe
