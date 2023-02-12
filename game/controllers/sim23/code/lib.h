@@ -16,6 +16,12 @@
 #include <webots/Receiver.hpp>
 #include <webots/InertialUnit.hpp>
 
+// OPENCV INCLUDES
+#include <opencv2/core.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/highgui.hpp>
+
 // NAMESPACES
 using namespace webots;
 using namespace std;
