@@ -28,18 +28,16 @@ int main(int argc, char **argv) {
 			break;
 		}
 
-		
-		/*bot.move(6);
-		bot.move(6);
-		bot.move(6);
-		bot.move(6);
-		printf("%f %f %f\n", bot.getLidar(3, 0), bot.getLidar(3, 496), bot.getLidar(3, 15));
-		break;*/
-		//bot.turn(90);
-		
+		//bot.turn(South);
+		//bot.delay(3000);
+		//bot.move(20);
+		//break;
 		//printf("%f\n", bot.getLidar(3, 0));
+		//printf("%f\n", bot.getAngle());
+		//printf("%d\n", bot.getDirection());
+		//bot.turn(South);
+		//bot.delay(100000000);
 
-		//getTile(&bot, cur);
 		
 	}
 	bot.destroy();

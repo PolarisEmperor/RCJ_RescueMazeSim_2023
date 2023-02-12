@@ -14,6 +14,7 @@
 #include <webots/GPS.hpp>
 #include <webots/Emitter.hpp>
 #include <webots/Receiver.hpp>
+#include <webots/InertialUnit.hpp>
 
 // NAMESPACES
 using namespace webots;

@@ -1,7 +1,7 @@
 ﻿  bot.cpp
   Generating code
-  2 of 522 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
+  1 of 510 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    2 functions had inline decision re-evaluated but remain unchanged
+    1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   sim23.vcxproj -> C:\Users\pl\Documents\Robotics\Webots\RCJ_RescueMazeSim_2023\game\controllers\sim23\sim23.exe

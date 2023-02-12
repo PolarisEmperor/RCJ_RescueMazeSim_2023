@@ -660,11 +660,11 @@ Robot {
             }
             Transform {
             translation 0.0 0.0185 0.0
-            rotation -1 0 0 1.57
+            rotation 0 0.71 0.71 3.14
             children [
-            Gyro {
+            InertialUnit {
             rotation 0.577 -0.577 -0.577 2.09
-            name "gyro"
+            name "imu"
             physics Physics {
             }
             boundingObject Sphere {

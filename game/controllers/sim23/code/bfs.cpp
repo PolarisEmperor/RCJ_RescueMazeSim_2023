@@ -12,30 +12,22 @@ int findNeighbor(unsigned int tile, int dir) {
 		switch (dir) {
 			case North:
 				if ((field[tile].bits & (1 << North)) == 0 && // TL N
-					(field[tile + 1].bits & (1 << North)) == 0 && // TR N
-					(field[tile - COLS].bits & (1 << South)) == 0 && // BL S
-					(field[tile - COLS + 1].bits & (1 << South)) == 0) // BR S
+					(field[tile + 1].bits & (1 << North)) == 0) // TR N
 					return neighbors[dir];
 				break;
 			case East:
 				if ((field[tile + 1].bits & (1 << East)) == 0 && // TR E
-					(field[tile + COLS + 1].bits & (1 << East)) == 0 && // BR E
-					(field[neighbors[East]].bits & (1 << West)) == 0 && // TL W
-					(field[neighbors[East] + COLS].bits & (1 << West)) == 0) // BL W
+					(field[tile + COLS + 1].bits & (1 << East)) == 0) // BR E
 					return neighbors[dir];
 				break;
 			case South:
 				if ((field[tile + COLS].bits & (1 << South)) == 0 && // BL S
-					(field[tile + COLS + 1].bits & (1 << South)) == 0 && // BR S
-					(field[neighbors[South]].bits & (1 << North)) == 0 && // TL N
-					(field[neighbors[South] + 1].bits & (1 << North)) == 0) // TR N
+					(field[tile + COLS + 1].bits & (1 << South)) == 0) // BR S
 					return neighbors[dir];
 				break;
 			case West:
 				if ((field[tile].bits & (1 << West)) == 0 && // TL W
-					(field[tile + COLS].bits & (1 << West)) == 0 && // BL W 
-					(field[tile - 1].bits & (1 << East)) == 0 && // TR E
-					(field[tile - 1 + COLS].bits & (1 << East)) == 0) // BR E 
+					(field[tile + COLS].bits & (1 << West)) == 0) // BL W 
 					return neighbors[dir];
 				break;
 		}
@@ -113,6 +105,7 @@ int bfs(Bot *bot, unsigned int tile) {
 			neighbor = findNeighbor(*cur, i); // find neighbor
 			if (neighbor >= 0) { // valid neighbor
 				if (parent[neighbor] < 0) {
+					printf("neighbor %d\n", neighbor);
 					parent[neighbor] = *cur; // neighbor came from cur
 					*next++ = neighbor; // add neighbor to worker array
 				}
@@ -146,7 +139,7 @@ int move2Tile(Bot *bot, unsigned int cur, unsigned int target) {
 
 	// Move to neighbors until reached target
 	if (neighbor != target) {
-		//printf("target = %d parent of target = %d\n", target, parent[target]);
+		printf("target = %d parent of target = %d\n", target, parent[target]);
 		move2Tile(bot, cur, parent[target]);
 		
 		cur = parent[target];
@@ -157,50 +150,10 @@ int move2Tile(Bot *bot, unsigned int cur, unsigned int target) {
 		}
 	}
 
+	printf("current direction %d turn to %d\n", bot->getDirection(), i);
+	
 	// Turn to the right direction
-	switch (i) {
-	case North:
-		while (bot->update() && bot->getDirection() != North) {
-			if (bot->getDirection() - 2 > North) {
-				bot->turn(90);
-			}
-			else {
-				bot->turn(-90);
-			}
-		}
-		break;
-	case East:
-		while (bot->update() && bot->getDirection() != East) {
-			if (bot->getDirection() < East) {
-				bot->turn(90);
-			}
-			else {
-				bot->turn(-90);
-			}
-		}
-		break;
-	case West:
-		while (bot->update() && bot->getDirection() != West) {
-			
-			if (bot->getDirection() + 2 >= West) {
-				bot->turn(90);
-			}
-			else {
-				bot->turn(-90);
-			}
-		}
-		break;
-	case South:
-		while (bot->update() && bot->getDirection() != South) {
-			if (bot->getDirection() < South) {
-				bot->turn(90);
-			}
-			else {
-				bot->turn(-90);
-			}
-		}
-		break;
-	}
+	bot->turn(i);
 
 	// Move forward to the tile
 	if (bot->move(12) == 0) {

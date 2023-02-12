@@ -2,7 +2,7 @@
 
 // Robot constructor
 Bot::Bot() {
-	gyro->enable(timeStep);
+	//gyro->enable(timeStep);
 	gps->enable(timeStep);
 	camL->enable(timeStep);
 	camR->enable(timeStep);
@@ -11,6 +11,7 @@ Bot::Bot() {
 	receiver->enable(timeStep);
 	encL->enable(timeStep);
 	encR->enable(timeStep);
+	imu->enable(timeStep);
 	lm->setPosition(INFINITY);
 	rm->setPosition(INFINITY);
 	lm->setVelocity(0);
@@ -33,11 +34,18 @@ bool Bot::update() {
 	if (robot->step(timeStep) == -1) return 0;
 
 	// Update angle
-	angle -= ((timeStep / 1000.0) * gyro->getValues()[1]) * 180 / PI; // convert from rad to degrees
+	angle = getAngle();
 
-	// Update position
+	// Update GPS position
 	pos.x = (double)gps->getValues()[0];
 	pos.y = (double)gps->getValues()[2];
+
+	// Update direction
+	curDir = getDirection();
+
+	if (prevPos == -1)
+		if (curDir == North || curDir == South) prevPos = pos.x;
+		else if (curDir == East || curDir == West) prevPos = pos.y;
 
 	return 1;
 }
@@ -64,22 +72,22 @@ Bot::Pos Bot::getPos() {
 
 // Get current angle
 double Bot::getAngle() {
-	return angle;
+	return imu->getRollPitchYaw()[2];
 }
 
 int Bot::getDirection() {
-	if ((getAngle() > -5 && getAngle() < 5)) {
+	double err = 0.03;
+	if (angle > 0 - err && angle < 0 + err)
 		return North;
-	}
-	else if ((getAngle() > -95 && getAngle() < -85) || (getAngle() > 265 && getAngle() < 275)) {
-		return West;
-	}
-	else if ((getAngle() > -185 && getAngle() < -175) || (getAngle() > 175 && getAngle() < 185)) {
-		return South;
-	}
-	else if ((getAngle() > -275 && getAngle() < -265) || (getAngle() > 85 && getAngle() < 95)) {
+	else if (angle > -1.57 - err && angle < -1.57 + err)
 		return East;
-	}
+	else if ((angle > 3.14 - err && angle < 3.14 + err) ||
+			 (angle > -3.14 - err && angle < -3.14 + err))
+		return South;
+	else if (angle > 1.57 - err && angle < 1.57 + err)
+		return West;
+
+	return -1;
 }
 
 // Reset left and right encoders
@@ -99,9 +107,9 @@ double Bot::getEncR() {
 }
 
 // Set motor speeds
-void Bot::speed(float lSpd, float rSpd) {
-	lm->setVelocity(min((float)maxSpd, max(lSpd, (float)(maxSpd * -1))));
-	rm->setVelocity(min((float)maxSpd, max(rSpd, (float)(maxSpd * -1))));
+void Bot::speed(double lSpd, double rSpd) {
+	lm->setVelocity(min((float)maxSpd, max((float)lSpd, (float)(maxSpd * -1))));
+	rm->setVelocity(min((float)maxSpd, max((float)rSpd, (float)(maxSpd * -1))));
 }
 
 // Stop motors
@@ -112,15 +120,36 @@ void Bot::stop() {
 
 // Move # cm
 // Forward = +cm Backward = -cm
-int Bot::move(float cm, float spd) {
+int Bot::move(double cm, double spd) {
+	double target = (curDir <= East) ? prevPos + cm / 100 : prevPos - cm / 100;
 	bool hole = false;
 	int tileColor = 0;
+	double distFromWall = 5.5;
+
+	if (cm > 0) {
+		while (update()) {
+			tileColor = getColor(camB->getWidth() / 2, 25);
+			if (tileColor == 2) { // bottom cam sees black
+				hole = true;
+				break;
+			}
+			else if (tileColor == 3) {
+				spd = 2;
+			}
+			if (curDir == North && pos.x >= target) break;
+			if (curDir == South && pos.x <= target) break;
+			if (curDir == East && pos.y >= target) break;
+			if (curDir == West && pos.y <= target) break;
+			if (getLidar(3, 0) < distFromWall) break;
+			speed(spd, spd);
+		}
+		stop();
+	}
+
+
 	resetEnc();
 	if (cm > 0) {
 		while (update() && getEncL() < cm * encpercm) {
-
-			//if (getLidar(3, 0) <= 5.7 || getLidar(3, 496) <= 5.8 || getLidar(3, 15) <= 5.8) 
-			//	break;
 			tileColor = getColor(camB->getWidth() / 2, 25);
 			if (tileColor == 2) { // bottom cam sees black
 				hole = true;
@@ -132,79 +161,71 @@ int Bot::move(float cm, float spd) {
 			speed(spd, spd);
 		}
 
-		if (hole) {
-			// back up to prev pos
-			speed(-spd, -spd);
-			printf("theres a black hole, backing up\n");
+	if (hole) {
+		// back up to prev pos
+		speed(-spd, -spd);
+		printf("theres a black hole, backing up\n");
 			
-			while (update()) {
-				if (getDirection() == North || getDirection() == South) {
-					if (fabs(getPos().y - prevPos) < 0.000001 || getLidar(3, 255) < 4.5) break;
-				}
-				else {
-					if (fabs(getPos().x - prevPos) < 0.000001 || getLidar(3, 255) < 4.5) break;
-				}
+		while (update()) {
+			if (getDirection() == North || getDirection() == South) {
+				if (fabs(getPos().x - prevPos) < 0.000001 || getLidar(3, 255) < 4.5) break;
 			}
-			stop(); 
-			
-			return 0;
-		}
-
-		if (getColor(camB->getWidth() / 2, 25) == 3) printf("SWAMP\n");
-		if (getColor(camB->getWidth() / 2, 25) == 4) printf("CHECKPOINT\n");
-		if (getColor(camB->getWidth() / 2, 25) == 6) printf("BLUE\n");
-		if (getColor(camB->getWidth() / 2, 25) == 7) printf("PURPLE\n");
-		if (getColor(camB->getWidth() / 2, 25) == 8) printf("RED\n");
-
-		if (getLidar(3, 0) < 8) {
-			while (update() && getLidar(3, 0) > 5.7) {
-				speed(spd, spd);
+			else {
+				if (fabs(getPos().y - prevPos) < 0.000001 || getLidar(3, 255) < 4.5) break;
 			}
 		}
+		stop(); 
+			
+		return 0;
 	}
-	else {
-		while (update() && getEncL() > cm * encpercm) {
-			speed(-spd, -spd);
-		}
-	}
-	stop();
 
-	if (getDirection() == North || getDirection() == South) prevPos = getPos().y;
-	else prevPos = getPos().x;
+	if (getColor(camB->getWidth() / 2, 25) == 3) printf("SWAMP\n");
+	if (getColor(camB->getWidth() / 2, 25) == 4) printf("CHECKPOINT\n");
+	if (getColor(camB->getWidth() / 2, 25) == 6) printf("BLUE\n");
+	if (getColor(camB->getWidth() / 2, 25) == 7) printf("PURPLE\n");
+	if (getColor(camB->getWidth() / 2, 25) == 8) printf("RED\n");
+
+	if (curDir == North || curDir == South) prevPos = pos.x;
+	else if (curDir == East || curDir == West) prevPos = pos.y;
 	return 1;
 }
 
-double fixAngle(double ang) {
-	bool neg = 0;
-	if (ang < 0) neg = 1;
+//double fixAngle(double ang) {
+//	bool neg = 0;
+//	if (ang < 0) neg = 1;
+//
+//	if ((ang > 85 && ang < 95) || (ang > -95 && ang < -85)) ang = 90;
+//	else if ((ang > 175 && ang < 185) || (ang > -185 && ang < -175)) ang = 180;
+//	else if ((ang > 265 && ang < 275) || (ang > -275 && ang < -265)) ang = 270;
+//	else if ((ang > 355 && ang < 365)) return 360;
+//	else if ((ang > -365 && ang < -355)) return -360;
+//	else return -1;
+//	return (neg) ? ang * -1 : ang;
+//}
 
-	if ((ang > 85 && ang < 95) || (ang > -95 && ang < -85)) ang = 90;
-	else if ((ang > 175 && ang < 185) || (ang > -185 && ang < -175)) ang = 180;
-	else if ((ang > 265 && ang < 275) || (ang > -275 && ang < -265)) ang = 270;
-	else if ((ang > 355 && ang < 365)) return 360;
-	else if ((ang > -365 && ang < -355)) return -360;
-	else return -1;
-	return (neg) ? ang * -1 : ang;
-}
+// Turn to global compass direction
+// N:0 E:1 S:2 W:3
+void Bot::turn(int dir, double spd) {
+	double angles[] = { 0, -1.57, 3.14, 1.57 };
+	double err = 0.015;
 
-void Bot::turn(float deg) {
-	double target = fixAngle(getAngle() + deg);
+	int prevDir = getDirection();
+	while (update()) {
+		if (dir == South && fabs(angle) > angles[dir] - err && fabs(angle) < angles[dir] + err)
+			break;
 
-	if (deg > 0) {
-		while (update() && getAngle() < target) {
-			speed(2, -2);
-		}
-	}
-	else {
-		while (update() && getAngle() > target) {
-			speed(-2, 2);
-		}
+		if (angle > angles[dir] - err && angle < angles[dir] + err) 
+			break;
+
+		if (prevDir < dir)
+			(abs(dir - prevDir) == 3) ? speed(-spd, spd) : speed(spd, -spd);
+		else if (prevDir > dir)
+			(abs(dir - prevDir) == 3) ? speed(spd, -spd) : speed(-spd, spd);
 	}
 	stop();
 
-	if (getAngle() > 360 || getAngle() < -360) angle = 0;
-	if (getDirection() == North || getDirection() == South) prevPos = getPos().y;
-	else prevPos = getPos().x;
+	if (curDir == North || curDir == South) prevPos = pos.x;
+	else if (curDir == East || curDir == West) prevPos = pos.y;
 }
 
 // get color from the bottom camera
