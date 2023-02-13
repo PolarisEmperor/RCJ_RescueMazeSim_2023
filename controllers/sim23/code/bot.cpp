@@ -43,9 +43,6 @@ bool Bot::update() {
 	// Update direction
 	curDir = getDirection();
 
-	if (prevPos == -1)
-		updatePrevPos();
-
 	return 1;
 }
 
@@ -74,8 +71,8 @@ Bot::Pos Bot::getPos() {
 
 // Update previous position variable
 void Bot::updatePrevPos() {
-	if (curDir == North || curDir == South) prevPos = pos.x;
-	else if (curDir == East || curDir == West) prevPos = pos.y;
+	prevPos.x = pos.x;
+	prevPos.y = pos.y;
 }
 
 // Get current angle
@@ -114,14 +111,29 @@ void Bot::stop() {
 // Move # cm
 // Forward = +cm Backward = -cm
 int Bot::move(double cm, double spd) {
-	double target = (curDir <= East) ? prevPos + cm / 100 : prevPos - cm / 100;
+	double target = 0;
 	bool hole = false;
 	int tileColor = 0;
 	double distFromWall = 5.5;
 
+	switch (curDir) {
+		case North:
+			target = prevPos.x + cm / 100;
+			break;
+		case East:
+			target = prevPos.y + cm / 100;
+			break;
+		case South:
+			target = prevPos.x - cm / 100;
+			break;
+		case West:
+			target = prevPos.y - cm / 100;
+			break;
+	}
+
 	if (cm > 0) {
 		while (update()) {
-			tileColor = getColor(camB->getWidth() / 2, 25);
+			tileColor = getTileColor(camB->getWidth() / 2, 25);
 			if (tileColor == Hole) { // bottom cam sees black
 				hole = true;
 				break;
@@ -146,10 +158,10 @@ int Bot::move(double cm, double spd) {
 
 		while (update()) {
 			if (getDirection() == North || getDirection() == South) {
-				if (fabs(getPos().x - prevPos) < 0.000001 || getLidar(3, 255) < 4.5) break;
+				if (fabs(getPos().x - prevPos.x) < 0.000001 || getLidar(3, 255) < 4.5) break;
 			}
 			else {
-				if (fabs(getPos().y - prevPos) < 0.000001 || getLidar(3, 255) < 4.5) break;
+				if (fabs(getPos().y - prevPos.y) < 0.000001 || getLidar(3, 255) < 4.5) break;
 			}
 		}
 		stop();
@@ -192,7 +204,7 @@ void Bot::turn(int dir, double spd) {
 }
 
 // Get tile color
-int Bot::getColor(int x, int y) {
+int Bot::getTileColor(int x, int y) {
 	const int holeThreshold = 32;
 	const int checkptThreshold = 188;
 	const int whiteConst = 192;

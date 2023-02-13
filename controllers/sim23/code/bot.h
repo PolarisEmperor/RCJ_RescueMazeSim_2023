@@ -21,21 +21,18 @@ private:
 	Receiver *receiver = robot->getReceiver("receiver");
 	InertialUnit *imu = robot->getInertialUnit("imu");
 
-	// Current position
-	struct Pos {
-		double x = 0;
-		double y = 0;
-	} pos;
-
-	// Angle in radians
-	double angle = 0;
-
 	const double PI = 3.141592;
 	const double maxSpd = lm->getMaxVelocity() - 0.01;
 	const int timeStep = (int)robot->getBasicTimeStep();
 
-	// Position of previous tile
-	double prevPos = -1;
+	// Current position
+	struct Pos {
+		double x = 0;
+		double y = 0;
+	} pos, prevPos;
+
+	// Angle in radians
+	double angle = 0;
 
 	// Current global compass direction
 	int curDir = -1;
@@ -43,7 +40,7 @@ private:
 	void updatePrevPos();
 public:
 	Bot();
-	void delay(int);
+	void delay(int ms);
 	bool update();
 	void destroy();
 	const float getLidar(int layer, int point);
@@ -51,9 +48,9 @@ public:
 	Pos getPos();
 	double getAngle();
 	int getDirection();
-	void speed(double, double);
+	void speed(double lSpd, double rSpd);
 	void stop();
-	int move(double, double = 5);
-	void turn(int, double = 2);
-	int getColor(int, int);
+	int move(double cm, double spd = 5);
+	void turn(int dir, double spd = 2);
+	int getTileColor(int x, int y);
 };
