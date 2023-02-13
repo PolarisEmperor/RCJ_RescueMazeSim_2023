@@ -1,2 +1,4 @@
 *.opendb
 *.vscode
+x64
+.vs
