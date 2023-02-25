@@ -3,11 +3,9 @@
 int parent[fieldSize];
 int worker[fieldSize];
 
-int room = 1;
-
 // Check if valid neighbor
 int findNeighbor(unsigned int tile, int dir) {
-	if (room == 1) {
+	if (bot.curRoom == 1) {
 		unsigned int neighbors[] = { tile - COLS * 2, tile + 2, tile + COLS * 2, tile - 2 };
 		switch (dir) {
 			case North:
@@ -32,7 +30,7 @@ int findNeighbor(unsigned int tile, int dir) {
 				break;
 		}
 	}
-	else if (room == 2) {
+	else if (bot.curRoom == 2) {
 		// tiles to the north, east, south, west
 		unsigned int neighbors[] = { tile - COLS, tile + 1, tile + COLS, tile - 1 };
 		switch (dir) {
@@ -71,15 +69,15 @@ int findNeighbor(unsigned int tile, int dir) {
 }
 
 // Breadth First Search
-int bfs(Bot *bot, unsigned int tile) {
+int bfs(int tile) {
 	int *cur = &worker[0];
 	int *next = cur + 1;
 	int neighbor = -1;
 	int target = -1;
 
 	// reset parent and worker arrays
-	memset(worker, -1, fieldSize * sizeof(worker[0]));
-	memset(parent, -1, fieldSize * sizeof(parent[0]));
+	memset(worker, -1, fieldSize * sizeof(int));
+	memset(parent, -1, fieldSize * sizeof(int));
 
 	*cur = tile; // add first tile to worker array
 	parent[*cur] = *cur;
@@ -113,7 +111,7 @@ int bfs(Bot *bot, unsigned int tile) {
 }
 
 //
-int move2Tile(Bot *bot, unsigned int cur, unsigned int target) {
+int move2Tile(int cur, int target) {
 	int i;
 	int neighbor;
 	int tileColor = Normal;
@@ -127,7 +125,7 @@ int move2Tile(Bot *bot, unsigned int cur, unsigned int target) {
 	// Move to neighbors until reached target
 	if (neighbor != target) {
 		printf("target = %d parent of target = %d\n", target, parent[target]);
-		move2Tile(bot, cur, parent[target]);
+		move2Tile(cur, parent[target]);
 
 		cur = parent[target];
 		//getTile(bot, cur);
@@ -137,25 +135,25 @@ int move2Tile(Bot *bot, unsigned int cur, unsigned int target) {
 		}
 	}
 
-	printf("current direction %d turn to %d\n", bot->getDirection(), i);
+	printf("current direction %d turn to %d\n", bot.getDirection(), i);
 
 	// Turn to the right direction
-	bot->turn(i);
+	bot.turn(i);
 
 	// Move forward to the tile
-	if (room == 1)
-		tileColor = bot->move(12);
-	else if (room == 2)
-		tileColor = bot->move(6);
+	if (bot.curRoom == 1)
+		tileColor = bot.move(12);
+	else if (bot.curRoom == 2)
+		tileColor = bot.move(6);
 
 	switch (tileColor) {
 		case Hole: // Black Hole
 			field[target].N = field[target].E = field[target].S = field[target].W = field[target].visited = 1;
 			return cur;
 		case Blue: // Room 1 -> Room 2
-			printf("ENTERED ROOM 2\n");
-			bot->delay(3000);
-			room = 2;
+			printf("ROOM 2\n");
+			bot.curRoom = 2;
+			bot.tile.room2 = target;
 			break;
 	}
 

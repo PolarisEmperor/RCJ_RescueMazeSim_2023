@@ -18,25 +18,21 @@ unsigned char moveBits(unsigned char bits, int n) {
 }
 
 // Get tile data(set bits of walls)
-void getTile(Bot *bot, int tile) {
+void getTile(int tile) {
 	int directions[4] = { tile, tile + 1, tile + COLS + 1, tile + COLS };
 	int outer[] = { tile - COLS, tile - COLS + 1, tile + 2, tile + 2 + COLS, tile + COLS + COLS + 1, tile + COLS + COLS, tile - 1 + COLS, tile - 1 };
 	int check[] = { 496, 15, 112, 142, 240, 270, 368, 398 }; // lidar values to check
-	int dir = bot->getDirection();
+	int dir = bot.getDirection();
 	int bit = 1;
-
+	
 	// clear structure
 	for (int i = 0; i < 4; i++) {
 		field[directions[i]].N = field[directions[i]].E = field[directions[i]].S = field[directions[i]].W = 0;
 	}
-	if (room == 2)
-		for (int i = 0; i < sizeof(outer) / sizeof(outer[0]); i++)
-			if (field[outer[i]].visited == 0)
-				field[outer[i]].N = field[outer[i]].E = field[outer[i]].S = field[outer[i]].W = 0;
 
 	// Scan for walls with Lidar
 	for (int i = 0; i < sizeof(check) / sizeof(check[0]); i++) {
-		if (bot->getLidar(3, check[i]) < 7)
+		if (bot.getLidar(3, check[i]) < 7)
 			field[directions[dir]].bits += bit; // set wall bit
 
 		// odd:        next wall  next tile
@@ -44,31 +40,23 @@ void getTile(Bot *bot, int tile) {
 	}
 
 	// Outer neighbors / side half walls
-	if (room == 2) {
+	if (bot.curRoom == 2) {
 		for (int i = North; i <= West; i++) {
-			if (bot->getLidar(3, i * 127) < 7) {
-				// error checking
-				if (outer[i * 2] < 0 || outer[i * 2] % COLS == 0 || outer[i * 2] >= COLS * (ROWS - 1) || (outer[i * 2] + 1) % COLS == 0)
-					break;
-
-				// no walls
-				if ((field[outer[i * 2]].bits & moveBits((1 << i), 2)) == 1 ||
-					(field[outer[i * 2 + 1]].bits & moveBits((1 << i), 2)) == 1)
-					break;
+			//printf("%f %f %f %d\n", bot->getLidar(3, i * 128 - 15), bot->getLidar(3, i*128), bot->getLidar(3, i * 128 + 15), i);
+			if (bot.getLidar(3, i * 128) < 7) {
+				if (bot.getLidar(3, i * 128 - 15) < 7 || bot.getLidar(3, i * 128 + 15) < 7) break;
 
 				field[outer[i * 2]].bits |= (i == West) ? moveBits(1 << (i - 1), 2) : 1 << (i + 1);
 				field[outer[i * 2 + 1]].bits |= (i == West) ? 1 << (i - 1) : moveBits(1 << (i + 1), 2);
 				printf("mid wall thingy  dir %d\n", i);
 				printf("outer bits %d %d\n", field[outer[i * 2]].bits, field[outer[i * 2 + 1]].bits);
-
-				bot->delay(3000);
-
 			}
 		}
 	}
+
 	// fix direction
 	for (int i = 0; i < 4; i++)
-		field[directions[i]].bits = moveBits(field[directions[i]].bits, bot->getDirection());
+		field[directions[i]].bits = moveBits(field[directions[i]].bits, bot.getDirection());
 
 	// set opposite wall bits for neighbor nodes for all 4 tiles
 	for (int i = 0; i < 4; i++) {
@@ -87,12 +75,13 @@ void getTile(Bot *bot, int tile) {
 		}
 	}
 
-	printf("TILE\n");
+	printf("TILE %d\n", tile);
 	for (int i = 0; i < 4; i++)
 		printf("%d\n", field[directions[i]].bits);
 
-	field[tile].visited = 1;
-	if (room == 1)
+	field[directions[0]].visited = 1;
+
+	if (bot.curRoom == 1)
 		for (int i = 1; i < sizeof(directions) / sizeof(directions[0]); i++)
 			field[directions[i]].visited = 1;
 }

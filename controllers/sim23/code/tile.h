@@ -1,4 +1,5 @@
 #pragma once
+
 #include "lib.h"
 #include "bot.h"
 
@@ -33,10 +34,10 @@ struct Tile {
 	};
 };
 
-const unsigned int ROWS = 40;
-const unsigned int COLS = 40;
-const unsigned int fieldSize = ROWS * COLS;
+//const int ROWS = 40;
+//const int COLS = 40;
+//const int fieldSize = ROWS * COLS;
 extern Tile field[fieldSize];
-extern int room;
+//extern int room;
 
-void getTile(Bot *, int);
+void getTile(int tile);

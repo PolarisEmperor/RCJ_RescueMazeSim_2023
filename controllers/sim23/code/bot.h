@@ -5,6 +5,10 @@
 enum Direction { North, East, South, West };
 enum TileColor { Normal, Hole = 2, Swamp, Checkpoint, Blue = 6, Purple, Red };
 
+const int ROWS = 40;
+const int COLS = 40;
+const int fieldSize = ROWS * COLS;
+
 class Bot {
 private:
 	Robot *robot = new Robot();
@@ -25,6 +29,7 @@ private:
 	const double maxSpd = lm->getMaxVelocity() - 0.01;
 	const int timeStep = (int)robot->getBasicTimeStep();
 
+
 	// Current position
 	struct Pos {
 		double x = 0;
@@ -37,8 +42,25 @@ private:
 	// Current global compass direction
 	int curDir = -1;
 
+	// Start tiles for each area
+	struct TileData {
+		// Room 1 tile (start)
+		int room1 = fieldSize / 2;
+		// Room 2 tile (blue)
+		int room2 = -1;
+		// Room 3 tile (purple)
+		int room3 = -1;
+		// Current tile
+		int cur = room1;
+	};
+
 	void updatePrevPos();
+
 public:
+	TileData tile;
+	// Current room
+	int curRoom;
+	
 	Bot();
 	void delay(int ms);
 	bool update();
@@ -54,3 +76,5 @@ public:
 	void turn(int dir, double spd = 2);
 	int getTileColor(int x, int y);
 };
+
+extern class Bot bot;

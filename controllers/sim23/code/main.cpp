@@ -5,28 +5,26 @@
 extern int parent[fieldSize];
 
 int main(int argc, char **argv) {
-	Bot bot;
-
-	int start = fieldSize / 2;
-	int cur = start;
 	int target = -1;
-
-	parent[cur] = cur; // set starting point
+	
+	parent[bot.tile.room1] = bot.tile.room1; // set starting point
 
 	// SIMULATION LOOP
 	while (bot.update()) {
-		getTile(&bot, cur);
+		getTile(bot.tile.cur);
+		
 		//printf("doing bfs\n");
-		target = bfs(&bot, cur); // do bfs
-		printf("cur = %d target = %d\n", cur, target);
-		if (target != -1 && cur != target) {
-			cur = move2Tile(&bot, cur, target);
+		target = bfs(bot.tile.cur); // do bfs
+		printf("cur = %d target = %d\n", bot.tile.cur, target);
+		if (target != -1 && bot.tile.cur != target) {
+			bot.tile.cur = move2Tile(bot.tile.cur, target);
 		}
 		else {
-			printf("i need to go home! start tile = %d\n", start);
-			move2Tile(&bot, cur, start);
+			printf("i need to go home! start tile = %d\n", bot.tile.room1);
+			move2Tile(bot.tile.cur, bot.tile.room1);
 			break;
 		}
+		
 	}
 
 	bot.destroy();

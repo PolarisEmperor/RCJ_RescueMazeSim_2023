@@ -1,8 +1,10 @@
 #include "bot.h"
 
+Bot bot;
+
 // Robot constructor
 Bot::Bot() {
-	//gyro->enable(timeStep);
+	// Enable motors / sensors
 	gps->enable(timeStep);
 	camL->enable(timeStep);
 	camR->enable(timeStep);
@@ -16,6 +18,12 @@ Bot::Bot() {
 	rm->setPosition(INFINITY);
 	lm->setVelocity(0);
 	rm->setVelocity(0);
+
+	// Set room values
+	tile.room1 = fieldSize / 2;
+	tile.cur = tile.room1;
+
+	curRoom = 1;
 }
 
 // Delay function
