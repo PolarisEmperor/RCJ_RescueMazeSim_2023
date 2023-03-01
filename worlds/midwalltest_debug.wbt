@@ -1,0 +1,333 @@
+#VRML_SIM R2023a utf8
+
+EXTERNPROTO "../protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "../protos/TexturedBackground.proto"
+EXTERNPROTO "../protos/halfTile.proto"
+IMPORTABLE EXTERNPROTO "../protos/custom_robot.proto"
+
+WorldInfo {
+  basicTimeStep 16
+  coordinateSystem "NUE"
+  contactProperties [
+    ContactProperties {
+      material1 "TILE"
+      material2 "NO_FRIC"
+      coulombFriction [
+        0
+      ]
+      bounce 0
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+  ]
+}
+DEF Viewpoint Viewpoint {
+  orientation -0.6832632393515958 0.6832632393515958 0.25749309020151906 2.63756
+  position -0.08 0.6000000000000001 0.51
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+DEF WALLTILES Group {
+  children [
+    DEF TILE halfTile {
+      id "0"
+      xScale 0.4
+      zScale 0.4
+      yScale 0.4
+      topWall 1
+      leftWall 1
+      tile1External [
+        TRUE
+        FALSE
+        FALSE
+        TRUE
+      ]
+      tile2External [
+        TRUE
+        FALSE
+        FALSE
+        FALSE
+      ]
+      tile3External [
+        FALSE
+        FALSE
+        FALSE
+        TRUE
+      ]
+      width 3
+      height 3
+      floor TRUE
+      tileColor 0.635 0.635 0.635
+      room 2
+    }
+    DEF TILE halfTile {
+      zPos 1
+      id "1"
+      xScale 0.4
+      zScale 0.4
+      yScale 0.4
+      leftWall 1
+      tile1Walls [
+        0, 0, 1, 0
+      ]
+      tile1External [
+        FALSE
+        FALSE
+        FALSE
+        TRUE
+      ]
+      tile3External [
+        FALSE
+        FALSE
+        FALSE
+        TRUE
+      ]
+      width 3
+      height 3
+      floor TRUE
+      tileColor 0.635 0.635 0.635
+      room 2
+    }
+    DEF TILE halfTile {
+      zPos 2
+      id "2"
+      xScale 0.4
+      zScale 0.4
+      yScale 0.4
+      bottomWall 5
+      leftWall 3
+      tile1External [
+        FALSE
+        FALSE
+        FALSE
+        TRUE
+      ]
+      tile3External [
+        FALSE
+        FALSE
+        TRUE
+        TRUE
+      ]
+      tile4External [
+        FALSE
+        FALSE
+        TRUE
+        FALSE
+      ]
+      width 3
+      height 3
+      floor TRUE
+      tileColor 0.635 0.635 0.635
+      room 2
+    }
+    DEF TILE halfTile {
+      xPos 1
+      id "3"
+      xScale 0.4
+      zScale 0.4
+      yScale 0.4
+      topWall 1
+      tile1Walls [
+        0, 1, 0, 0
+      ]
+      tile1External [
+        TRUE
+        FALSE
+        FALSE
+        FALSE
+      ]
+      tile2External [
+        TRUE
+        FALSE
+        FALSE
+        FALSE
+      ]
+      width 3
+      height 3
+      floor TRUE
+      tileColor 0.635 0.635 0.635
+      room 2
+    }
+    DEF START_TILE halfTile {
+      xPos 1
+      zPos 1
+      id "4"
+      xScale 0.4
+      zScale 0.4
+      yScale 0.4
+      width 3
+      height 3
+      floor TRUE
+      tileColor 0.635 0.635 0.635
+      room 2
+    }
+    DEF TILE halfTile {
+      xPos 1
+      zPos 2
+      id "5"
+      xScale 0.4
+      zScale 0.4
+      yScale 0.4
+      bottomWall 1
+      tile3Walls [
+        0, 1, 0, 0
+      ]
+      tile3External [
+        FALSE
+        FALSE
+        TRUE
+        FALSE
+      ]
+      tile4External [
+        FALSE
+        FALSE
+        TRUE
+        FALSE
+      ]
+      width 3
+      height 3
+      floor TRUE
+      tileColor 0.635 0.635 0.635
+      room 2
+    }
+    DEF TILE halfTile {
+      xPos 2
+      id "6"
+      xScale 0.4
+      zScale 0.4
+      yScale 0.4
+      rightWall 2
+      topWall 3
+      tile1External [
+        TRUE
+        FALSE
+        FALSE
+        FALSE
+      ]
+      tile2External [
+        TRUE
+        TRUE
+        FALSE
+        FALSE
+      ]
+      tile4External [
+        FALSE
+        TRUE
+        FALSE
+        FALSE
+      ]
+      width 3
+      height 3
+      floor TRUE
+      tileColor 0.635 0.635 0.635
+      room 2
+    }
+    DEF TILE halfTile {
+      xPos 2
+      zPos 1
+      id "7"
+      xScale 0.4
+      zScale 0.4
+      yScale 0.4
+      rightWall 1
+      tile2Walls [
+        0, 0, 1, 0
+      ]
+      tile2External [
+        FALSE
+        TRUE
+        FALSE
+        FALSE
+      ]
+      tile4External [
+        FALSE
+        TRUE
+        FALSE
+        FALSE
+      ]
+      width 3
+      height 3
+      floor TRUE
+      tileColor 0.635 0.635 0.635
+      room 2
+    }
+    DEF TILE halfTile {
+      xPos 2
+      zPos 2
+      id "8"
+      xScale 0.4
+      zScale 0.4
+      yScale 0.4
+      rightWall 3
+      bottomWall 3
+      tile2External [
+        FALSE
+        TRUE
+        FALSE
+        FALSE
+      ]
+      tile3External [
+        FALSE
+        FALSE
+        TRUE
+        FALSE
+      ]
+      tile4External [
+        FALSE
+        TRUE
+        TRUE
+        FALSE
+      ]
+      width 3
+      height 3
+      floor TRUE
+      tileColor 0.635 0.635 0.635
+      room 2
+    }
+  ]
+}
+DEF CHECKPOINTBOUNDS Group {
+}
+DEF TRAPBOUNDS Group {
+}
+DEF STARTBOUNDS Group {
+  children [
+    DEF boundary Group {
+      children [
+        DEF start0min Transform {
+          translation -0.12 -0.03 -0.12
+        }
+        DEF start0max Transform {
+          translation 0 -0.03 0
+        }
+      ]
+    }
+  ]
+}
+DEF SWAMPBOUNDS Group {
+}
+DEF OBSTACLES Group {
+}
+DEF HUMANGROUP Group {
+}
+DEF HAZARDGROUP Group {
+}
+DEF ROBOT0 custom_robot {
+  hidden position_0_0 -3.933771482782049e-11
+  hidden position_0_1 3.928943349516331e-11
+  hidden linearVelocity_0 6.172007059269386e-14 -6.611571848563151e-16 2.384337668336119e-14
+  hidden angularVelocity_0 5.209152637021554e-13 -2.94484779373008e-10 1.196273869296756e-14
+  hidden rotation_7 0.7071067811865553 1.3907982455567081e-11 -0.7071067811865397 3.140000000027816
+  hidden linearVelocity_7 -1.1762216529341896e-14 -4.08497000177909e-16 7.846644526474294e-12
+  hidden angularVelocity_7 3.956136087137053e-10 -2.9517122746077397e-10 -9.928833587593564e-13
+  hidden rotation_8 0.7071067811865397 -1.389091242670408e-11 -0.7071067811865553 3.1399999999722183
+  hidden linearVelocity_8 1.1404437354825978e-14 -8.528240385756037e-16 -7.785691413083841e-12
+  hidden angularVelocity_8 -3.9358775319845823e-10 -2.9379440082546544e-10 1.0106803402386578e-12
+  translation -0.060000000289270876 -0.0302549166138932 -0.06000000028121667
+  rotation -0.9932550110933834 8.378690293249717e-06 0.11595034656127683 2.5595842324611104e-05
+  controller "<extern>"
+  camera_fieldOfView 1
+}

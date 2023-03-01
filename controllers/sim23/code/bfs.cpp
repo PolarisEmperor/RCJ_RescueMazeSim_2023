@@ -134,12 +134,12 @@ int move2Tile(int cur, int target) {
 			if (neighbor == target) break;
 		}
 	}
-
+	printf("target = %d cur = %d\n", target, cur);
 	printf("current direction %d turn to %d\n", bot.getDirection(), i);
 
 	// Turn to the right direction
-	bot.turn(i);
-
+	if (bot.getDirection() != i) bot.turn(i);
+	printf("it turned\n");
 	// Move forward to the tile
 	if (bot.curRoom == 1)
 		tileColor = bot.move(12);
@@ -151,6 +151,9 @@ int move2Tile(int cur, int target) {
 			field[target].N = field[target].E = field[target].S = field[target].W = field[target].visited = 1;
 			return cur;
 		case Blue: // Room 1 -> Room 2
+			if (bot.tile.room2 != -1) {
+				break;
+			}
 			printf("ROOM 2\n");
 			bot.curRoom = 2;
 			bot.tile.room2 = target;

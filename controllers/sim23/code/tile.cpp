@@ -6,21 +6,39 @@ Tile field[fieldSize];
 // if n == 1, nesw == 0110 will become 1100
 // and 1001 will become 0011, the highest order bit will move down to the lowest order bit.
 unsigned char moveBits(unsigned char bits, int n) {
-	if (!n) return bits;
+	ubyte walls = bits & 0x0f;  // 0000xxxx
+	ubyte mask;
+	walls <<= n;
 
-	bool HOB = bits & (1 << 3); // is highest order bit set
-	bool visited = bits & (1 << 4); // is visited bit set
-	bits <<= 1; // left shift
-	if (!visited) bits &= ~(1 << 4); // clear shifted bit
-	if (HOB) bits |= 1; // HOB is now LOB
+	mask = walls & 0xf0;
+	walls &= ~mask;
+	walls |= mask >> 4;
 
-	return moveBits(bits, n - 1);
+	//printf("%d\n", walls);
+	//printf("%d\n", mask);
+
+
+	//printf("%x\n", bits);
+	bits &= ~0x0f;
+	bits |= walls;
+	//printf("%x\n", bits);
+
+	//if (!n) return bits;
+
+	//bool HOB = bits & (1 << 3); // is highest order bit set
+	//bool visited = bits & (1 << 4); // is visited bit set
+	//bits <<= 1; // left shift
+	//if (!visited) bits &= ~(1 << 4); // clear shifted bit
+	//if (HOB) bits |= 1; // HOB is now LOB
+
+	//return moveBits(bits, n - 1);
+	return bits;
 }
 
 // Get tile data(set bits of walls)
 void getTile(int tile) {
 	int directions[4] = { tile, tile + 1, tile + COLS + 1, tile + COLS };
-	int outer[] = { tile - COLS, tile - COLS + 1, tile + 2, tile + 2 + COLS, tile + COLS + COLS + 1, tile + COLS + COLS, tile - 1 + COLS, tile - 1 };
+	int outer[] = { tile - COLS, tile - COLS + 1, tile + 2, tile + 2 + COLS, tile + COLS + COLS, tile + COLS + COLS + 1, tile - 1, tile - 1 + COLS };
 	int check[] = { 496, 15, 112, 142, 240, 270, 368, 398 }; // lidar values to check
 	int dir = bot.getDirection();
 	int bit = 1;
@@ -41,16 +59,35 @@ void getTile(int tile) {
 
 	// Outer neighbors / side half walls
 	if (bot.curRoom == 2) {
+		printf("CURDIR %d\n", bot.getDirection());
 		for (int i = North; i <= West; i++) {
-			//printf("%f %f %f %d\n", bot->getLidar(3, i * 128 - 15), bot->getLidar(3, i*128), bot->getLidar(3, i * 128 + 15), i);
-			if (bot.getLidar(3, i * 128) < 7) {
+			for (int j = i * 128 - 30; j < i * 128 + 30; j++) {
 				if (bot.getLidar(3, i * 128 - 15) < 7 || bot.getLidar(3, i * 128 + 15) < 7) break;
-
-				field[outer[i * 2]].bits |= (i == West) ? moveBits(1 << (i - 1), 2) : 1 << (i + 1);
-				field[outer[i * 2 + 1]].bits |= (i == West) ? 1 << (i - 1) : moveBits(1 << (i + 1), 2);
-				printf("mid wall thingy  dir %d\n", i);
-				printf("outer bits %d %d\n", field[outer[i * 2]].bits, field[outer[i * 2 + 1]].bits);
+				if (bot.getLidar(3, j) < 7) {
+					int wall = i + dir;
+					if (wall >= 4) wall -= 4;
+					field[outer[wall * 2]].bits |= (wall % 2 == 0) ? 2 : 4;
+					field[outer[wall * 2 + 1]].bits |= (wall % 2 == 0) ? 8 : 1;
+					printf("mid wall thingy  dir %d\n", i);
+					printf("WALL %d\n", wall);
+					printf("tile %d %d\n", outer[wall * 2], (wall % 2 == 0) ? 2 : 4);
+					printf("tile %d %d\n", outer[wall* 2 + 1], (wall % 2 == 0) ? 8 : 1);
+					
+					break;
+				}
 			}
+			 
+			
+			
+			////printf("%f %f %f %d\n", bot->getLidar(3, i * 128 - 15), bot->getLidar(3, i*128), bot->getLidar(3, i * 128 + 15), i);
+			//if (bot.getLidar(3, i * 128) < 7) {
+			//	if (bot.getLidar(3, i * 128 - 15) < 7 || bot.getLidar(3, i * 128 + 15) < 7) break;
+
+			//	field[outer[i * 2]].bits |= (i == West) ? moveBits(1 << (i - 1), 2) : 1 << (i + 1);
+			//	field[outer[i * 2 + 1]].bits |= (i == West) ? 1 << (i - 1) : moveBits(1 << (i + 1), 2);
+			//	printf("mid wall thingy  dir %d\n", i);
+			//	printf("outer bits %d %d\n", field[outer[i * 2]].bits, field[outer[i * 2 + 1]].bits);
+			//}
 		}
 	}
 

@@ -5,21 +5,6 @@
 
 typedef unsigned char ubyte;
 
-// Old struct
-//struct Tile {
-//	union {
-//		struct {
-//			ubyte N : 1; // north wall
-//			ubyte E : 1; // east wall
-//			ubyte S : 1; // south wall
-//			ubyte W : 1; // west wall
-//			ubyte visited : 1; // has robot visited tile already
-//			ubyte code : 4; // hsu, hazards
-//		};
-//		ubyte bits;
-//	};
-//};
-
 struct Tile {
 	union {
 		struct {
@@ -27,17 +12,17 @@ struct Tile {
 			ubyte E : 1; // east wall
 			ubyte S : 1; // south wall
 			ubyte W : 1; // west wall
-			ubyte visited : 1; // has robot visited tile already
-			ubyte code : 3; // idk what we're using this for yet
+			ubyte tl : 1; // curve between W and N 
+			ubyte tr : 1; // curve between N and E
+			ubyte br : 1; // curve between E and S
+			ubyte bl : 1; // curve between S and W
 		};
 		ubyte bits;
 	};
+	bool visited; // has robot visited tile already
 };
 
-//const int ROWS = 40;
-//const int COLS = 40;
-//const int fieldSize = ROWS * COLS;
 extern Tile field[fieldSize];
-//extern int room;
 
 void getTile(int tile);
+unsigned char moveBits(unsigned char bits, int n); // temp, remove when done

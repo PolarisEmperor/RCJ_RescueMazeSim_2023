@@ -48,6 +48,8 @@ bool Bot::update() {
 	pos.x = (double)gps->getValues()[0];
 	pos.y = (double)gps->getValues()[2];
 
+	if (prevPos.x == 0) updatePrevPos();
+
 	// Update direction
 	curDir = getDirection();
 
@@ -123,24 +125,25 @@ int Bot::move(double cm, double spd) {
 	bool hole = false;
 	int tileColor = 0;
 	double distFromWall = 5.5;
-
+	printf("%f %f\n", prevPos.x, prevPos.y);
 	switch (curDir) {
 		case North:
-			target = prevPos.x + cm / 100;
+			target = prevPos.y - cm / 100;
 			break;
 		case East:
-			target = prevPos.y + cm / 100;
+			target = prevPos.x + cm / 100;
 			break;
 		case South:
-			target = prevPos.x - cm / 100;
+			target = prevPos.y + cm / 100;
 			break;
 		case West:
-			target = prevPos.y - cm / 100;
+			target = prevPos.x - cm / 100;
 			break;
 	}
 
 	if (cm > 0) {
 		while (update()) {
+			printf("moving\n");
 			tileColor = getTileColor(camB->getWidth() / 2, 25);
 			if (tileColor == Hole) { // bottom cam sees black
 				hole = true;
@@ -149,10 +152,10 @@ int Bot::move(double cm, double spd) {
 			else if (tileColor == Swamp) { // swamp
 				spd = 2;
 			}
-			if (curDir == North && pos.x >= target) break;
-			if (curDir == South && pos.x <= target) break;
-			if (curDir == East && pos.y >= target) break;
-			if (curDir == West && pos.y <= target) break;
+			if (curDir == North && pos.y <= target) break;
+			if (curDir == South && pos.y >= target) break;
+			if (curDir == East && pos.x >= target) break;
+			if (curDir == West && pos.x <= target) break;
 			if (getLidar(3, 0) < distFromWall) break;
 			speed(spd, spd);
 		}

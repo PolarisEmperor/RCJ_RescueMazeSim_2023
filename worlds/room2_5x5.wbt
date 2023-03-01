@@ -38,7 +38,7 @@
         DEF WALLTILES Group {
             children [
               
-        DEF START_TILE halfTile {
+        DEF START_TILE worldTile {
             xPos 0
             zPos 0
             floor TRUE
@@ -46,15 +46,10 @@
             rightWall 0
             bottomWall 15
             leftWall 3
-            tile1Walls [ 0, 0, 0, 0 ]
-            tile2Walls [ 0, 0, 0, 0 ]
-            tile3Walls [ 0, 0, 0, 0 ]
-            tile4Walls [ 0, 0, 0, 0 ]
-            tile1External [ TRUE, FALSE, FALSE, TRUE ]
-            tile2External [ TRUE, FALSE, FALSE, FALSE ]
-            tile3External [ FALSE, FALSE, FALSE, TRUE ]
-            tile4External [ FALSE, FALSE, FALSE, FALSE ]
-            curve [0,0,0,0]
+            topExternal TRUE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal TRUE
             start TRUE
             trap FALSE
             checkpoint FALSE
@@ -66,7 +61,7 @@
             yScale 0.4
             zScale 0.4
             tileColor 0.635 0.635 0.635
-            room 2
+            room 1
           }
         
         DEF TILE halfTile {
@@ -220,7 +215,7 @@
             xScale 0.4
             yScale 0.4
             zScale 0.4
-            tileColor 0.635 0.635 0.635
+            tileColor 0.10196078431372549 0.10196078431372549 0.9019607843137255 
             room 2
           }
         

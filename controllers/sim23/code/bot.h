@@ -72,7 +72,7 @@ public:
 	int getDirection();
 	void speed(double lSpd, double rSpd);
 	void stop();
-	int move(double cm, double spd = 5);
+	int move(double cm, double spd = 6);
 	void turn(int dir, double spd = 2);
 	int getTileColor(int x, int y);
 };

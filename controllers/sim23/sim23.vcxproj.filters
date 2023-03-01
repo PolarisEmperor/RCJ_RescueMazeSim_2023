@@ -1,39 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Accelerometer.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Altimeter.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Brake.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Camera.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Compass.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Connector.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Device.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Display.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\DistanceSensor.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Emitter.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Field.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\GPS.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Gyro.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\InertialUnit.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Joystick.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Keyboard.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\LED.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Lidar.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\LightSensor.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Motion.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Motor.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Mouse.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Node.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Pen.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\PositionSensor.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Radar.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\RangeFinder.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Receiver.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Robot.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Skin.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Speaker.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Supervisor.cpp" />
-    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\TouchSensor.cpp" />
     <ClCompile Include="code\bfs.cpp">
       <Filter>Code</Filter>
     </ClCompile>
@@ -49,10 +16,112 @@
     <ClCompile Include="code\victim.cpp">
       <Filter>Code</Filter>
     </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Accelerometer.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Altimeter.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Brake.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Camera.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Compass.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Connector.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Device.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Display.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\DistanceSensor.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Emitter.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Field.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\GPS.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Gyro.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\InertialUnit.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Joystick.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Keyboard.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\LED.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Lidar.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\LightSensor.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Motion.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Motor.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Mouse.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Node.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Pen.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\PositionSensor.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Radar.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\RangeFinder.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Receiver.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Robot.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Skin.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Speaker.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Supervisor.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\TouchSensor.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Code">
       <UniqueIdentifier>{5f27818a-28a4-4c58-8a04-aaa1bf6154e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Webots Files">
+      <UniqueIdentifier>{e7cad9ab-78be-4d9f-a251-45d62975e70c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
