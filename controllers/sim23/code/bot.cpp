@@ -143,7 +143,6 @@ int Bot::move(double cm, double spd) {
 
 	if (cm > 0) {
 		while (update()) {
-			if (bot.getLidar(3, 0) < 6) break;
 			tileColor = getTileColor(camB->getWidth() / 2, 25);
 			if (tileColor == Hole) { // bottom cam sees black
 				hole = true;
