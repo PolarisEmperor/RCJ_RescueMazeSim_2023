@@ -81,6 +81,7 @@ int bfs(int tile) {
 
 	*cur = tile; // add first tile to worker array
 	parent[*cur] = *cur;
+	printf("CURRENT ROOM = %d\n", bot.curRoom);
 	while (*cur > 0 && cur < &worker[fieldSize]) {
 		target = -1;
 
@@ -139,7 +140,6 @@ int move2Tile(int cur, int target) {
 
 	// Turn to the right direction
 	if (bot.getDirection() != i) bot.turn(i);
-	printf("it turned\n");
 	// Move forward to the tile
 	if (bot.curRoom == 1)
 		tileColor = bot.move(12);
@@ -151,12 +151,17 @@ int move2Tile(int cur, int target) {
 			field[target].N = field[target].E = field[target].S = field[target].W = field[target].visited = 1;
 			return cur;
 		case Blue: // Room 1 -> Room 2
-			if (bot.tile.room2 != -1) {
+			if (bot.curRoom == 2) {
+				//if (bot.curRoom == 1) bot.curRoom = 2;
+				//else if (bot.curRoom == 2) bot.curRoom = 1;
+				//printf("BLUE\n");
 				break;
 			}
-			printf("ROOM 2\n");
+			printf("entering ROOM 2 for the first time tile = %d\n", target);
+			bot.delay(3000);
 			bot.curRoom = 2;
 			bot.tile.room2 = target;
+
 			break;
 	}
 

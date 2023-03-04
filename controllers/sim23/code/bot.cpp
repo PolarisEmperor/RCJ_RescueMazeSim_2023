@@ -125,7 +125,7 @@ int Bot::move(double cm, double spd) {
 	bool hole = false;
 	int tileColor = 0;
 	double distFromWall = 5.5;
-	printf("%f %f\n", prevPos.x, prevPos.y);
+
 	switch (curDir) {
 		case North:
 			target = prevPos.y - cm / 100;
@@ -143,7 +143,7 @@ int Bot::move(double cm, double spd) {
 
 	if (cm > 0) {
 		while (update()) {
-			printf("moving\n");
+			if (bot.getLidar(3, 0) < 6) break;
 			tileColor = getTileColor(camB->getWidth() / 2, 25);
 			if (tileColor == Hole) { // bottom cam sees black
 				hole = true;
