@@ -30,7 +30,10 @@ void sendVictimSignal(char ch) {
 	}
 	bot.stop();
 	bot.delay(1000);
+	printf("sending message\n");
+	bot.update();
 	bot.emitter->send(message, sizeof(message));
+	bot.update();
 	bot.stop();
 	bot.delay(1000);
 }
