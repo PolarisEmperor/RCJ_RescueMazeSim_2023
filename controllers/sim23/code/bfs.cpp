@@ -148,11 +148,10 @@ int move2Tile(int cur, int target) {
 
 	switch (tileColor) {
 		case Hole: // Black Hole
-			field[target].N = 1;
-			field[target].E = 1;
-			field[target].S = 1;
-			field[target].W = 1;
-			field[target].visited = 1;
+			field[target].N = field[target].E = field[target].S = field[target].W = field[target].visited = 1;
+			field[target + 1].N = field[target + 1].E = field[target + 1].S = field[target + 1].W = field[target + 1].visited = 1;
+			field[target + COLS].N = field[target + COLS].E = field[target + COLS].S = field[target + COLS].W = field[target + COLS].visited = 1;
+			field[target + COLS + 1].N = field[target + COLS + 1].E = field[target + COLS + 1].S = field[target + COLS + 1].W = field[target + COLS + 1].visited = 1;
 			printf("hole hole hole\n");
 			return cur;
 		case Blue: // Room 1 -> Room 2
