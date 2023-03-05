@@ -14,8 +14,29 @@ const int max_thresh = 255;
 int PosX;
 int PosZ;
 
+void sendVictimSignal(char ch) {
+	char message[9];
+
+	int x = bot.getPos().x * 100;
+	int y = bot.getPos().y * 100;
+
+	int victim_pos[2] = { x, y };
+
+	memcpy(message, victim_pos, sizeof(victim_pos));
+	message[8] = ch;
+
+	if (ch == 'H' || ch == 'S' || ch == 'U') {
+		printf("I found a %c\n", ch);
+	}
+	bot.stop();
+	bot.delay(1000);
+	bot.emitter->send(message, sizeof(message));
+	bot.stop();
+	bot.delay(1000);
+}
+
 // HSU victim detection
-char HSU(Mat roi) {
+void HSU(Mat roi) {
 	vector<vector<Point>> contours;
 	unsigned char slicedContours = 0;
 	double area = 0;
@@ -32,7 +53,7 @@ char HSU(Mat roi) {
 		area += contourArea(contours[i]);
 	}
 	//printf("top contour: %f\n", area);
-	if (area < double(top.rows * top.cols * 0.05) || area > double(top.rows * top.cols * 0.3)) return 0;
+	if (area < double(top.rows * top.cols * 0.05) || area > double(top.rows * top.cols * 0.3)) return;
 	slicedContours = (unsigned char)contours.size() * 100;
 	findContours(mid, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE); // find contours
 	area = 0;
@@ -40,7 +61,7 @@ char HSU(Mat roi) {
 		area += contourArea(contours[i]);
 	}
 	//printf("mid contour: %f\n", area);
-	if (area < double(mid.rows * mid.cols * 0.05) || area > double(mid.rows * mid.cols * 0.3)) return 0;
+	if (area < double(mid.rows * mid.cols * 0.05) || area > double(mid.rows * mid.cols * 0.3)) return;
 	slicedContours += (unsigned char)contours.size() * 10;
 	findContours(bot, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE); // find contours
 	area = 0;
@@ -48,7 +69,7 @@ char HSU(Mat roi) {
 		area += contourArea(contours[i]);
 	}
 	//printf("bot contour: %f\n", area);
-	if (area < double(bot.rows * bot.cols * 0.05) || area > double(bot.rows * bot.cols * 0.3)) return 0;
+	if (area < double(bot.rows * bot.cols * 0.05) || area > double(bot.rows * bot.cols * 0.3)) return;
 	slicedContours += (unsigned char)contours.size();
 
 	//imshow("hsu", roi);
@@ -58,10 +79,10 @@ char HSU(Mat roi) {
 	//waitKey(1);
 
 	switch (slicedContours) {
-		case 212: return 'H';
-		case 111: return 'S';
-		case 221: return 'U';
-		default: return 0;
+		case 212: sendVictimSignal('H');
+		case 111: sendVictimSignal('S');
+		case 221: sendVictimSignal('U');
+		default: return;
 	}
 }
 
@@ -150,6 +171,7 @@ bool checkVisualVictim(Camera *cam) {
 
 					if (blackarea / area > 0.09 && blackarea / area < 0.2 && contours.size() > 10) {
 						printf("poison\n");
+						sendVictimSignal('P');
 						//changeMessage(PosX, PosZ, 'P');
 						//boardLoc(loc).victimChecked = true;
 						return true;
@@ -157,6 +179,7 @@ bool checkVisualVictim(Camera *cam) {
 
 					if (blackarea / area > 0.2 && blackarea / area < 0.5 && contours.size() < 10 && contours.size() > 3) {
 						printf("corrosive\n");
+						sendVictimSignal('C');
 						//changeMessage(PosX, PosZ, 'C');
 						//boardLoc(loc).victimChecked = true;
 						return true;
@@ -176,14 +199,6 @@ bool checkVisualVictim(Camera *cam) {
 					//PosX = gps->getValues()[0] * 100;
 					//PosZ = gps->getValues()[2] * 100;
 
-					// detect letter
-					char letter = HSU(roi);
-					if (letter) { // send to erebus
-						printf("I found a %c!\n", letter);
-						//changeMessage(PosX, PosZ, letter);
-						//boardLoc(loc).victimChecked = true;
-						return true;
-					}
 				}
 			}
 		}
@@ -207,12 +222,14 @@ bool checkVisualVictim(Camera *cam) {
 				findContours(frame_yellow, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
 				if (contours.size() == 0) { //if no yellow
 					printf("flammable\n");
+					sendVictimSignal('F');
 					//changeMessage(PosX, PosZ, 'F');
 					//boardLoc(loc).victimChecked = true;
 					return true;
 				}
 				else {
 					printf("organic peroxide\n");
+					sendVictimSignal('O');
 					//changeMessage(PosX, PosZ, 'O');
 					//boardLoc(loc).victimChecked = true;
 					return true;

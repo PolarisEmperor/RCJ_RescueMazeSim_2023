@@ -20,7 +20,6 @@ private:
 	Camera *camL = robot->getCamera("lCam");
 	Camera *camB = robot->getCamera("bCam");
 	Lidar *lidar = robot->getLidar("lidar");
-	Emitter *emitter = robot->getEmitter("emitter");
 	Receiver *receiver = robot->getReceiver("receiver");
 	InertialUnit *imu = robot->getInertialUnit("imu");
 
@@ -56,6 +55,7 @@ private:
 	void updatePrevPos();
 
 public:
+	Emitter* emitter = robot->getEmitter("emitter");
 	TileData tile;
 	// Current room
 	int curRoom;
