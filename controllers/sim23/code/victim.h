@@ -1,7 +1,5 @@
-//#pragma once
-//#include "includes.h"
-//#include "message.h"
-//#include "tile.h"
-//#include "angle.h"
-//
-//bool checkVisualVictim(Camera *);
+#pragma once
+#include "lib.h"
+#include "tile.h"
+
+bool checkVisualVictim(Camera *);

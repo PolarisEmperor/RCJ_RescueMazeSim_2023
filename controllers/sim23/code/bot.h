@@ -1,5 +1,4 @@
 #pragma once
-
 #include "lib.h"
 
 enum Direction { North, East, South, West };

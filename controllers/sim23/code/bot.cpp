@@ -1,4 +1,5 @@
 #include "bot.h"
+#include "victim.h"
 
 Bot bot;
 
@@ -162,21 +163,28 @@ int Bot::move(double cm, double spd) {
 	}
 
 	if (hole) {
+		stop();
+		//printf("prevPos %f\n", prevPos.x);
+		//printf("cur pos %f\n", getPos().x);
+
+		delay(1000);
+
 		// back up to prev pos
 		speed(-spd, -spd);
 		printf("theres a black hole, backing up\n");
 
 		while (update()) {
+			//printf("%f\n", fabs(getPos().x - prevPos.x));
 			if (getDirection() == North || getDirection() == South) {
-				if (fabs(getPos().x - prevPos.x) < 0.000001 || getLidar(3, 255) < 4.5) break;
+				if (fabs(getPos().y - prevPos.y) > 0.019 || getLidar(3, 255) < 4.5) break;
 			}
 			else {
-				if (fabs(getPos().y - prevPos.y) < 0.000001 || getLidar(3, 255) < 4.5) break;
+				if (fabs(getPos().x - prevPos.x) > 0.019 || getLidar(3, 255) < 4.5) break;
 			}
 		}
 		stop();
-
-		return 0;
+		delay(3000);
+		return Hole;
 	}
 
 	if (tileColor == 3) printf("SWAMP\n");
@@ -197,6 +205,8 @@ void Bot::turn(int dir, double spd) {
 
 	int prevDir = getDirection();
 	while (update()) {
+		checkVisualVictim(camL);
+		checkVisualVictim(camR);
 		if (dir == South && fabs(angle) > angles[dir] - err && fabs(angle) < angles[dir] + err)
 			break;
 
