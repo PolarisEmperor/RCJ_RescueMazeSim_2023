@@ -157,7 +157,33 @@ int Bot::move(double cm, double spd) {
 			if (curDir == East && pos.x >= target) break;
 			if (curDir == West && pos.x <= target) break;
 			if (getLidar(3, 0) < distFromWall) break;
-			speed(spd, spd);
+			
+			switch (curDir) {
+				case North:
+					if (bot.getAngle() < 0) speed(spd - 1, spd);
+					else if (bot.getAngle() > 0) speed(spd, spd - 1);
+					else speed(spd, spd);
+					break;
+				case East:
+					if (bot.getAngle() < -1.57) speed(spd - 1, spd);
+					else if (bot.getAngle() > -1.57) speed(spd, spd - 1);
+					else speed(spd, spd);
+					break;
+				case South:
+					if (bot.getAngle() > 0 && bot.getAngle() < 3.14) speed(spd - 1, spd);
+					else if (bot.getAngle() < 0 && bot.getAngle() > -3.14) speed(spd, spd - 1);
+					else speed(spd, spd);
+					
+					break;
+				case West:
+					if (bot.getAngle() < 1.57) speed(spd-1, spd);
+					else if (bot.getAngle() > 1.57) speed(spd, spd-1);
+					else speed(spd, spd);
+					break;
+			}
+			printf("%f\n", bot.getAngle());
+			
+
 		}
 		stop();
 	}
