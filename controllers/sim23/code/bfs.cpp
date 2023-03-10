@@ -5,32 +5,32 @@ int worker[fieldSize];
 
 // Check if valid neighbor
 int findNeighbor(unsigned int tile, int dir) {
-	if (bot.curRoom == 1) {
-		unsigned int neighbors[] = { tile - COLS * 2, tile + 2, tile + COLS * 2, tile - 2 };
-		switch (dir) {
-			case North:
-				if ((field[tile].bits & (1 << North)) == 0 && // TL N
-					(field[tile + 1].bits & (1 << North)) == 0) // TR N
-					return neighbors[dir];
-				break;
-			case East:
-				if ((field[tile + 1].bits & (1 << East)) == 0 && // TR E
-					(field[tile + COLS + 1].bits & (1 << East)) == 0) // BR E
-					return neighbors[dir];
-				break;
-			case South:
-				if ((field[tile + COLS].bits & (1 << South)) == 0 && // BL S
-					(field[tile + COLS + 1].bits & (1 << South)) == 0) // BR S
-					return neighbors[dir];
-				break;
-			case West:
-				if ((field[tile].bits & (1 << West)) == 0 && // TL W
-					(field[tile + COLS].bits & (1 << West)) == 0) // BL W 
-					return neighbors[dir];
-				break;
-		}
-	}
-	else if (bot.curRoom == 2) {
+	//if (bot.curRoom == 1) {
+	//	unsigned int neighbors[] = { tile - COLS * 2, tile + 2, tile + COLS * 2, tile - 2 };
+	//	switch (dir) {
+	//		case North:
+	//			if ((field[tile].bits & (1 << North)) == 0 && // TL N
+	//				(field[tile + 1].bits & (1 << North)) == 0) // TR N
+	//				return neighbors[dir];
+	//			break;
+	//		case East:
+	//			if ((field[tile + 1].bits & (1 << East)) == 0 && // TR E
+	//				(field[tile + COLS + 1].bits & (1 << East)) == 0) // BR E
+	//				return neighbors[dir];
+	//			break;
+	//		case South:
+	//			if ((field[tile + COLS].bits & (1 << South)) == 0 && // BL S
+	//				(field[tile + COLS + 1].bits & (1 << South)) == 0) // BR S
+	//				return neighbors[dir];
+	//			break;
+	//		case West:
+	//			if ((field[tile].bits & (1 << West)) == 0 && // TL W
+	//				(field[tile + COLS].bits & (1 << West)) == 0) // BL W 
+	//				return neighbors[dir];
+	//			break;
+	//	}
+	//}
+	//else if (bot.curRoom == 2) {
 		// tiles to the north, east, south, west
 		unsigned int neighbors[] = { tile - COLS, tile + 1, tile + COLS, tile - 1 };
 		switch (dir) {
@@ -63,7 +63,7 @@ int findNeighbor(unsigned int tile, int dir) {
 				}
 				break;
 		}
-	}
+	//}
 
 	return -1; // Tile is not a neighbor
 }
@@ -141,9 +141,9 @@ int move2Tile(int cur, int target) {
 	// Turn to the right direction
 	if (bot.getDirection() != i) bot.turn(i);
 	// Move forward to the tile
-	if (bot.curRoom == 1)
-		tileColor = bot.move(12);
-	else if (bot.curRoom == 2)
+	//if (bot.curRoom == 1)
+	//	tileColor = bot.move(12);
+	//else if (bot.curRoom == 2)
 		tileColor = bot.move(6);
 
 	switch (tileColor) {
@@ -155,17 +155,22 @@ int move2Tile(int cur, int target) {
 			printf("hole hole hole\n");
 			return cur;
 		case Blue: // Room 1 -> Room 2
-			if (bot.curRoom == 2) {
-				//if (bot.curRoom == 1) bot.curRoom = 2;
-				//else if (bot.curRoom == 2) bot.curRoom = 1;
-				//printf("BLUE\n");
-				break;
+			if (bot.curRoom == 2 && target == bot.tile.room2) {
+				printf("room 2 -> 1\n");
+				bot.delay(3000);
+				bot.curRoom = 1;
 			}
-			printf("entering ROOM 2 for the first time tile = %d\n", target);
-			bot.delay(3000);
-			bot.curRoom = 2;
-			bot.tile.room2 = target;
-
+			else if (bot.curRoom == 1 && target == bot.tile.room2) {
+				printf("room 1 -> 2\n");
+				bot.delay(3000);
+				bot.curRoom = 2;
+			}
+			else if (target % 2 == 0 && int(target / 10 * 10) % (COLS * 2) == 0 && bot.tile.room2 < 0) {
+				printf("entering ROOM 2 for the first time tile = %d\n", target);
+				bot.delay(3000);
+				bot.curRoom = 2;
+				bot.tile.room2 = target;
+			}
 			break;
 	}
 

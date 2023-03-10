@@ -12,6 +12,7 @@ int main(int argc, char **argv) {
 	// SIMULATION LOOP
 	while (bot.update()) {
 		getTile(bot.tile.cur);
+		printf("IN ROOM %d\n", bot.curRoom);
 		target = bfs(bot.tile.cur); // do bfs
 		printf("cur = %d target = %d\n", bot.tile.cur, target);
 		
@@ -19,9 +20,10 @@ int main(int argc, char **argv) {
 			bot.tile.cur = move2Tile(bot.tile.cur, target);
 		}
 		else {
+			printf("current room = %d\n", bot.curRoom);
 			switch (bot.curRoom) {
 				case 2:
-					printf("i need to go home! start tile = %d\n", bot.tile.room2);
+					printf("i need to go home! room 2 = %d\n", bot.tile.room2);
 					bot.tile.cur = move2Tile(bot.tile.cur, bot.tile.room2);
 					bot.curRoom = 1;
 					bfs(bot.tile.cur);

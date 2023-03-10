@@ -93,7 +93,7 @@ double Bot::getAngle() {
 
 // Get current global compass direction
 int Bot::getDirection() {
-	double err = 0.03;
+	double err = 0.05;
 	if (angle > 0 - err && angle < 0 + err)
 		return North;
 	else if (angle > -1.57 - err && angle < -1.57 + err)
