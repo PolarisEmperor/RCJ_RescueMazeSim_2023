@@ -158,6 +158,7 @@ int Bot::move(double cm, double spd) {
 			if (curDir == West && pos.x <= target) break;
 			if (getLidar(3, 0) < distFromWall) break;
 			
+			// IMU Straighten
 			switch (curDir) {
 				case North:
 					if (bot.getAngle() < 0) speed(spd - 1, spd);
@@ -173,43 +174,35 @@ int Bot::move(double cm, double spd) {
 					if (bot.getAngle() > 0 && bot.getAngle() < 3.14) speed(spd - 1, spd);
 					else if (bot.getAngle() < 0 && bot.getAngle() > -3.14) speed(spd, spd - 1);
 					else speed(spd, spd);
-					
 					break;
 				case West:
-					if (bot.getAngle() < 1.57) speed(spd-1, spd);
-					else if (bot.getAngle() > 1.57) speed(spd, spd-1);
+					if (bot.getAngle() < 1.57) speed(spd - 1, spd);
+					else if (bot.getAngle() > 1.57) speed(spd, spd - 1);
 					else speed(spd, spd);
 					break;
 			}
-			printf("%f\n", bot.getAngle());
-			
-
 		}
 		stop();
 	}
 
 	if (hole) {
 		stop();
-		//printf("prevPos %f\n", prevPos.x);
-		//printf("cur pos %f\n", getPos().x);
-
-		delay(1000);
+		printf("prevPos %f %f\n", prevPos.x, prevPos.y);
+		printf("cur pos %f %f\n", getPos().x, getPos().y);
 
 		// back up to prev pos
 		speed(-spd, -spd);
 		printf("theres a black hole, backing up\n");
 
-		while (update()) {
-			//printf("%f\n", fabs(getPos().x - prevPos.x));
-			if (getDirection() == North || getDirection() == South) {
-				if (fabs(getPos().y - prevPos.y) > 0.019 || getLidar(3, 255) < 4.5) break;
-			}
-			else {
-				if (fabs(getPos().x - prevPos.x) > 0.019 || getLidar(3, 255) < 4.5) break;
-			}
-		}
+		if (getDirection() == North || getDirection() == South)
+			if (getPos().y < prevPos.y) while (update() && getPos().y < prevPos.y);
+			else						while (update() && getPos().y > prevPos.y);
+		else
+			if (getPos().x < prevPos.x) while (update() && getPos().x < prevPos.x);
+			else						while (update() && getPos().x > prevPos.x);
+
 		stop();
-		delay(3000);
+		printf("cur pos %f %f\n", getPos().x, getPos().y);
 		return Hole;
 	}
 

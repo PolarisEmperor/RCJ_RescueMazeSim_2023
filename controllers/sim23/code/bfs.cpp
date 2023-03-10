@@ -111,7 +111,7 @@ int bfs(int tile) {
 	return -1; // could not find any unvisited tile
 }
 
-//
+// Move to the target tile
 int move2Tile(int cur, int target) {
 	int i;
 	int neighbor;

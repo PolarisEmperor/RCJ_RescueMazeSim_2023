@@ -1,501 +1,331 @@
-#VRML_SIM R2022b utf8
-        EXTERNPROTO "../protos/TexturedBackgroundLight.proto"
-        EXTERNPROTO "../protos/TexturedBackground.proto"
-        EXTERNPROTO "../protos/curvedWall.proto"
-        EXTERNPROTO "../protos/halfTile.proto"
-        EXTERNPROTO "../protos/HazardMap.proto"
-        EXTERNPROTO "../protos/obstacle.proto"
-        EXTERNPROTO "../protos/Victim.proto"
-        EXTERNPROTO "../protos/worldTile.proto"
-        EXTERNPROTO "../protos/Area4_1.proto"
-        EXTERNPROTO "../protos/Area4_2.proto"
-        IMPORTABLE EXTERNPROTO "../protos/custom_robot.proto"
+#VRML_SIM R2023a utf8
 
-        WorldInfo {
-          basicTimeStep 16
-          coordinateSystem "NUE"
-          contactProperties [
-            ContactProperties {
-              material1  "TILE"
-              material2  "NO_FRIC"
-              coulombFriction 0
-              bounce 0
-              bumpSound ""
-              rollSound ""
-              slideSound ""
-            }
-          ]
+EXTERNPROTO "../protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "../protos/TexturedBackground.proto"
+EXTERNPROTO "../protos/HazardMap.proto"
+EXTERNPROTO "../protos/Victim.proto"
+EXTERNPROTO "../protos/worldTile.proto"
+IMPORTABLE EXTERNPROTO "../protos/custom_robot.proto"
+
+WorldInfo {
+  basicTimeStep 16
+  coordinateSystem "NUE"
+  contactProperties [
+    ContactProperties {
+      material1 "TILE"
+      material2 "NO_FRIC"
+      coulombFriction [
+        0
+      ]
+      bounce 0
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+  ]
+}
+DEF Viewpoint Viewpoint {
+  orientation -0.6832632393515958 0.6832632393515958 0.25749309020151906 2.63756
+  position -0.04896393757885256 0.7629128145434594 0.6572266318359702
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+DEF WALLTILES Group {
+  children [
+    DEF START_TILE worldTile {
+      floor TRUE
+      topWall 1
+      leftWall 1
+      topExternal TRUE
+      leftExternal TRUE
+      start TRUE
+      width 6
+      height 2
+      id "0"
+      xScale 0.4
+      zScale 0.4
+      yScale 0.4
+      tileColor 0.635 0.635 0.635
+      room 1
+    }
+    DEF TILE worldTile {
+      zPos 1
+      floor TRUE
+      bottomWall 5
+      leftWall 3
+      leftExternal TRUE
+      bottomExternal TRUE
+      width 6
+      height 2
+      id "1"
+      xScale 0.4
+      zScale 0.4
+      yScale 0.4
+      tileColor 0.635 0.635 0.635
+      room 1
+    }
+    DEF TILE worldTile {
+      xPos 1
+      floor TRUE
+      bottomWall 1
+      topWall 1
+      topExternal TRUE
+      width 6
+      height 2
+      id "2"
+      xScale 0.4
+      zScale 0.4
+      yScale 0.4
+      tileColor 0.635 0.635 0.635
+      room 1
+    }
+    DEF TILE worldTile {
+      xPos 1
+      zPos 1
+      floor TRUE
+      bottomWall 1
+      bottomExternal TRUE
+      width 6
+      height 2
+      id "3"
+      xScale 0.4
+      zScale 0.4
+      yScale 0.4
+      tileColor 0.635 0.635 0.635
+      room 1
+    }
+    DEF TILE worldTile {
+      xPos 2
+      floor TRUE
+      bottomWall 1
+      topWall 1
+      topExternal TRUE
+      width 6
+      height 2
+      id "4"
+      xScale 0.4
+      zScale 0.4
+      yScale 0.4
+      tileColor 0.635 0.635 0.635
+      room 1
+    }
+    DEF TILE worldTile {
+      xPos 2
+      zPos 1
+      floor TRUE
+      bottomWall 1
+      bottomExternal TRUE
+      width 6
+      height 2
+      id "5"
+      xScale 0.4
+      zScale 0.4
+      yScale 0.4
+      tileColor 0.635 0.635 0.635
+      room 1
+    }
+    DEF TILE worldTile {
+      xPos 3
+      floor TRUE
+      bottomWall 1
+      topWall 1
+      topExternal TRUE
+      width 6
+      height 2
+      id "6"
+      xScale 0.4
+      zScale 0.4
+      yScale 0.4
+      tileColor 0.635 0.635 0.635
+      room 1
+    }
+    DEF TILE worldTile {
+      xPos 3
+      zPos 1
+      floor TRUE
+      bottomWall 1
+      bottomExternal TRUE
+      width 6
+      height 2
+      id "7"
+      xScale 0.4
+      zScale 0.4
+      yScale 0.4
+      tileColor 0.635 0.635 0.635
+      room 1
+    }
+    DEF TILE worldTile {
+      xPos 4
+      floor TRUE
+      topWall 1
+      topExternal TRUE
+      width 6
+      height 2
+      id "8"
+      xScale 0.4
+      zScale 0.4
+      yScale 0.4
+      tileColor 0.635 0.635 0.635
+      room 1
+    }
+    DEF TILE worldTile {
+      xPos 4
+      zPos 1
+      floor TRUE
+      bottomWall 1
+      bottomExternal TRUE
+      width 6
+      height 2
+      id "9"
+      xScale 0.4
+      zScale 0.4
+      yScale 0.4
+      tileColor 0.635 0.635 0.635
+      room 1
+    }
+    DEF TILE worldTile {
+      xPos 5
+      rightWall 2
+      topWall 3
+      topExternal TRUE
+      rightExternal TRUE
+      trap TRUE
+      width 6
+      height 2
+      id "10"
+      xScale 0.4
+      zScale 0.4
+      yScale 0.4
+      tileColor 0.635 0.635 0.635
+      room 1
+    }
+    DEF TILE worldTile {
+      xPos 5
+      zPos 1
+      floor TRUE
+      rightWall 3
+      bottomWall 3
+      rightExternal TRUE
+      bottomExternal TRUE
+      checkpoint TRUE
+      width 6
+      height 2
+      id "11"
+      xScale 0.4
+      zScale 0.4
+      yScale 0.4
+      tileColor 0.635 0.635 0.635
+      room 1
+    }
+  ]
+}
+DEF CHECKPOINTBOUNDS Group {
+  children [
+    DEF boundary Group {
+      children [
+        DEF checkpoint0min Transform {
+          translation 0.1800000000000001 -0.03 -0.06
         }
-        DEF Viewpoint Viewpoint {
-          orientation -0.683263 0.683263 0.257493 2.63756
-          position -0.08 0.4 0.34
+        DEF checkpoint0max Transform {
+          translation 0.3000000000000001 -0.03 0.06
         }
-        TexturedBackground {
+      ]
+    }
+  ]
+}
+DEF TRAPBOUNDS Group {
+  children [
+    DEF boundary Group {
+      children [
+        DEF trap0min Transform {
+          translation 0.1800000000000001 -0.03 -0.18
         }
-        TexturedBackgroundLight {
+        DEF trap0max Transform {
+          translation 0.3000000000000001 -0.03 -0.06
         }
-        
-        DEF WALLTILES Group {
-            children [
-              
-        DEF START_TILE worldTile {
-            xPos 0
-            zPos 0
-            floor TRUE
-            topWall 1
-            rightWall 0
-            bottomWall 0
-            leftWall 1
-            topExternal TRUE
-            rightExternal FALSE
-            bottomExternal FALSE
-            leftExternal TRUE
-            start TRUE
-            trap FALSE
-            checkpoint FALSE
-            swamp FALSE
-            width 6
-            height 2
-            id "0"
-            xScale 0.4
-            yScale 0.4
-            zScale 0.4
-            tileColor 0.635 0.635 0.635
-            room 1
-          }
-        
-        DEF TILE worldTile {
-            xPos 0
-            zPos 1
-            floor TRUE
-            topWall 0
-            rightWall 0
-            bottomWall 5
-            leftWall 3
-            topExternal FALSE
-            rightExternal FALSE
-            bottomExternal TRUE
-            leftExternal TRUE
-            start FALSE
-            trap FALSE
-            checkpoint FALSE
-            swamp FALSE
-            width 6
-            height 2
-            id "1"
-            xScale 0.4
-            yScale 0.4
-            zScale 0.4
-            tileColor 0.635 0.635 0.635
-            room 1
-          }
-        
-        DEF TILE worldTile {
-            xPos 1
-            zPos 0
-            floor TRUE
-            topWall 1
-            rightWall 0
-            bottomWall 1
-            leftWall 0
-            topExternal TRUE
-            rightExternal FALSE
-            bottomExternal FALSE
-            leftExternal FALSE
-            start FALSE
-            trap FALSE
-            checkpoint FALSE
-            swamp FALSE
-            width 6
-            height 2
-            id "2"
-            xScale 0.4
-            yScale 0.4
-            zScale 0.4
-            tileColor 0.635 0.635 0.635
-            room 1
-          }
-        
-        DEF TILE worldTile {
-            xPos 1
-            zPos 1
-            floor TRUE
-            topWall 0
-            rightWall 0
-            bottomWall 1
-            leftWall 0
-            topExternal FALSE
-            rightExternal FALSE
-            bottomExternal TRUE
-            leftExternal FALSE
-            start FALSE
-            trap FALSE
-            checkpoint FALSE
-            swamp FALSE
-            width 6
-            height 2
-            id "3"
-            xScale 0.4
-            yScale 0.4
-            zScale 0.4
-            tileColor 0.635 0.635 0.635
-            room 1
-          }
-        
-        DEF TILE worldTile {
-            xPos 2
-            zPos 0
-            floor TRUE
-            topWall 1
-            rightWall 0
-            bottomWall 1
-            leftWall 0
-            topExternal TRUE
-            rightExternal FALSE
-            bottomExternal FALSE
-            leftExternal FALSE
-            start FALSE
-            trap FALSE
-            checkpoint FALSE
-            swamp FALSE
-            width 6
-            height 2
-            id "4"
-            xScale 0.4
-            yScale 0.4
-            zScale 0.4
-            tileColor 0.635 0.635 0.635
-            room 1
-          }
-        
-        DEF TILE worldTile {
-            xPos 2
-            zPos 1
-            floor TRUE
-            topWall 0
-            rightWall 0
-            bottomWall 1
-            leftWall 0
-            topExternal FALSE
-            rightExternal FALSE
-            bottomExternal TRUE
-            leftExternal FALSE
-            start FALSE
-            trap FALSE
-            checkpoint FALSE
-            swamp FALSE
-            width 6
-            height 2
-            id "5"
-            xScale 0.4
-            yScale 0.4
-            zScale 0.4
-            tileColor 0.635 0.635 0.635
-            room 1
-          }
-        
-        DEF TILE worldTile {
-            xPos 3
-            zPos 0
-            floor TRUE
-            topWall 1
-            rightWall 0
-            bottomWall 1
-            leftWall 0
-            topExternal TRUE
-            rightExternal FALSE
-            bottomExternal FALSE
-            leftExternal FALSE
-            start FALSE
-            trap FALSE
-            checkpoint FALSE
-            swamp FALSE
-            width 6
-            height 2
-            id "6"
-            xScale 0.4
-            yScale 0.4
-            zScale 0.4
-            tileColor 0.635 0.635 0.635
-            room 1
-          }
-        
-        DEF TILE worldTile {
-            xPos 3
-            zPos 1
-            floor TRUE
-            topWall 0
-            rightWall 0
-            bottomWall 1
-            leftWall 0
-            topExternal FALSE
-            rightExternal FALSE
-            bottomExternal TRUE
-            leftExternal FALSE
-            start FALSE
-            trap FALSE
-            checkpoint FALSE
-            swamp FALSE
-            width 6
-            height 2
-            id "7"
-            xScale 0.4
-            yScale 0.4
-            zScale 0.4
-            tileColor 0.635 0.635 0.635
-            room 1
-          }
-        
-        DEF TILE worldTile {
-            xPos 4
-            zPos 0
-            floor TRUE
-            topWall 1
-            rightWall 0
-            bottomWall 0
-            leftWall 0
-            topExternal TRUE
-            rightExternal FALSE
-            bottomExternal FALSE
-            leftExternal FALSE
-            start FALSE
-            trap FALSE
-            checkpoint FALSE
-            swamp FALSE
-            width 6
-            height 2
-            id "8"
-            xScale 0.4
-            yScale 0.4
-            zScale 0.4
-            tileColor 0.635 0.635 0.635
-            room 1
-          }
-        
-        DEF TILE worldTile {
-            xPos 4
-            zPos 1
-            floor TRUE
-            topWall 0
-            rightWall 0
-            bottomWall 1
-            leftWall 0
-            topExternal FALSE
-            rightExternal FALSE
-            bottomExternal TRUE
-            leftExternal FALSE
-            start FALSE
-            trap FALSE
-            checkpoint FALSE
-            swamp FALSE
-            width 6
-            height 2
-            id "9"
-            xScale 0.4
-            yScale 0.4
-            zScale 0.4
-            tileColor 0.635 0.635 0.635
-            room 1
-          }
-        
-        DEF TILE worldTile {
-            xPos 5
-            zPos 0
-            floor FALSE
-            topWall 3
-            rightWall 2
-            bottomWall 0
-            leftWall 0
-            topExternal TRUE
-            rightExternal TRUE
-            bottomExternal FALSE
-            leftExternal FALSE
-            start FALSE
-            trap TRUE
-            checkpoint FALSE
-            swamp FALSE
-            width 6
-            height 2
-            id "10"
-            xScale 0.4
-            yScale 0.4
-            zScale 0.4
-            tileColor 0.635 0.635 0.635
-            room 1
-          }
-        
-        DEF TILE worldTile {
-            xPos 5
-            zPos 1
-            floor TRUE
-            topWall 0
-            rightWall 3
-            bottomWall 3
-            leftWall 0
-            topExternal FALSE
-            rightExternal TRUE
-            bottomExternal TRUE
-            leftExternal FALSE
-            start FALSE
-            trap FALSE
-            checkpoint TRUE
-            swamp FALSE
-            width 6
-            height 2
-            id "11"
-            xScale 0.4
-            yScale 0.4
-            zScale 0.4
-            tileColor 0.635 0.635 0.635
-            room 1
-          }
-        
-            ]
+      ]
+    }
+  ]
+}
+DEF STARTBOUNDS Group {
+  children [
+    DEF boundary Group {
+      children [
+        DEF start0min Transform {
+          translation -0.42 -0.03 -0.18
         }
-        
-        DEF CHECKPOINTBOUNDS Group {
-            children [
-              
-        DEF boundary Group {
-            children [
-              DEF checkpoint0min Transform {
-                    translation 0.1800000000000001 -0.03 -0.06
-              }
-              DEF checkpoint0max Transform {
-                    translation 0.3000000000000001 -0.03 0.06
-              }
-            ]
-          }
-        
-            ]
+        DEF start0max Transform {
+          translation -0.3 -0.03 -0.06
         }
-        
-        DEF TRAPBOUNDS Group {
-            children [
-              
-        DEF boundary Group {
-            children [
-              DEF trap0min Transform {
-                    translation 0.1800000000000001 -0.03 -0.18
-              }
-              DEF trap0max Transform {
-                    translation 0.3000000000000001 -0.03 -0.06
-              }
-            ]
-          }
-        
-            ]
-        }
-        
-        DEF STARTBOUNDS Group {
-            children [
-              
-        DEF boundary Group {
-            children [
-              DEF start0min Transform {
-                    translation -0.42 -0.03 -0.18
-              }
-              DEF start0max Transform {
-                    translation -0.3 -0.03 -0.06
-              }
-            ]
-          }
-        
-            ]
-        }
-        
-        DEF SWAMPBOUNDS Group {
-            children [
-              
-            ]
-        }
-        
-        DEF OBSTACLES Group {
-            children [
-              
-            ]
-        }
-        
-        DEF HUMANGROUP Group {
-            children [
-              
-        Victim {
-            translation -0.24 0 -0.175
-            rotation 0 1 0 3.14
-            name "Victim0"
-            type "harmed"
-            scoreWorth 5
-        }
-        
-        Victim {
-            translation -0.12 0 -0.06499999999999999
-            rotation 0 1 0 0
-            name "Victim1"
-            type "stable"
-            scoreWorth 5
-        }
-        
-        Victim {
-            translation 0 0 -0.175
-            rotation 0 1 0 3.14
-            name "Victim2"
-            type "unharmed"
-            scoreWorth 5
-        }
-        
-            ]
-        }
-        
-        DEF HAZARDGROUP Group {
-            children [
-              
-        HazardMap {
-            translation -0.24 0 -0.054400000000000004
-            rotation 0 1 0 3.14
-            name "Hazard0"
-            type "F"
-            scoreWorth 10
-        }
-        
-        HazardMap {
-            translation -0.12 0 0.054400000000000004
-            rotation 0 1 0 0
-            name "Hazard1"
-            type "O"
-            scoreWorth 10
-        }
-        
-        HazardMap {
-            translation 0 0 -0.054400000000000004
-            rotation 0 1 0 3.14
-            name "Hazard2"
-            type "C"
-            scoreWorth 10
-        }
-        
-        HazardMap {
-            translation 0.12 0 0.054400000000000004
-            rotation 0 1 0 0
-            name "Hazard3"
-            type "P"
-            scoreWorth 10
-        }
-        
-            ]
-        }
-        
-        DEF MAINSUPERVISOR Robot {
-            children [
-              Receiver {
-                channel 1
-              }
-              Emitter {
-                channel 1
-              }
-            ]
-            supervisor TRUE
-            controller "MainSupervisor"
-            customData "480"
-            window "MainSupervisorWindow"
-          }
-        
+      ]
+    }
+  ]
+}
+DEF SWAMPBOUNDS Group {
+}
+DEF OBSTACLES Group {
+}
+DEF HUMANGROUP Group {
+  children [
+    Victim {
+      translation -0.24 0 -0.175
+      rotation 0 1 0 3.14
+      name "Victim0"
+      scoreWorth 5
+    }
+    Victim {
+      translation -0.12 0 -0.06499999999999999
+      name "Victim1"
+      type "stable"
+      scoreWorth 5
+    }
+    Victim {
+      translation 0 0 -0.175
+      rotation 0 1 0 3.14
+      name "Victim2"
+      type "unharmed"
+      scoreWorth 5
+    }
+  ]
+}
+DEF HAZARDGROUP Group {
+  children [
+    HazardMap {
+      translation -0.24 0 -0.054400000000000004
+      rotation 0 1 0 3.14
+      name "Hazard0"
+    }
+    HazardMap {
+      translation -0.12 0 0.054400000000000004
+      name "Hazard1"
+      type "O"
+    }
+    HazardMap {
+      translation 0 0 -0.054400000000000004
+      rotation 0 1 0 3.14
+      name "Hazard2"
+      type "C"
+    }
+    HazardMap {
+      translation 0.12 0 0.054400000000000004
+      name "Hazard3"
+      type "P"
+    }
+  ]
+}
+DEF MAINSUPERVISOR Robot {
+  children [
+    Receiver {
+      channel 1
+    }
+    Emitter {
+      channel 1
+    }
+  ]
+  controller "MainSupervisor"
+  customData "480"
+  supervisor TRUE
+  window "MainSupervisorWindow"
+}
