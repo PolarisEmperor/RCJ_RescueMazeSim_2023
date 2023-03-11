@@ -33,6 +33,10 @@ int findNeighbor(unsigned int tile, int dir) {
 	//else if (bot.curRoom == 2) {
 		// tiles to the north, east, south, west
 		unsigned int neighbors[] = { tile - COLS, tile + 1, tile + COLS, tile - 1 };
+		if (tile == 486) {
+			printf("%d %d %d %d\n", field[tile].bits, field[tile+1].bits, field[tile+COLS].bits, field[tile+COLS+1].bits);
+			bot.delay(1000);
+		}
 		switch (dir) {
 			case North:
 				if ((field[tile].bits & (1 << North)) == 0 &&
@@ -90,7 +94,7 @@ int bfs(int tile) {
 			neighbor = findNeighbor(*cur, i); // find neighbor
 			if (neighbor >= 0) { // valid neighbor
 				if (parent[neighbor] < 0) {
-					printf("neighbor %d\n", neighbor);
+					printf("cur %d neighbor %d\n", *cur, neighbor);
 					parent[neighbor] = *cur; // neighbor came from cur
 					*next++ = neighbor; // add neighbor to worker array
 				}
