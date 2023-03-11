@@ -21,10 +21,9 @@ Bot::Bot() {
 	rm->setVelocity(0);
 
 	// Set room values
-	tile.room1 = fieldSize / 2;
-	tile.cur = tile.room1;
-
 	curRoom = 1;
+	curTile = startTile = fieldSize / 2;
+	blueTile = purpleTile =	redTile = greenTile = -1;
 }
 
 // Delay function
@@ -80,6 +79,11 @@ Bot::Pos Bot::getPos() {
 	return pos;
 }
 
+// Get previous position
+Bot::Pos Bot::getPrevPos() {
+	return prevPos;
+}
+
 // Update previous position variable
 void Bot::updatePrevPos() {
 	prevPos.x = pos.x;
@@ -121,11 +125,8 @@ void Bot::stop() {
 
 // Move # cm
 // Forward = +cm Backward = -cm
-int Bot::move(double cm, double spd) {
+void Bot::move(double cm, double spd) {
 	double target = 0;
-	bool hole = false;
-	int tileColor = 0;
-	double distFromWall = 5.5;
 
 	switch (curDir) {
 		case North:
@@ -142,78 +143,25 @@ int Bot::move(double cm, double spd) {
 			break;
 	}
 
-	if (cm > 0) {
+	if (cm > 0)
 		while (update()) {
-			tileColor = getTileColor(camB->getWidth() / 2, 25);
-			if (tileColor == Hole) { // bottom cam sees black
-				hole = true;
-				break;
-			}
-			else if (tileColor == Swamp) { // swamp
-				spd = 2;
-			}
 			if (curDir == North && pos.y <= target) break;
 			if (curDir == South && pos.y >= target) break;
 			if (curDir == East && pos.x >= target) break;
 			if (curDir == West && pos.x <= target) break;
-			if (getLidar(3, 0) < distFromWall) break;
-			
-			// IMU Straighten
-			switch (curDir) {
-				case North:
-					if (bot.getAngle() < 0) speed(spd - 1, spd);
-					else if (bot.getAngle() > 0) speed(spd, spd - 1);
-					else speed(spd, spd);
-					break;
-				case East:
-					if (bot.getAngle() < -1.57) speed(spd - 1, spd);
-					else if (bot.getAngle() > -1.57) speed(spd, spd - 1);
-					else speed(spd, spd);
-					break;
-				case South:
-					if (bot.getAngle() > 0 && bot.getAngle() < 3.14) speed(spd - 1, spd);
-					else if (bot.getAngle() < 0 && bot.getAngle() > -3.14) speed(spd, spd - 1);
-					else speed(spd, spd);
-					break;
-				case West:
-					if (bot.getAngle() < 1.57) speed(spd - 1, spd);
-					else if (bot.getAngle() > 1.57) speed(spd, spd - 1);
-					else speed(spd, spd);
-					break;
-			}
+			speed(spd, spd);
 		}
-		stop();
-	}
+	else if (cm < 0)
+		while (update()) {
+			if (curDir == North && pos.y >= target) break;
+			if (curDir == South && pos.y <= target) break;
+			if (curDir == East && pos.x <= target) break;
+			if (curDir == West && pos.x >= target) break;
+			speed(-spd, -spd);
+		}
 
-	if (hole) {
-		stop();
-		printf("prevPos %f %f\n", prevPos.x, prevPos.y);
-		printf("cur pos %f %f\n", getPos().x, getPos().y);
-
-		// back up to prev pos
-		speed(-spd, -spd);
-		printf("theres a black hole, backing up\n");
-
-		if (getDirection() == North || getDirection() == South)
-			if (getPos().y < prevPos.y) while (update() && getPos().y < prevPos.y);
-			else						while (update() && getPos().y > prevPos.y);
-		else
-			if (getPos().x < prevPos.x) while (update() && getPos().x < prevPos.x);
-			else						while (update() && getPos().x > prevPos.x);
-
-		stop();
-		printf("cur pos %f %f\n", getPos().x, getPos().y);
-		return Hole;
-	}
-
-	if (tileColor == 3) printf("SWAMP\n");
-	if (tileColor == 4) printf("CHECKPOINT\n");
-	if (tileColor == 6) printf("BLUE\n");
-	if (tileColor == 7) printf("PURPLE\n");
-	if (tileColor == 8) printf("RED\n");
-
+	stop();
 	updatePrevPos();
-	return tileColor;
 }
 
 // Turn to global compass direction

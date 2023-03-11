@@ -58,7 +58,6 @@ void getTile(int tile) {
 					printf("WALL %d\n", wall);
 					printf("tile %d %d\n", outer[wall * 2], (wall % 2 == 0) ? 2 : 4);
 					printf("tile %d %d\n", outer[wall* 2 + 1], (wall % 2 == 0) ? 8 : 1);
-					bot.delay(1000);
 					break;
 				}
 			}
@@ -91,8 +90,4 @@ void getTile(int tile) {
 		printf("%d\n", field[directions[i]].bits);
 
 	field[directions[0]].visited = 1;
-
-	//if (bot.curRoom == 1)
-	//	for (int i = 1; i < sizeof(directions) / sizeof(directions[0]); i++)
-	//		field[directions[i]].visited = 1;
 }

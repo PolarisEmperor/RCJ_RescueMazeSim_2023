@@ -2,7 +2,7 @@
 #include "lib.h"
 
 enum Direction { North, East, South, West };
-enum TileColor { Normal, Hole = 2, Swamp, Checkpoint, Blue = 6, Purple, Red };
+enum TileColor { Normal, Hole = 2, Swamp, Checkpoint, Blue = 6, Purple, Red, Green };
 
 const int ROWS = 40;
 const int COLS = 40;
@@ -13,20 +13,6 @@ private:
 	Robot *robot = new Robot();
 	Motor *lm = robot->getMotor("wheel2 motor");
 	Motor *rm = robot->getMotor("wheel1 motor");
-	PositionSensor *encL = robot->getPositionSensor("wheel2 sensor");
-	PositionSensor *encR = robot->getPositionSensor("wheel1 sensor");
-	GPS *gps = robot->getGPS("gps");
-	Camera *camR = robot->getCamera("rCam");
-	Camera *camL = robot->getCamera("lCam");
-	Camera *camB = robot->getCamera("bCam");
-	Lidar *lidar = robot->getLidar("lidar");
-	Receiver *receiver = robot->getReceiver("receiver");
-	InertialUnit *imu = robot->getInertialUnit("imu");
-
-	const double PI = 3.141592;
-	const double maxSpd = lm->getMaxVelocity() - 0.01;
-	const int timeStep = (int)robot->getBasicTimeStep();
-
 
 	// Current position
 	struct Pos {
@@ -34,32 +20,36 @@ private:
 		double y = 0;
 	} pos, prevPos;
 
+	const double PI = 3.141592;
+	const double maxSpd = lm->getMaxVelocity() - 0.01;
+	const int timeStep = (int)robot->getBasicTimeStep();
+
 	// Angle in radians
 	double angle = 0;
 
 	// Current global compass direction
 	int curDir = -1;
 
-	// Start tiles for each area
-	struct TileData {
-		// Room 1 tile (start)
-		int room1 = fieldSize / 2;
-		// Room 2 tile (blue)
-		int room2 = -1;
-		// Room 3 tile (purple)
-		int room3 = -1;
-		// Current tile
-		int cur = room1;
-	};
-
-	void updatePrevPos();
-
 public:
 	Emitter* emitter = robot->getEmitter("emitter");
-	TileData tile;
-	// Current room
-	int curRoom;
-	
+	Receiver *receiver = robot->getReceiver("receiver");
+	GPS *gps = robot->getGPS("gps");
+	InertialUnit *imu = robot->getInertialUnit("imu");
+	PositionSensor *encL = robot->getPositionSensor("wheel2 sensor");
+	PositionSensor *encR = robot->getPositionSensor("wheel1 sensor");
+	Camera *camR = robot->getCamera("rCam");
+	Camera *camL = robot->getCamera("lCam");
+	Camera *camB = robot->getCamera("bCam");
+	Lidar *lidar = robot->getLidar("lidar");
+
+	int curRoom;	// Current room
+	int curTile;	// Current Tile
+	int startTile;	// Starting tile
+	int blueTile;	// Room 1 -> Room 2
+	int purpleTile; // Room 2 -> Room 3
+	int redTile;	// Room 3 -> Room 4
+	int greenTile;	// Room 1 -> Room 4
+
 	Bot();
 	void delay(int ms);
 	bool update();
@@ -67,13 +57,15 @@ public:
 	const float getLidar(int layer, int point);
 	int getLidarRes();
 	Pos getPos();
+	Pos getPrevPos();
 	double getAngle();
 	int getDirection();
 	void speed(double lSpd, double rSpd);
 	void stop();
-	int move(double cm, double spd = 6);
+	void move(double cm, double spd = 6);
 	void turn(int dir, double spd = 2);
 	int getTileColor(int x, int y);
+	void updatePrevPos();
 };
 
 extern class Bot bot;
