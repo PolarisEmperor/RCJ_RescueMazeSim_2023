@@ -55,7 +55,6 @@ public:
 	bool update();
 	void destroy();
 	const float getLidar(int layer, int point);
-	int getLidarRes();
 	Pos getPos();
 	Pos getPrevPos();
 	double getAngle();

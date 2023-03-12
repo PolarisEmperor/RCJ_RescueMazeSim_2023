@@ -10,32 +10,20 @@ int findNeighbor(unsigned int tile, int dir) {
 
 	switch (dir) {
 		case North:
-			if ((field[tile].bits & (1 << North)) == 0 &&
-				(field[neighbors[East]].bits & (1 << North)) == 0 &&
-				(field[neighbors[North]].bits & (1 << East)) == 0) {
+			if ((field[tile].bits & (1 << North)) == 0 && (field[neighbors[East]].bits & (1 << North)) == 0 && (field[neighbors[North]].bits & (1 << East)) == 0)
 				return neighbors[dir];
-			}
 			break;
 		case East:
-			if ((field[neighbors[East]].bits & (1 << East)) == 0 &&
-				(field[neighbors[South] + 1].bits & (1 << East)) == 0 &&
-				(field[neighbors[East] + 1].bits & (1 << South)) == 0) {
+			if ((field[neighbors[East]].bits & (1 << East)) == 0 && (field[neighbors[South] + 1].bits & (1 << East)) == 0 && (field[neighbors[East] + 1].bits & (1 << South)) == 0)
 				return neighbors[dir];
-			}
 			break;
 		case South:
-			if ((field[neighbors[South]].bits & (1 << South)) == 0 &&
-				(field[neighbors[South] + 1].bits & (1 << South)) == 0 &&
-				(field[neighbors[South] + COLS].bits & (1 << East)) == 0) {
+			if ((field[neighbors[South]].bits & (1 << South)) == 0 && (field[neighbors[South] + 1].bits & (1 << South)) == 0 && (field[neighbors[South] + COLS].bits & (1 << East)) == 0)
 				return neighbors[dir];
-			}
 			break;
 		case West:
-			if ((field[tile].bits & (1 << West)) == 0 &&
-				(field[neighbors[South]].bits & (1 << West)) == 0 &&
-				(field[neighbors[West]].bits & (1 << South)) == 0) {
+			if ((field[tile].bits & (1 << West)) == 0 && (field[neighbors[South]].bits & (1 << West)) == 0 && (field[neighbors[West]].bits & (1 << South)) == 0)
 				return neighbors[dir];
-			}
 			break;
 	}
 	return -1; // Tile is not a neighbor
@@ -84,12 +72,11 @@ int bfs(int tile) {
 
 // Move to the target tile
 int move2Tile(int cur, int target) {
-	double targetPos = 0;
-	double distFromWall = 5.5;
-	int i;
+	double targetPos = 0; // Position of target tile
+	double distFromWall = 5.5; // Minimum distance to wall
 	int neighbor;
 	int tileColor = Normal;
-	bool hole = false;
+	int i;
 
 	// Find what direction to move to
 	for (i = North; i <= West; i++) {
@@ -103,7 +90,6 @@ int move2Tile(int cur, int target) {
 		move2Tile(cur, parent[target]);
 
 		cur = parent[target];
-		//getTile(bot, cur);
 		for (i = North; i <= West; i++) {
 			neighbor = findNeighbor(cur, i);
 			if (neighbor == target) break;
@@ -116,7 +102,6 @@ int move2Tile(int cur, int target) {
 	if (bot.getDirection() != i) bot.turn(i);
 	
 	// Drive forward
-	//tileColor = bot.move(6);
 	switch (bot.getDirection()) {
 		case North:
 			targetPos = bot.getPrevPos().y - 6.0 / 100;
@@ -131,7 +116,6 @@ int move2Tile(int cur, int target) {
 			targetPos = bot.getPrevPos().x - 6.0 / 100;
 			break;
 	}
-	printf("%f %f %f\n", bot.getPos().x, bot.getPos().y, targetPos);
 	bot.stop();
 	
 	while (bot.update()) {

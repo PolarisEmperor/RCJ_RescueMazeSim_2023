@@ -26,6 +26,15 @@ Bot::Bot() {
 	blueTile = purpleTile =	redTile = greenTile = -1;
 }
 
+// Cleanup
+void Bot::destroy() {
+	// Send the letter 'E' to signify exit
+	char message = 'E';
+	emitter->send(&message, 1);
+
+	delete robot;
+}
+
 // Delay function
 void Bot::delay(int ms) {
 	double initTime = robot->getTime();
@@ -56,24 +65,6 @@ bool Bot::update() {
 	return 1;
 }
 
-// Cleanup
-void Bot::destroy() {
-	// Send the letter 'E' to signify exit
-	char message = 'E';
-	emitter->send(&message, 1);
-
-	delete robot;
-}
-
-// Get lidar readings from specified point and layer in cm
-const float Bot::getLidar(int layer, int point) {
-	return lidar->getRangeImage()[(lidar->getHorizontalResolution() * layer) + point] * 100;
-}
-
-int Bot::getLidarRes() {
-	return lidar->getHorizontalResolution();
-}
-
 // Get current position
 Bot::Pos Bot::getPos() {
 	return pos;
@@ -88,6 +79,11 @@ Bot::Pos Bot::getPrevPos() {
 void Bot::updatePrevPos() {
 	prevPos.x = pos.x;
 	prevPos.y = pos.y;
+}
+
+// Get lidar readings from specified point and layer in cm
+const float Bot::getLidar(int layer, int point) {
+	return lidar->getRangeImage()[(lidar->getHorizontalResolution() * layer) + point] * 100;
 }
 
 // Get current angle

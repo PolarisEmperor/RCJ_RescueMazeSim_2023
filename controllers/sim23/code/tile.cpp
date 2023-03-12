@@ -8,23 +8,22 @@ Tile field[fieldSize];
 unsigned char moveBits(unsigned char bits, int n) {
 	ubyte walls = bits & 0x0f;  // 0000xxxx
 	ubyte mask;
-	walls <<= n;
 
-	mask = walls & 0xf0;
-	walls &= ~mask;
-	walls |= mask >> 4;
-
-	bits &= ~0x0f;
-	bits |= walls;
+	walls <<= n; // left shift
+	mask = walls & 0xf0; // set mask
+	walls &= ~mask; // clear mask
+	walls |= mask >> 4; // set pushed-over bits
+	bits &= ~0x0f; // clear wall bits
+	bits |= walls; // set new wall bits
 
 	return bits;
 }
 
 // Get tile data(set bits of walls)
 void getTile(int tile) {
-	int directions[4] = { tile, tile + 1, tile + COLS + 1, tile + COLS };
-	int outer[] = { tile - COLS, tile - COLS + 1, tile + 2, tile + 2 + COLS, tile + COLS + COLS, tile + COLS + COLS + 1, tile - 1, tile - 1 + COLS };
-	int n = 30;
+	int directions[4] = { tile, tile + 1, tile + COLS + 1, tile + COLS }; // sub-tiles
+	int outer[] = { tile - COLS, tile - COLS + 1, tile + 2, tile + 2 + COLS, tile + COLS + COLS, tile + COLS + COLS + 1, tile - 1, tile - 1 + COLS }; // neighbors of sub-tiles
+	int n = 30; // lidar range
 	int check[] = { 511-n, 0+n, 127-n, 127+n, 255-n, 255+n, 383-n, 383+n }; // lidar values to check
 	int dir = bot.getDirection();
 	int bit = 1;
@@ -43,17 +42,20 @@ void getTile(int tile) {
 		(i % 2 != 0) ? bit *= 2 : (dir == West) ? dir = North : dir++;
 	}
 
-	// Outer neighbors / side half walls
+	// Check for side half walls
 	if (bot.curRoom == 2) {
 		printf("CURDIR %d\n", bot.getDirection());
 		for (int i = North; i <= West; i++) {
-			for (int j = i * 128 - 30; j < i * 128 + 30; j++) {
+			for (int j = i * 128 - n; j < i * 128 + n; j++) {
 				if (bot.getLidar(3, i * 128 - 30) < 7 || bot.getLidar(3, i * 128 + 30) < 7) break;
 				if (bot.getLidar(3, j) < 7) {
-					int wall = i + dir;
-					if (wall >= 4) wall -= 4;
+					int wall = i + dir; // what side the wall is on
+					if (wall >= 4) wall -= 4; // fix side
+
+					// set bits
 					field[outer[wall * 2]].bits |= (wall % 2 == 0) ? 2 : 4;
 					field[outer[wall * 2 + 1]].bits |= (wall % 2 == 0) ? 8 : 1;
+
 					printf("mid wall thingy  dir %d\n", i);
 					printf("WALL %d\n", wall);
 					printf("tile %d %d\n", outer[wall * 2], (wall % 2 == 0) ? 2 : 4);

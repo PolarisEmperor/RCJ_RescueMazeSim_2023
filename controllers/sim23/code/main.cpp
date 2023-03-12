@@ -12,7 +12,6 @@ int main(int argc, char **argv) {
 	// SIMULATION LOOP
 	while (bot.update()) {
 		getTile(bot.curTile);
-		printf("IN ROOM %d\n", bot.curRoom);
 		target = bfs(bot.curTile); // do bfs
 		printf("cur = %d target = %d\n", bot.curTile, target);
 		
