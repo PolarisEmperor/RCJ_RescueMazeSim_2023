@@ -188,7 +188,6 @@ int move2Tile(int cur, int target) {
 
 	switch (tileColor) {
 		case Blue: // Room 1 -> Room 2
-			printf("BLUE\n");
 			if (bot.curRoom == 2 && target == bot.blueTile) {
 				printf("room 2 -> 1\n");
 				bot.delay(3000);
@@ -199,7 +198,7 @@ int move2Tile(int cur, int target) {
 				bot.delay(3000);
 				bot.curRoom = 2;
 			}
-			else if (target % 2 == 0 && int(target / 10 * 10) % (COLS * 2) == 0 && bot.blueTile < 0) {
+			else if (target % 2 == 0 && (int(target / 10 * 10) % (COLS * 2) == 0 || (int(target / 10 * 10) + 10) % (COLS * 2) == 0) && bot.blueTile < 0) {
 				printf("entering ROOM 2 for the first time tile = %d\n", target);
 				bot.delay(3000);
 				bot.curRoom = 2;

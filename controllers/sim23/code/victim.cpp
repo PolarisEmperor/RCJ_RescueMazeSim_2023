@@ -38,9 +38,6 @@ void sendVictimSignal(char ch) {
 		bot.stop();
 		bot.delay(1000);
 	}
-		
-
-
 }
 
 // HSU victim detection

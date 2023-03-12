@@ -27,7 +27,8 @@ void getTile(int tile) {
 	int check[] = { 511-n, 0+n, 127-n, 127+n, 255-n, 255+n, 383-n, 383+n }; // lidar values to check
 	int dir = bot.getDirection();
 	int bit = 1;
-	
+	int distFromWall = 9;
+
 	// clear structure
 	for (int i = 0; i < 4; i++) {
 		field[directions[i]].N = field[directions[i]].E = field[directions[i]].S = field[directions[i]].W = 0;
@@ -35,7 +36,7 @@ void getTile(int tile) {
 
 	// Scan for walls with Lidar
 	for (int i = 0; i < sizeof(check) / sizeof(check[0]); i++) {
-		if (bot.getLidar(3, check[i]) < 7)
+		if (bot.getLidar(3, check[i]) < distFromWall)
 			field[directions[dir]].bits += bit; // set wall bit
 
 		// odd:        next wall  next tile
@@ -56,10 +57,10 @@ void getTile(int tile) {
 					field[outer[wall * 2]].bits |= (wall % 2 == 0) ? 2 : 4;
 					field[outer[wall * 2 + 1]].bits |= (wall % 2 == 0) ? 8 : 1;
 
-					//printf("mid wall thingy  dir %d\n", i);
-					//printf("WALL %d\n", wall);
-					//printf("tile %d %d\n", outer[wall * 2], (wall % 2 == 0) ? 2 : 4);
-					//printf("tile %d %d\n", outer[wall* 2 + 1], (wall % 2 == 0) ? 8 : 1);
+					printf("mid wall thingy  dir %d\n", i);
+					printf("WALL %d\n", wall);
+					printf("tile %d %d\n", outer[wall * 2], (wall % 2 == 0) ? 2 : 4);
+					printf("tile %d %d\n", outer[wall* 2 + 1], (wall % 2 == 0) ? 8 : 1);
 					break;
 				}
 			}
@@ -87,9 +88,9 @@ void getTile(int tile) {
 		}
 	}
 
-	/*printf("TILE %d\n", tile);
+	printf("TILE %d\n", tile);
 	for (int i = 0; i < 4; i++)
-		printf("%d\n", field[directions[i]].bits);*/
+		printf("%d\n", field[directions[i]].bits);
 
 	field[directions[0]].visited = 1;
 }
