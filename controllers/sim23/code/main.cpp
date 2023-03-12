@@ -13,7 +13,7 @@ int main(int argc, char **argv) {
 	while (bot.update()) {
 		getTile(bot.curTile);
 		target = bfs(bot.curTile); // do bfs
-		printf("cur = %d target = %d\n", bot.curTile, target);
+		//printf("cur = %d target = %d\n", bot.curTile, target);
 		
 		if (target != -1 && bot.curTile != target) {
 			bot.curTile = move2Tile(bot.curTile, target);

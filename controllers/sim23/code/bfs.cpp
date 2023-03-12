@@ -42,7 +42,7 @@ int bfs(int tile) {
 
 	*cur = tile; // add first tile to worker array
 	parent[*cur] = *cur;
-	printf("CURRENT ROOM = %d\n", bot.curRoom);
+	//printf("CURRENT ROOM = %d\n", bot.curRoom);
 	while (*cur > 0 && cur < &worker[fieldSize]) {
 		target = -1;
 
@@ -51,7 +51,7 @@ int bfs(int tile) {
 			neighbor = findNeighbor(*cur, i); // find neighbor
 			if (neighbor >= 0) { // valid neighbor
 				if (parent[neighbor] < 0) {
-					printf("cur %d neighbor %d\n", *cur, neighbor);
+					//printf("cur %d neighbor %d\n", *cur, neighbor);
 					parent[neighbor] = *cur; // neighbor came from cur
 					*next++ = neighbor; // add neighbor to worker array
 				}
@@ -86,7 +86,7 @@ int move2Tile(int cur, int target) {
 
 	// Move to neighbors until reached target
 	if (neighbor != target) {
-		printf("target = %d parent of target = %d\n", target, parent[target]);
+		//printf("target = %d parent of target = %d\n", target, parent[target]);
 		move2Tile(cur, parent[target]);
 
 		cur = parent[target];
@@ -95,8 +95,8 @@ int move2Tile(int cur, int target) {
 			if (neighbor == target) break;
 		}
 	}
-	printf("target = %d cur = %d\n", target, cur);
-	printf("current direction %d turn to %d\n", bot.getDirection(), i);
+	//printf("target = %d cur = %d\n", target, cur);
+	//printf("current direction %d turn to %d\n", bot.getDirection(), i);
 
 	// Turn to the right direction
 	if (bot.getDirection() != i) bot.turn(i);
@@ -119,6 +119,11 @@ int move2Tile(int cur, int target) {
 	bot.stop();
 	
 	while (bot.update()) {
+		if (field[cur].victimChecked == 0 && (checkVisualVictim(bot.camL) || checkVisualVictim(bot.camR))) {
+			printf("found victim at tile %d\n", cur);
+			//field[cur].victimChecked = 1;
+		}
+
 		tileColor = bot.getTileColor(bot.camB->getWidth() / 2, 25);
 		if (tileColor == Hole) { // bottom cam sees black
 			bot.stop();

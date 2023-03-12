@@ -15,7 +15,7 @@ int PosX;
 int PosZ;
 
 void sendVictimSignal(char ch) {
-	char message[9];
+	char message[9] = { 0 };
 
 	int x = bot.getPos().x * 100;
 	int y = bot.getPos().y * 100;
@@ -28,14 +28,19 @@ void sendVictimSignal(char ch) {
 	if (ch == 'H' || ch == 'S' || ch == 'U') {
 		printf("I found a %c\n", ch);
 	}
-	bot.stop();
-	bot.delay(1000);
-	printf("sending message\n");
-	bot.update();
-	bot.emitter->send(message, sizeof(message));
-	bot.update();
-	bot.stop();
-	bot.delay(1000);
+
+	printf("GPS %d %d sending message\n", x, y);
+
+	for (int i = 0; i < 2 && bot.update(); i++) {
+		bot.stop();
+		bot.delay(1000);
+		bot.emitter->send(message, sizeof(message));
+		bot.stop();
+		bot.delay(1000);
+	}
+		
+
+
 }
 
 // HSU victim detection

@@ -44,7 +44,7 @@ void getTile(int tile) {
 
 	// Check for side half walls
 	if (bot.curRoom == 2) {
-		printf("CURDIR %d\n", bot.getDirection());
+		//printf("CURDIR %d\n", bot.getDirection());
 		for (int i = North; i <= West; i++) {
 			for (int j = i * 128 - n; j < i * 128 + n; j++) {
 				if (bot.getLidar(3, i * 128 - 30) < 7 || bot.getLidar(3, i * 128 + 30) < 7) break;
@@ -56,10 +56,10 @@ void getTile(int tile) {
 					field[outer[wall * 2]].bits |= (wall % 2 == 0) ? 2 : 4;
 					field[outer[wall * 2 + 1]].bits |= (wall % 2 == 0) ? 8 : 1;
 
-					printf("mid wall thingy  dir %d\n", i);
-					printf("WALL %d\n", wall);
-					printf("tile %d %d\n", outer[wall * 2], (wall % 2 == 0) ? 2 : 4);
-					printf("tile %d %d\n", outer[wall* 2 + 1], (wall % 2 == 0) ? 8 : 1);
+					//printf("mid wall thingy  dir %d\n", i);
+					//printf("WALL %d\n", wall);
+					//printf("tile %d %d\n", outer[wall * 2], (wall % 2 == 0) ? 2 : 4);
+					//printf("tile %d %d\n", outer[wall* 2 + 1], (wall % 2 == 0) ? 8 : 1);
 					break;
 				}
 			}
@@ -87,9 +87,9 @@ void getTile(int tile) {
 		}
 	}
 
-	printf("TILE %d\n", tile);
+	/*printf("TILE %d\n", tile);
 	for (int i = 0; i < 4; i++)
-		printf("%d\n", field[directions[i]].bits);
+		printf("%d\n", field[directions[i]].bits);*/
 
 	field[directions[0]].visited = 1;
 }

@@ -12,14 +12,11 @@ struct Tile {
 			ubyte E : 1; // east wall
 			ubyte S : 1; // south wall
 			ubyte W : 1; // west wall
-			ubyte tl : 1; // curve between W and N 
-			ubyte tr : 1; // curve between N and E
-			ubyte br : 1; // curve between E and S
-			ubyte bl : 1; // curve between S and W
 		};
 		ubyte bits;
 	};
 	bool visited; // has robot visited tile already
+	bool victimChecked; // victim seen
 };
 
 extern Tile field[fieldSize];

@@ -4,3 +4,4 @@
 #include "bot.h"
 
 bool checkVisualVictim(Camera *);
+void sendVictimSignal(char ch);
