@@ -26,8 +26,8 @@ Bot::Bot() {
 	blueTile = purpleTile =	redTile = greenTile = -1;
 }
 
-// Cleanup
-void Bot::destroy() {
+// Robot destructor
+Bot::~Bot() {
 	// Send the letter 'E' to signify exit
 	char message = 'E';
 	emitter->send(&message, 1);

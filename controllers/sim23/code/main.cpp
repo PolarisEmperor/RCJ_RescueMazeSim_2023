@@ -34,7 +34,5 @@ int main(int argc, char **argv) {
 			break;
 		}
 	}
-
-	bot.destroy();
 	return 0;
 }

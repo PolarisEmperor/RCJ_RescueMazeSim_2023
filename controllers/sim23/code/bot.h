@@ -51,9 +51,9 @@ public:
 	int greenTile;	// Room 1 -> Room 4
 
 	Bot();
+	~Bot();
 	void delay(int ms);
 	bool update();
-	void destroy();
 	const float getLidar(int layer, int point);
 	Pos getPos();
 	Pos getPrevPos();
