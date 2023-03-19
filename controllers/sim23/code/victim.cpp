@@ -1,5 +1,9 @@
 #include "victim.h"
 
+using namespace webots;
+using namespace std;
+using namespace cv;
+
 // constants
 const int max_value_H = 360 / 2;
 const int max_value = 255;
@@ -169,7 +173,7 @@ bool checkVisualVictim(Camera *cam) {
 					imshow("black", black);
 					//waitKey(1);
 					findContours(black, contours, RETR_LIST, CHAIN_APPROX_SIMPLE);
-					printf("contour count %d\n", contours.size());
+					printf("contour count %I64u\n", contours.size());
 					printf("area %f\n", area);
 					for (int i = 0; i < contours.size(); i++) {
 						blackarea += contourArea(contours[i]);

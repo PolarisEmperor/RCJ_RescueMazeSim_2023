@@ -1,6 +1,12 @@
 #include "bot.h"
 #include "victim.h"
 
+#define maxSpd (lm->getMaxVelocity() - 0.01)
+#define timeStep ((int)robot->getBasicTimeStep())
+
+using namespace std;
+using namespace webots;
+
 Bot bot;
 
 // Robot constructor
@@ -23,6 +29,7 @@ Bot::Bot() {
 	// Set room values
 	curRoom = 1;
 	curTile = startTile = fieldSize / 2;
+	checkpointTile = curTile;
 	blueTile = purpleTile =	redTile = greenTile = -1;
 }
 

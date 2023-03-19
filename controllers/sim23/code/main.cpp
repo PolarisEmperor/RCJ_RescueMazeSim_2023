@@ -4,7 +4,7 @@
 
 extern int parent[fieldSize];
 
-int main(int argc, char **argv) {
+int main() {
 	int target = -1;
 
 	parent[bot.startTile] = bot.startTile; // set starting point

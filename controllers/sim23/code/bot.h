@@ -10,19 +10,11 @@ const int fieldSize = ROWS * COLS;
 
 class Bot {
 private:
-	Robot *robot = new Robot();
-	Motor *lm = robot->getMotor("wheel2 motor");
-	Motor *rm = robot->getMotor("wheel1 motor");
-
 	// Current position
 	struct Pos {
 		double x = 0;
 		double y = 0;
 	} pos, prevPos;
-
-	const double PI = 3.141592;
-	const double maxSpd = lm->getMaxVelocity() - 0.01;
-	const int timeStep = (int)robot->getBasicTimeStep();
 
 	// Angle in radians
 	double angle = 0;
@@ -31,24 +23,28 @@ private:
 	int curDir = -1;
 
 public:
-	Emitter* emitter = robot->getEmitter("emitter");
-	Receiver *receiver = robot->getReceiver("receiver");
-	GPS *gps = robot->getGPS("gps");
-	InertialUnit *imu = robot->getInertialUnit("imu");
-	PositionSensor *encL = robot->getPositionSensor("wheel2 sensor");
-	PositionSensor *encR = robot->getPositionSensor("wheel1 sensor");
-	Camera *camR = robot->getCamera("rCam");
-	Camera *camL = robot->getCamera("lCam");
-	Camera *camB = robot->getCamera("bCam");
-	Lidar *lidar = robot->getLidar("lidar");
+	webots::Robot *robot = new webots::Robot();
+	webots::Motor *lm = robot->getMotor("wheel2 motor");
+	webots::Motor *rm = robot->getMotor("wheel1 motor");
+	webots::Emitter* emitter = robot->getEmitter("emitter");
+	webots::Receiver *receiver = robot->getReceiver("receiver");
+	webots::GPS *gps = robot->getGPS("gps");
+	webots::InertialUnit *imu = robot->getInertialUnit("imu");
+	webots::PositionSensor *encL = robot->getPositionSensor("wheel2 sensor");
+	webots::PositionSensor *encR = robot->getPositionSensor("wheel1 sensor");
+	webots::Camera *camR = robot->getCamera("rCam");
+	webots::Camera *camL = robot->getCamera("lCam");
+	webots::Camera *camB = robot->getCamera("bCam");
+	webots::Lidar *lidar = robot->getLidar("lidar");
 
-	int curRoom;	// Current room
-	int curTile;	// Current Tile
-	int startTile;	// Starting tile
-	int blueTile;	// Room 1 -> Room 2
-	int purpleTile; // Room 2 -> Room 3
-	int redTile;	// Room 3 -> Room 4
-	int greenTile;	// Room 1 -> Room 4
+	int curRoom;		// Current room
+	int curTile;		// Current Tile
+	int startTile;		// Starting tile
+	int checkpointTile; // Checkpoint Tile
+	int blueTile;		// Room 1 -> Room 2
+	int purpleTile;		// Room 2 -> Room 3
+	int redTile;		// Room 3 -> Room 4
+	int greenTile;		// Room 1 -> Room 4
 
 	Bot();
 	~Bot();

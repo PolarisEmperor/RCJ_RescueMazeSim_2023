@@ -18,8 +18,3 @@
 
 // OPENCV INCLUDES
 #include <opencv2/opencv.hpp>
-
-// NAMESPACES
-using namespace webots;
-using namespace std;
-using namespace cv;
