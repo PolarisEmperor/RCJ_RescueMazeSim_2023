@@ -61,7 +61,7 @@ void HSU(Mat roi) {
 	for (int i = 0; i < contours.size(); i++) {
 		area += contourArea(contours[i]);
 	}
-	printf("top contour: %f, ", area);
+	//printf("top contour: %f, ", area);
 	if (area < double(top.rows * top.cols * 0.05) || area > double(top.rows * top.cols * 0.3)) return;
 	slicedContours = (unsigned char)contours.size() * 100;
 	findContours(mid, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE); // find contours
@@ -69,9 +69,9 @@ void HSU(Mat roi) {
 	for (int i = 0; i < contours.size(); i++) {
 		area += contourArea(contours[i]);
 	}
-	printf("mid contour: %f, ", area);
-	printf("mid.rows: %d, ", mid.rows);
-	printf("mid.cols: %d", mid.cols);
+	//printf("mid contour: %f, ", area);
+	//printf("mid.rows: %d, ", mid.rows);
+	//printf("mid.cols: %d", mid.cols);
 	if (area < double(mid.rows * mid.cols * 0.05) || area > double(mid.rows * mid.cols * 0.5)) {
 		return;
 	}
@@ -81,19 +81,19 @@ void HSU(Mat roi) {
 	for (int i = 0; i < contours.size(); i++) {
 		area += contourArea(contours[i]);
 	}
-	printf("bot contour: %f, ", area);
-	printf("bot.rows: %d, ", bot.rows);
-	printf("bot.cols: %d, \n", bot.cols);
+	//printf("bot contour: %f, ", area);
+	//printf("bot.rows: %d, ", bot.rows);
+	//printf("bot.cols: %d, \n", bot.cols);
 	if (area < double(bot.rows * bot.cols * 0.05) || area > double(bot.rows * bot.cols * 0.3)) return;
 	slicedContours += (unsigned char)contours.size();
 
-	imshow("letter", roi);
-	imshow("top", top);
-	imshow("mid", mid);
-	imshow("bot", bot);
-	waitKey(1);
+	//imshow("letter", roi);
+	//imshow("top", top);
+	//imshow("mid", mid);
+	//imshow("bot", bot);
+	//waitKey(1);
 
-	printf("SlicedContour: %d--------------------------\n", slicedContours);
+	//printf("SlicedContour: %d--------------------------\n", slicedContours);
 	switch (slicedContours) {
 		case 212: sendVictimSignal('H'); return;
 		case 111: sendVictimSignal('S'); return;
@@ -156,11 +156,11 @@ bool checkVisualVictim(Camera *cam) {
 				boundRect = boundingRect(largest);
 				double area = roi.rows * roi.cols;
 
-				printf("\nCountour Area: %f\n", contourArea(largest));
-				printf("angle %f rows %d cols %d\n", rotateRect.angle, roi.rows, roi.cols);
+				//printf("\nCountour Area: %f\n", contourArea(largest));
+				//printf("angle %f rows %d cols %d\n", rotateRect.angle, roi.rows, roi.cols);
 
-				imshow("roi", roi);
-				waitKey(1);
+				//imshow("roi", roi);
+				//waitKey(1);
 
 				// poison or corrosive hazard signs
 				if (rotateRect.angle < 52 && rotateRect.angle > 38 && (float)roi.cols / (float)roi.rows > 0.6 && (float)roi.cols / (float)roi.rows < 1.2 && roi.rows > frame.rows / 2) {
@@ -170,11 +170,11 @@ bool checkVisualVictim(Camera *cam) {
 					black = ~roi;
 					black = black(Rect(0, black.rows / 2, black.cols, black.rows / 2));
 
-					imshow("black", black);
+					//imshow("black", black);
 					//waitKey(1);
-					findContours(black, contours, RETR_LIST, CHAIN_APPROX_SIMPLE);
-					printf("contour count %I64u\n", contours.size());
-					printf("area %f\n", area);
+					//findContours(black, contours, RETR_LIST, CHAIN_APPROX_SIMPLE);
+					//printf("contour count %I64u\n", contours.size());
+					//printf("area %f\n", area);
 					for (int i = 0; i < contours.size(); i++) {
 						blackarea += contourArea(contours[i]);
 					}
@@ -183,7 +183,7 @@ bool checkVisualVictim(Camera *cam) {
 					//PosX = gps->getValues()[0] * 100;
 					//PosZ = gps->getValues()[2] * 100;
 
-					printf("area %f\n", blackarea);
+					//printf("area %f\n", blackarea);
 
 					if (blackarea / area > 0.09 && blackarea / area < 0.2 && contours.size() > 10) {
 						printf("poison\n");

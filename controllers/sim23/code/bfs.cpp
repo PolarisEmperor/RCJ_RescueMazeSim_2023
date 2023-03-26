@@ -116,6 +116,7 @@ int move2Tile(int cur, int target) {
 			targetPos = bot.getPrevPos().x - 6.0 / 100;
 			break;
 	}
+	printf("targetPos: %f\n", targetPos);
 	bot.stop();
 	
 	while (bot.update()) {

@@ -31,6 +31,8 @@ Bot::Bot() {
 	curTile = startTile = fieldSize / 2;
 	checkpointTile = curTile;
 	blueTile = purpleTile =	redTile = greenTile = -1;
+
+	startPos = { -9999, -9999 };
 }
 
 // Robot destructor
@@ -64,11 +66,11 @@ bool Bot::update() {
 	pos.x = (double)gps->getValues()[0];
 	pos.y = (double)gps->getValues()[2];
 
+	if (startPos.x == -9999) startPos = pos;
 	if (prevPos.x == 0) updatePrevPos();
 
 	// Update direction
 	curDir = getDirection();
-
 	return 1;
 }
 
@@ -86,6 +88,30 @@ Bot::Pos Bot::getPrevPos() {
 void Bot::updatePrevPos() {
 	prevPos.x = pos.x;
 	prevPos.y = pos.y;
+}
+
+// Testing something (not working)
+Bot::Pos Bot::getTilePos(int tile) {
+	Pos tilePos;
+	int row = tile / ROWS;
+	int col = tile % COLS;
+	int startRow = startTile / ROWS;
+	int startCol = startTile % COLS;
+	int diffX = startCol - col;
+	int diffY = abs(startRow - row);
+
+	if (diffX < 0) diffX = (COLS + diffX) * -1;
+
+	//if (row < startRow) diffX = (COLS + diffX) * -1;
+	//if (col < startCol) diffY = (ROWS - diffY) * -1;
+
+	/*tilePos.x = startPos.x + (0.06 * (col - startCol));
+	tilePos.y = startPos.y + (0.06 * (row - startRow));*/
+	printf("r %d c  %d sr %d sc %d\n", row, col, startRow, startCol);
+	printf("diff %d %d\n", diffX, diffY);
+	//printf("%f %f\n", tilePos.x, tilePos.y);
+
+	return pos;
 }
 
 // Get lidar readings from specified point and layer in cm

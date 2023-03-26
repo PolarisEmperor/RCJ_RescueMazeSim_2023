@@ -14,7 +14,7 @@ private:
 	struct Pos {
 		double x = 0;
 		double y = 0;
-	} pos, prevPos;
+	} pos, prevPos, startPos;
 
 	// Angle in radians
 	double angle = 0;
@@ -53,6 +53,7 @@ public:
 	const float getLidar(int layer, int point);
 	Pos getPos();
 	Pos getPrevPos();
+	Pos getTilePos(int tile);
 	double getAngle();
 	int getDirection();
 	void speed(double lSpd, double rSpd);

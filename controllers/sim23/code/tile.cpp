@@ -44,7 +44,7 @@ void getTile(int tile) {
 	}
 
 	// Check for side half walls
-	if (bot.curRoom == 2) {
+	//if (bot.curRoom == 2) {
 		//printf("CURDIR %d\n", bot.getDirection());
 		for (int i = North; i <= West; i++) {
 			for (int j = i * 128 - n; j < i * 128 + n; j++) {
@@ -65,7 +65,7 @@ void getTile(int tile) {
 				}
 			}
 		}
-	}
+	//}
 
 	// fix direction
 	for (int i = 0; i < 4; i++)
