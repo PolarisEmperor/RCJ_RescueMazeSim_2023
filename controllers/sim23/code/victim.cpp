@@ -100,7 +100,7 @@ bool HSU(Mat roi) {
 	if (area < double(bot.rows * bot.cols * 0.05) || area > double(bot.rows * bot.cols * 0.3)) return true;
 	slicedContours += (unsigned char)contours.size();
 
-	imshow("letter", roi);
+	//imshow("letter", roi);
 	//imshow("top", top);
 	//imshow("mid", mid);
 	//imshow("bot", bot);
@@ -125,7 +125,7 @@ bool checkVisualVictim(Camera* cam) {
 
 	Mat frame_HSV, frame_red, frame_yellow;
 	Mat frame(cam->getHeight(), cam->getWidth(), CV_8UC4, (void*)cam->getImage());
-	imshow("camView", frame);
+	//imshow("camView", frame);
 	if (frame.empty()) {
 		cout << "Could not open or find the image!\n" << endl;
 		return false;
@@ -172,7 +172,7 @@ bool checkVisualVictim(Camera* cam) {
 				//printf("\nCountour Area: %f\n", contourArea(largest));
 				//printf("angle %f rows %d cols %d\n", rotateRect.angle, roi.rows, roi.cols);
 
-				imshow("roi", roi);
+				//imshow("roi", roi);
 				waitKey(1);
 
 				// poison or corrosive hazard signs
@@ -183,7 +183,7 @@ bool checkVisualVictim(Camera* cam) {
 					black = ~roi;
 					black = black(Rect(0, black.rows / 2, black.cols, black.rows / 2));
 
-					imshow("black", black);
+					//imshow("black", black);
 					//waitKey(1);
 					//findContours(black, contours, RETR_LIST, CHAIN_APPROX_SIMPLE);
 					//printf("contour count %I64u\n", contours.size());
