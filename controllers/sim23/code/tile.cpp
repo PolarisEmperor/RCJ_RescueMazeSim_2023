@@ -2,6 +2,28 @@
 
 Tile field[fieldSize];
 
+void setWalls(int tile, bool N, bool E, bool S, bool W) {
+	// tiles to the north, east, south, west directions
+	int neighbors[4] = { tile - COLS, tile + 1, tile + COLS, tile - 1 };
+	
+	if (N) {
+		field[tile].N = 1;
+		field[neighbors[North]].S = 1;
+	}
+	if (E) {
+		field[tile].E = 1;
+		field[neighbors[East]].W = 1;
+	}
+	if (S) {
+		field[tile].S = 1;
+		field[neighbors[South]].N = 1;
+	}
+	if (W) {
+		field[tile].W = 1;
+		field[neighbors[West]].E = 1;
+	}
+}
+
 // Shift NESW wall bits in Tile structure to the left
 // if n == 1, nesw == 0110 will become 1100
 // and 1001 will become 0011, the highest order bit will move down to the lowest order bit.
@@ -29,6 +51,7 @@ void getTile(int tile) {
 	int bit = 1;
 	int distFromWall = 9;
 
+	if (field[tile].visited) return;
 	// clear structure
 	for (int i = 0; i < 4; i++) {
 		field[directions[i]].N = field[directions[i]].E = field[directions[i]].S = field[directions[i]].W = 0;

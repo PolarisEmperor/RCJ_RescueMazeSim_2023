@@ -21,5 +21,6 @@ struct Tile {
 
 extern Tile field[fieldSize];
 
+void setWalls(int tile, bool N, bool E, bool S, bool W);
 void getTile(int tile);
-unsigned char moveBits(unsigned char bits, int n); // temp, remove when done
+//unsigned char moveBits(unsigned char bits, int n); // temp, remove when done
