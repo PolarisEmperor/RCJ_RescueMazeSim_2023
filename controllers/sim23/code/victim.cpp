@@ -45,12 +45,25 @@ void sendVictimSignal(char ch) {
 }
 
 // HSU victim detection
-void HSU(Mat roi) {
+bool HSU(Mat roi) {
 	vector<vector<Point>> contours;
 	unsigned char slicedContours = 0;
 	double area = 0;
 
 	threshold(roi, roi, thresh, max_thresh, THRESH_BINARY_INV); // create thresholded image
+
+	printf("==========CHECKING BORDERS==========\n");
+	int matRows = roi.rows;
+	int matCols = roi.cols;
+	double* p;
+	//checks if contour is touching border
+	for (int i = 0; i < matRows; i++) {
+		p = roi.ptr<double>(i);
+		if (p[0] >= 120 || p[matCols] >= 120){
+			printf("CONTOUR ON BORDER!\n");
+			return false;
+		}
+	}
 
 	Mat top(roi, Rect(0, 0, roi.cols, roi.rows / 4));
 	Mat mid(roi, Rect(0, roi.rows / 3, roi.cols, roi.rows / 4));
@@ -62,7 +75,7 @@ void HSU(Mat roi) {
 		area += contourArea(contours[i]);
 	}
 	//printf("top contour: %f, ", area);
-	if (area < double(top.rows * top.cols * 0.05) || area > double(top.rows * top.cols * 0.3)) return;
+	if (area < double(top.rows * top.cols * 0.05) || area > double(top.rows * top.cols * 0.3)) return true;
 	slicedContours = (unsigned char)contours.size() * 100;
 	findContours(mid, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE); // find contours
 	area = 0;
@@ -73,7 +86,7 @@ void HSU(Mat roi) {
 	//printf("mid.rows: %d, ", mid.rows);
 	//printf("mid.cols: %d", mid.cols);
 	if (area < double(mid.rows * mid.cols * 0.05) || area > double(mid.rows * mid.cols * 0.5)) {
-		return;
+		return true;
 	}
 	slicedContours += (unsigned char)contours.size() * 10;
 	findContours(bot, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE); // find contours
@@ -84,21 +97,21 @@ void HSU(Mat roi) {
 	//printf("bot contour: %f, ", area);
 	//printf("bot.rows: %d, ", bot.rows);
 	//printf("bot.cols: %d, \n", bot.cols);
-	if (area < double(bot.rows * bot.cols * 0.05) || area > double(bot.rows * bot.cols * 0.3)) return;
+	if (area < double(bot.rows * bot.cols * 0.05) || area > double(bot.rows * bot.cols * 0.3)) return true;
 	slicedContours += (unsigned char)contours.size();
 
-	//imshow("letter", roi);
+	imshow("letter", roi);
 	//imshow("top", top);
 	//imshow("mid", mid);
 	//imshow("bot", bot);
-	//waitKey(1);
+	waitKey(1);
 
 	//printf("SlicedContour: %d--------------------------\n", slicedContours);
 	switch (slicedContours) {
-		case 212: sendVictimSignal('H'); return;
-		case 111: sendVictimSignal('S'); return;
-		case 221: sendVictimSignal('U'); return;
-		default: return;
+	case 212: sendVictimSignal('H'); return true;
+	case 111: sendVictimSignal('S'); return true;
+	case 221: sendVictimSignal('U'); return true;
+	default: return false;
 	}
 }
 
@@ -107,12 +120,12 @@ bool comp(vector<Point> first, vector<Point> second) {
 }
 
 // Victim/Hazard sign detection
-bool checkVisualVictim(Camera *cam) {
+bool checkVisualVictim(Camera* cam) {
 	//if (boardLoc(loc).victimChecked) return false; // don't repeatedly check the same tile
 
 	Mat frame_HSV, frame_red, frame_yellow;
-	Mat frame(cam->getHeight(), cam->getWidth(), CV_8UC4, (void *)cam->getImage());
-
+	Mat frame(cam->getHeight(), cam->getWidth(), CV_8UC4, (void*)cam->getImage());
+	imshow("camView", frame);
 	if (frame.empty()) {
 		cout << "Could not open or find the image!\n" << endl;
 		return false;
@@ -159,8 +172,8 @@ bool checkVisualVictim(Camera *cam) {
 				//printf("\nCountour Area: %f\n", contourArea(largest));
 				//printf("angle %f rows %d cols %d\n", rotateRect.angle, roi.rows, roi.cols);
 
-				//imshow("roi", roi);
-				//waitKey(1);
+				imshow("roi", roi);
+				waitKey(1);
 
 				// poison or corrosive hazard signs
 				if (rotateRect.angle < 52 && rotateRect.angle > 38 && (float)roi.cols / (float)roi.rows > 0.6 && (float)roi.cols / (float)roi.rows < 1.2 && roi.rows > frame.rows / 2) {
@@ -170,7 +183,7 @@ bool checkVisualVictim(Camera *cam) {
 					black = ~roi;
 					black = black(Rect(0, black.rows / 2, black.cols, black.rows / 2));
 
-					//imshow("black", black);
+					imshow("black", black);
 					//waitKey(1);
 					//findContours(black, contours, RETR_LIST, CHAIN_APPROX_SIMPLE);
 					//printf("contour count %I64u\n", contours.size());
@@ -206,8 +219,14 @@ bool checkVisualVictim(Camera *cam) {
 					rotateRect.angle < 95 &&
 					roi.rows > frame.rows / 2 &&
 					(((float)roi.cols / (float)roi.rows > 1.0 && (float)roi.cols / (float)roi.rows < 1.5) ||
-					 (/*roundAngle(angle) == -1 && */ (float)roi.cols / (float)roi.rows > 0.7 && (float)roi.cols / (float)roi.rows < 1.5))) {
-					HSU(roi);
+						(/*roundAngle(angle) == -1 && */ (float)roi.cols / (float)roi.rows > 0.7 && (float)roi.cols / (float)roi.rows < 1.5))) 
+				{
+					if (HSU(roi)) {
+						return true;
+					}
+					else {
+						return false;
+					}
 					//if (roundAngle(angle) == -1) roi = roi(Rect(0, 5, roi.cols, roi.rows - 10));
 					roi = roi(Rect(2, 0, roi.cols - 4, roi.rows)); // resize
 
@@ -230,7 +249,7 @@ bool checkVisualVictim(Camera *cam) {
 			//printf("width %f height %f\n", width, height);
 
 			if ((/*roundAngle(angle) == -1 && */ width / height > 0.4 && width / height < 2.1 && height > 30 && width > 30) ||
-				(width > 30 && width < 100 && height > 15 && height < 100 && (width / height > 0.9 && width / height < 2.1))){
+				(width > 30 && width < 100 && height > 15 && height < 100 && (width / height > 0.9 && width / height < 2.1))) {
 				// get gps
 				//PosX = gps->getValues()[0] * 100;
 				//PosZ = gps->getValues()[2] * 100;
