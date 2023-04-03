@@ -2,7 +2,6 @@
 #include "lib.h"
 
 enum Direction { North, East, South, West };
-enum TileColor { Normal, Hole = 2, Swamp, Checkpoint, Blue = 6, Purple, Red, Green };
 
 const int ROWS = 40;
 const int COLS = 40;

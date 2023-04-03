@@ -1,8 +1,10 @@
 #pragma once
 
+#include <string>
 #include "lib.h"
 #include "bot.h"
 
+enum TileColor { Normal, Hole = 2, Swamp, Checkpoint, Blue = 6, Purple, Red, Green };
 typedef unsigned char ubyte;
 
 struct Tile {
@@ -17,10 +19,11 @@ struct Tile {
 	};
 	bool visited; // has robot visited tile already
 	bool victimChecked; // victim seen
+	unsigned char color; // Tile color
 };
 
 extern Tile field[fieldSize];
 
 void setWalls(int tile, bool N, bool E, bool S, bool W);
 void getTile(int tile);
-//unsigned char moveBits(unsigned char bits, int n); // temp, remove when done
+void sendMap();

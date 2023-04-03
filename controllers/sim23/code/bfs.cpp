@@ -122,9 +122,15 @@ int move2Tile(int cur, int target) {
 	bot.stop();
 	
 	while (bot.update()) {
-		if (field[cur].victimChecked == 0 && (checkVisualVictim(bot.camL) || checkVisualVictim(bot.camR))) {
-			printf("found victim at tile %d\n", cur);
-			//field[cur].victimChecked = 1;
+		if (bot.getLidar(3, 127) < 8) {
+			if (checkVisualVictim(bot.camR)) {
+				printf("found victim at tile %d\n", cur);
+			}
+		}
+		if (bot.getLidar(3, 383) < 8) {
+			if (checkVisualVictim(bot.camL)) {
+				printf("found victim at tile %d\n", cur);
+			}
 		}
 
 		tileColor = bot.getTileColor(bot.camB->getWidth() / 2, 0);
@@ -148,137 +154,76 @@ int move2Tile(int cur, int target) {
 
 			bot.stop();
 
-			if (left == Hole) {
-				printf("left\n");
-			}
-			if (right == Hole) {
-				printf("right\n");
-			}
-
-			//					tl tr bl br
-			int blackHole[4] = { 0, 0, 0, 0 };
+			//						tl					tr			bl			br
+			int blackHole[4] = { target - COLS, target - COLS + 1, target, target + 1 };
 
 			switch (bot.getDirection()) {
 				case North:
-					printf("north %d\n", target);
-					if (left == Hole && right == Hole) { // Both
-						printf("%d %d %d %d\n", target - COLS, target - COLS + 1, target, target + 1);
-						setWalls(target - COLS, 1, 1, 1, 1);
-						setWalls(target - COLS + 1, 1, 1, 1, 1);
-						setWalls(target, 1, 1, 1, 1);
-						setWalls(target + 1, 1, 1, 1, 1);
-						field[target - COLS].visited = field[target - COLS + 1].visited = field[target].visited = field[target + 1].visited = 1;
-					}
-					else if (left == Hole && right != Hole) { // Left
-						printf("%d %d %d %d\n", target - COLS - 1, target - COLS, target - 1, target);
-						setWalls(target - COLS - 1, 1, 1, 1, 1);
-						setWalls(target - COLS, 1, 1, 1, 1);
-						setWalls(target - 1, 1, 1, 1, 1);
-						setWalls(target, 1, 1, 1, 1);
-						field[target - COLS - 1].visited = field[target - COLS].visited = field[target - 1].visited = field[target].visited = 1;
-						
+					if (left == Hole && right != Hole) { // Left
+						for (int i = 0; i < 4; i++) {
+							blackHole[i]--;
+						}
 					}
 					else if (left != Hole && right == Hole) { // Right
-						printf("%d %d %d %d\n", target - COLS + 1, target - COLS + 2, target + 1, target + 2);
-						setWalls(target - COLS + 1, 1, 1, 1, 1);
-						setWalls(target - COLS + 2, 1, 1, 1, 1);
-						setWalls(target + 1, 1, 1, 1, 1);
-						setWalls(target + 2, 1, 1, 1, 1);
-						field[target - COLS + 1].visited = field[target - COLS + 2].visited = field[target + 1].visited = field[target + 2].visited = 1;
+						for (int i = 0; i < 4; i++) {
+							blackHole[i]++;
+						}
 					}
 					break;
 				case East:
-					printf("east %d\n", target + 1);
-					if (left == Hole && right == Hole) { // Both
-						printf("%d %d %d %d\n", target + 1, target + 2, target + COLS + 1, target + COLS + 2);
-						setWalls(target + COLS + 1, 1, 1, 1, 1);
-						setWalls(target + COLS + 2, 1, 1, 1, 1);
-						setWalls(target + 1, 1, 1, 1, 1);
-						setWalls(target + 2, 1, 1, 1, 1);
-						field[target + 1].visited = field[target + 2].visited = field[target + COLS + 1].visited = field[target + COLS + 2].visited = 1;
+					for (int i = 0; i < 4; i++) {
+						blackHole[i] += COLS + 1;
 					}
-					else if (left == Hole && right != Hole) { // Left
-						printf("%d %d %d %d\n", target - COLS - 1, target - COLS + 2, target + 1, target + 2);
-						setWalls(target - COLS + 1, 1, 1, 1, 1);
-						setWalls(target - COLS + 2, 1, 1, 1, 1);
-						setWalls(target + 1, 1, 1, 1, 1);
-						setWalls(target + 2, 1, 1, 1, 1);
-						field[target - COLS + 1].visited = field[target - COLS + 2].visited = field[target + 1].visited = field[target + 2].visited = 1;
+					if (left == Hole && right != Hole) { // Left
+						for (int i = 0; i < 4; i++) {
+							blackHole[i] -= COLS;
+						}
 					}
 					else if (left != Hole && right == Hole) { // Right
-						printf("%d %d %d %d\n", target + COLS + 1, target + COLS + 2, target + COLS * 2 + 1, target + COLS * 2 + 2);
-						setWalls(target + COLS + 1, 1, 1, 1, 1);
-						setWalls(target + COLS + 2, 1, 1, 1, 1);
-						setWalls(target + COLS * 2 + 1, 1, 1, 1, 1);
-						setWalls(target + COLS * 2 + 2, 1, 1, 1, 1);
-						field[target + COLS + 1].visited = field[target + COLS + 2].visited = field[target + COLS * 2 + 1].visited = field[target + COLS * 2 + 2].visited = 1;
+						for (int i = 0; i < 4; i++) {
+							blackHole[i] += COLS;
+						}
 					}
 					break;
 				case South:
-					printf("south %d\n", target + COLS);
-					if (left == Hole && right == Hole) { // Both
-						printf("%d %d %d %d\n", target + COLS, target + COLS + 1, target + COLS * 2, target + COLS * 2 + 1);
-						setWalls(target + COLS, 1, 1, 1, 1);
-						setWalls(target + COLS + 1, 1, 1, 1, 1);
-						setWalls(target + COLS * 2, 1, 1, 1, 1);
-						setWalls(target + COLS * 2 + 1, 1, 1, 1, 1);
-						field[target + COLS].visited = field[target + COLS + 1].visited = field[target + COLS * 2].visited = field[target + COLS * 2 + 1].visited = 1;
+					for (int i = 0; i < 4; i++) {
+						blackHole[i] += COLS * 2;
 					}
-					else if (left == Hole && right != Hole) { // Left
-						printf("%d %d %d %d\n", target + COLS + 1, target + COLS + 2, target + COLS * 2 + 1, target + COLS * 2 + 2);
-						setWalls(target + COLS + 1, 1, 1, 1, 1);
-						setWalls(target + COLS + 2, 1, 1, 1, 1);
-						setWalls(target + COLS * 2 + 1, 1, 1, 1, 1);
-						setWalls(target + COLS * 2 + 2, 1, 1, 1, 1);
-						field[target + COLS + 1].visited = field[target + COLS + 2].visited = field[target + COLS * 2 + 1].visited = field[target + COLS * 2 + 2].visited = 1;
+					if (left == Hole && right != Hole) { // Left
+						for (int i = 0; i < 4; i++) {
+							blackHole[i] += 1;
+						}
 					}
 					else if (left != Hole && right == Hole) { // Right
-						printf("%d %d %d %d\n", target + COLS - 1, target + COLS - 2, target + COLS * 2 - 1, target + COLS * 2 - 2);
-						setWalls(target + COLS - 1, 1, 1, 1, 1);
-						setWalls(target + COLS - 2, 1, 1, 1, 1);
-						setWalls(target + COLS * 2 - 1, 1, 1, 1, 1);
-						setWalls(target + COLS * 2 - 2, 1, 1, 1, 1);
-						field[target + COLS - 1].visited = field[target + COLS].visited = field[target + COLS * 2 - 1].visited = field[target + COLS * 2].visited = 1;
+						for (int i = 0; i < 4; i++) {
+							blackHole[i] -= 1;
+						}
 					}
 					break;
 				case West:
-					printf("west %d\n", target - 1);
-					if (left == Hole && right == Hole) { // Both
-						printf("%d %d %d %d\n", target - 1, target, target + COLS - 1, target + COLS);
-						setWalls(target + COLS + 1, 1, 1, 1, 1);
-						setWalls(target + COLS, 1, 1, 1, 1);
-						setWalls(target - 1, 1, 1, 1, 1);
-						setWalls(target, 1, 1, 1, 1);
-						field[target - 1].visited = field[target].visited = field[target + COLS - 1].visited = field[target + COLS].visited = 1;
+					for (int i = 0; i < 4; i++) {
+						blackHole[i] += COLS - 1;
 					}
-					else if (left == Hole && right != Hole) { // Left
-						printf("%d %d %d %d\n", target + COLS - 1, target + COLS, target + COLS * 2 - 1, target + COLS * 2);
-						setWalls(target + COLS - 1, 1, 1, 1, 1);
-						setWalls(target + COLS, 1, 1, 1, 1);
-						setWalls(target + COLS * 2 - 1, 1, 1, 1, 1);
-						setWalls(target + COLS * 2, 1, 1, 1, 1);
-						field[target + COLS - 1].visited = field[target + COLS].visited = field[target + COLS * 2 - 1].visited = field[target + COLS * 2].visited = 1;
+					if (left == Hole && right != Hole) { // Left
+						for (int i = 0; i < 4; i++) {
+							blackHole[i] += COLS;
+						}
 					}
 					else if (left != Hole && right == Hole) { // Right
-						printf("%d %d %d %d\n", target - COLS - 1, target - COLS, target, target - 1);
-						setWalls(target - COLS - 1, 1, 1, 1, 1);
-						setWalls(target - COLS, 1, 1, 1, 1);
-						setWalls(target - 1, 1, 1, 1, 1);
-						setWalls(target, 1, 1, 1, 1);
-						field[target - COLS - 1].visited = field[target - COLS].visited = field[target].visited = field[target - 1].visited = 1;
+						for (int i = 0; i < 4; i++) {
+							blackHole[i] -= COLS;
+						}
 					}
 					break;
 			}
 
-			// Set all wall bits of tile
-			//field[target].N = field[target].E = field[target].S = field[target].W = field[target].visited = 1;
-			//field[target + 1].N = field[target + 1].E = field[target + 1].S = field[target + 1].W = field[target + 1].visited = 1;
-			//field[target + COLS].N = field[target + COLS].E = field[target + COLS].S = field[target + COLS].W = field[target + COLS].visited = 1;
-			//field[target + COLS + 1].N = field[target + COLS + 1].E = field[target + COLS + 1].S = field[target + COLS + 1].W = field[target + COLS + 1].visited = 1;
-			printf("there was a black hole. robot on tile %d\n", cur);
-			//bot.stop();
-			//bot.delay(3000);
+			for (int i = 0; i < 4; i++) {
+				setWalls(blackHole[i], 1, 1, 1, 1);
+				field[blackHole[i]].visited = 1;
+				field[blackHole[i]].color = Hole;
+			}
 
+			printf("there was a black hole. robot on tile %d\n", cur);
 			return cur;
 		}
 
@@ -338,6 +283,9 @@ int move2Tile(int cur, int target) {
 				bot.curRoom = 2;
 				bot.blueTile = target;
 			}
+			break;
+		default:
+			field[target].color = tileColor;
 			break;
 	}
 

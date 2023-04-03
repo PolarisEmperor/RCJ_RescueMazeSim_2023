@@ -1,4 +1,5 @@
 #include "bot.h"
+#include "tile.h"
 #include "victim.h"
 
 #define maxSpd (lm->getMaxVelocity() - 0.01)
@@ -37,6 +38,8 @@ Bot::Bot() {
 
 // Robot destructor
 Bot::~Bot() {
+	sendMap();
+
 	// Send the letter 'E' to signify exit
 	char message = 'E';
 	emitter->send(&message, 1);
@@ -201,8 +204,13 @@ void Bot::turn(int dir, double spd) {
 
 	int prevDir = getDirection();
 	while (update()) {
-		checkVisualVictim(camL);
-		checkVisualVictim(camR);
+		if (bot.getLidar(3, 127) < 8) {
+			checkVisualVictim(bot.camR);
+		}
+		if (bot.getLidar(3, 383) < 8) {
+			checkVisualVictim(bot.camL);
+		}
+
 		if (dir == South && fabs(angle) > angles[dir] - err && fabs(angle) < angles[dir] + err)
 			break;
 

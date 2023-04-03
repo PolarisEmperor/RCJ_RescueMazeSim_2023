@@ -1,5 +1,7 @@
 #include "tile.h"
 
+using namespace std;
+
 Tile field[fieldSize];
 
 void setWalls(int tile, bool N, bool E, bool S, bool W) {
@@ -116,4 +118,39 @@ void getTile(int tile) {
 		printf("%d\n", field[directions[i]].bits);
 
 	field[directions[0]].visited = 1;
+}
+
+void sendMap() {
+	const unsigned int width = 9, height = 9;
+	string map[width][height] = {
+		{ "1", "1", "1", "1", "1", "1", "1", "1", "1" },
+		{ "1", "5", "0", "5", "0", "0", "0", "0", "1" },
+		{ "1", "0", "0", "0", "0", "0", "0", "0", "1" },
+		{ "1", "5", "0", "5", "0", "0", "0", "0", "1" },
+		{ "1", "0", "0", "0", "0", "0", "0", "0", "1" },
+		{ "1", "0", "0", "0", "0", "0", "0", "0", "1" },
+		{ "1", "0", "0", "0", "0", "0", "0", "0", "1" },
+		{ "1", "0", "0", "0", "0", "0", "0", "0", "1" },
+		{ "1", "1", "1", "1", "1", "1", "1", "1", "1" }
+	};
+
+	string flattened = "";
+	for (int i = 0; i < width; i++) {
+		for (int j = 0; j < height; j++) {
+			printf("%s ", map[i][j]);
+			flattened += map[i][j] + ","; // Flatten the array with comma separators
+		}
+		printf("\n");
+	}
+
+	flattened.pop_back(); // Remove the last unnecessary comma
+
+	char *message = (char *)malloc(8 + flattened.size());
+	// The first 2 integers in the message array are width, height
+	memcpy(message, &width, sizeof(width));
+	memcpy(&message[4], &height, sizeof(height));
+	memcpy(&message[8], flattened.c_str(), flattened.size()); // Copy in the flattened map afterwards
+	bot.emitter->send(message, 8 + flattened.size()); // Send map data
+	char msg = 'M'; // Send map evaluate request
+	bot.emitter->send(&msg, sizeof(msg));
 }
