@@ -37,10 +37,10 @@ void sendVictimSignal(char ch) {
 
 	for (int i = 0; i < 2 && bot.update(); i++) {
 		bot.stop();
-		bot.delay(1000);
+		bot.delay(500);
 		bot.emitter->send(message, sizeof(message));
 		bot.stop();
-		bot.delay(1000);
+		bot.delay(700);
 	}
 }
 
@@ -172,33 +172,34 @@ bool checkVisualVictim(Camera* cam) {
 				//printf("\nCountour Area: %f\n", contourArea(largest));
 				//printf("angle %f rows %d cols %d\n", rotateRect.angle, roi.rows, roi.cols);
 
-				//imshow("roi", roi);
+				imshow("roi", roi);
 				waitKey(1);
 
 				// poison or corrosive hazard signs
 				if (rotateRect.angle < 52 && rotateRect.angle > 38 && (float)roi.cols / (float)roi.rows > 0.6 && (float)roi.cols / (float)roi.rows < 1.2 && roi.rows > frame.rows / 2) {
-					printf("largest %f %f\n", contourArea(largest), contourArea(largest) / area);
+					//printf("largest %f %f\n", contourArea(largest), contourArea(largest) / area);
 					Mat black;
 					double blackarea = 0;
 					black = ~roi;
 					black = black(Rect(0, black.rows / 2, black.cols, black.rows / 2));
 
-					//imshow("black", black);
-					//waitKey(1);
+					imshow("black", black);
+					waitKey(1);
 					//findContours(black, contours, RETR_LIST, CHAIN_APPROX_SIMPLE);
 					//printf("contour count %I64u\n", contours.size());
 					//printf("area %f\n", area);
-					for (int i = 0; i < contours.size(); i++) {
-						blackarea += contourArea(contours[i]);
+					for (int i = 0; i < maskcontours.size(); i++) {
+						blackarea += contourArea(maskcontours[i]);
 					}
 
 					// get gps
 					//PosX = gps->getValues()[0] * 100;
 					//PosZ = gps->getValues()[2] * 100;
 
-					//printf("area %f\n", blackarea);
+					//printf("blackarea %f, area %f\n", blackarea, area);
+					printf("black/area: %f\n", blackarea / area);
 
-					if (blackarea / area > 0.09 && blackarea / area < 0.2 && contours.size() > 10) {
+					if (blackarea / area > 0.5 && blackarea / area < 0.63) {
 						printf("poison\n");
 						sendVictimSignal('P');
 						//changeMessage(PosX, PosZ, 'P');
@@ -206,7 +207,7 @@ bool checkVisualVictim(Camera* cam) {
 						return true;
 					}
 
-					if (blackarea / area > 0.2 && blackarea / area < 0.5 && contours.size() < 10 && contours.size() > 3) {
+					if (blackarea / area > 0.32 && blackarea / area < 0.44) {
 						printf("corrosive\n");
 						sendVictimSignal('C');
 						//changeMessage(PosX, PosZ, 'C');
