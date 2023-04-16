@@ -52,6 +52,7 @@ void getTile(int tile) {
 	int dir = bot.getDirection();
 	int bit = 1;
 	int distFromWall = 9;
+	bool wall[8] = { 0 };
 
 	if (field[tile].visited) return;
 	// clear structure
@@ -61,11 +62,49 @@ void getTile(int tile) {
 
 	// Scan for walls with Lidar
 	for (int i = 0; i < sizeof(check) / sizeof(check[0]); i++) {
-		if (bot.getLidar(3, check[i]) < distFromWall)
-			field[directions[dir]].bits += bit; // set wall bit
-
+		if (bot.getLidar(3, check[i]) < distFromWall) {
+			if (i + bot.getDirection() * 2 > 7) {
+				wall[i + bot.getDirection() * 2 - 8] = true;
+			}
+			else {
+				wall[i + bot.getDirection() * 2] = true;
+			}
+			printf("wall dir %d bot dir %d real dir %d\n", i, bot.getDirection(), (i + bot.getDirection() * 2 > 7) ? (i + bot.getDirection() * 2) - 8 : i + bot.getDirection() * 2);
+			//field[directions[dir]].bits += bit; // set wall bit
+		}
 		// odd:        next wall  next tile
 		(i % 2 != 0) ? bit *= 2 : (dir == West) ? dir = North : dir++;
+	}
+
+	for (int i = 0; i < 8; i++) {
+		if (wall[i]) {
+			switch (i) {
+				case 0:
+					setWalls(tile, 1, 0, 0, 0);
+					break;
+				case 1:
+					setWalls(tile + 1, 1, 0, 0, 0);
+					break;
+				case 2:
+					setWalls(tile + 1, 0, 1, 0, 0);
+					break;
+				case 3:
+					setWalls(tile + COLS + 1, 0, 1, 0, 0);
+					break;
+				case 4:
+					setWalls(tile + COLS + 1, 0, 0, 1, 0);
+					break;
+				case 5:
+					setWalls(tile + COLS, 0, 0, 1, 0);
+					break;
+				case 6:
+					setWalls(tile + COLS, 0, 0, 0, 1);
+					break;
+				case 7:
+					setWalls(tile, 0, 0, 0, 1);
+					break;
+			}
+		}
 	}
 
 	// Check for side half walls
@@ -92,26 +131,26 @@ void getTile(int tile) {
 		}
 	//}
 
-	// fix direction
-	for (int i = 0; i < 4; i++)
-		field[directions[i]].bits = moveBits(field[directions[i]].bits, bot.getDirection());
+	//// fix direction
+	//for (int i = 0; i < 4; i++)
+	//	field[directions[i]].bits = moveBits(field[directions[i]].bits, bot.getDirection());
 
-	// set opposite wall bits for neighbor nodes for all 4 tiles
-	for (int i = 0; i < 4; i++) {
-		int t = directions[i];
-		int neighbors[] = { t - COLS, t + 1, t + COLS, t - 1 };
-		for (int j = North; j <= West; j++) {
-			switch (j) {
-				// error checking
-				case North: if (t < COLS) continue;
-				case East:  if (t % COLS == 0) continue;
-				case South: if (t >= COLS * (ROWS - 1)) continue;
-				case West:  if ((t + 1) % COLS == 0) continue;
-			}
-			if (field[t].bits & (1 << j)) // check bit
-				field[neighbors[j]].bits |= moveBits(1 << j, 2); // set bit
-		}
-	}
+	//// set opposite wall bits for neighbor nodes for all 4 tiles
+	//for (int i = 0; i < 4; i++) {
+	//	int t = directions[i];
+	//	int neighbors[] = { t - COLS, t + 1, t + COLS, t - 1 };
+	//	for (int j = North; j <= West; j++) {
+	//		switch (j) {
+	//			// error checking
+	//			case North: if (t < COLS) continue;
+	//			case East:  if (t % COLS == 0) continue;
+	//			case South: if (t >= COLS * (ROWS - 1)) continue;
+	//			case West:  if ((t + 1) % COLS == 0) continue;
+	//		}
+	//		if (field[t].bits & (1 << j)) // check bit
+	//			field[neighbors[j]].bits |= moveBits(1 << j, 2); // set bit
+	//	}
+	//}
 
 	printf("TILE %d\n", tile);
 	for (int i = 0; i < 4; i++)
@@ -120,18 +159,63 @@ void getTile(int tile) {
 	field[directions[0]].visited = 1;
 }
 
+bool isEmptyRow(int row) {
+	// Loop through all cols in row
+	for (int col = 0; col < COLS; col++) {
+		if (field[row * ROWS + col].visited) return false;
+	}
+	return true;
+}
+
+bool isEmptyCol(int col) {
+	// Loop through all rows in col
+	for (int row = 0; row < ROWS; row++) {
+		if (field[row * ROWS + col].visited) return false;
+	}
+	return true;
+}
+
+void createMap() {
+	string map;
+	unsigned int width, height, startX = 0, startY = 0, endX, endY;
+
+	// Calculate Height and Width of map
+	while (isEmptyCol(startX)) startX++;
+	endX = startX;
+	while (!isEmptyCol(endX)) endX++;
+	height = (endX - startX + 1) * 2 + 1;
+	printf("Height = %d\n", height);
+
+	while (isEmptyRow(startY)) startY++;
+	endY = startY;
+	while (!isEmptyRow(endY)) endY++;
+	width = (endY - startY + 1) * 2 + 1;
+	printf("Width = %d\n", width);
+
+	map.reserve(width * height);
+
+	printf("map size = %ud\n", map.size());
+
+	for (int i = 0; i < fieldSize; i++) {
+		if (field[i].visited)
+			printf("%d ", i);
+	}
+	printf("\n");
+}
+
 void sendMap() {
+	createMap();
 	const unsigned int width = 9, height = 9;
 	string map[width][height] = {
-		{ "1", "1", "1", "1", "1", "1", "1", "1", "1" },
+		{ "1", "1", "1", "1", "1", "H", "1", "1", "1" },
 		{ "1", "5", "0", "5", "0", "0", "0", "0", "1" },
 		{ "1", "0", "0", "0", "0", "0", "0", "0", "1" },
 		{ "1", "5", "0", "5", "0", "0", "0", "0", "1" },
 		{ "1", "0", "0", "0", "0", "0", "0", "0", "1" },
+		{ "1", "0", "0", "0", "0", "0", "0", "0", "S" },
 		{ "1", "0", "0", "0", "0", "0", "0", "0", "1" },
 		{ "1", "0", "0", "0", "0", "0", "0", "0", "1" },
-		{ "1", "0", "0", "0", "0", "0", "0", "0", "1" },
-		{ "1", "1", "1", "1", "1", "1", "1", "1", "1" }
+		{ "1", "U", "1", "1", "1", "1", "1", "1", "1" }
 	};
 
 	string flattened = "";
