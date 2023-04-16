@@ -37,10 +37,10 @@ void sendVictimSignal(char ch) {
 
 	for (int i = 0; i < 2 && bot.update(); i++) {
 		bot.stop();
-		bot.delay(500);
+		bot.delay(400);
 		bot.emitter->send(message, sizeof(message));
 		bot.stop();
-		bot.delay(700);
+		bot.delay(500);
 	}
 }
 
