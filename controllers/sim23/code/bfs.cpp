@@ -122,12 +122,12 @@ int move2Tile(int cur, int target) {
 	bot.stop();
 	
 	while (bot.update()) {
-		if (bot.getLidar(3, 127) < 8) {
-			if (checkVisualVictim(bot.camR)) {
+		if (bot.getLidar(3, 127) < 8 && !field[cur].victimChecked) {
+			if (checkVisualVictim(bot.camR) ) {
 				printf("found victim at tile %d\n", cur);
 			}
 		}
-		if (bot.getLidar(3, 383) < 8) {
+		if (bot.getLidar(3, 383) < 8 && !field[cur].victimChecked) {
 			if (checkVisualVictim(bot.camL)) {
 				printf("found victim at tile %d\n", cur);
 			}

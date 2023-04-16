@@ -172,8 +172,8 @@ bool checkVisualVictim(Camera* cam) {
 				//printf("\nCountour Area: %f\n", contourArea(largest));
 				//printf("angle %f rows %d cols %d\n", rotateRect.angle, roi.rows, roi.cols);
 
-				imshow("roi", roi);
-				waitKey(1);
+				//imshow("roi", roi);
+				//waitKey(1);
 
 				// poison or corrosive hazard signs
 				if (rotateRect.angle < 52 && rotateRect.angle > 38 && (float)roi.cols / (float)roi.rows > 0.6 && (float)roi.cols / (float)roi.rows < 1.2 && roi.rows > frame.rows / 2) {
@@ -183,8 +183,8 @@ bool checkVisualVictim(Camera* cam) {
 					black = ~roi;
 					black = black(Rect(0, black.rows / 2, black.cols, black.rows / 2));
 
-					imshow("black", black);
-					waitKey(1);
+					//imshow("black", black);
+					//waitKey(1);
 					//findContours(black, contours, RETR_LIST, CHAIN_APPROX_SIMPLE);
 					//printf("contour count %I64u\n", contours.size());
 					//printf("area %f\n", area);

@@ -204,11 +204,15 @@ void Bot::turn(int dir, double spd) {
 
 	int prevDir = getDirection();
 	while (update()) {
-		if (bot.getLidar(3, 127) < 8) {
+		if (bot.getLidar(3, 127) < 8 && !field[bot.curTile].victimChecked) {
 			checkVisualVictim(bot.camR);
+			printf("found victim turning\n");
+			//field[bot.curTile].victimChecked = 1;
 		}
-		if (bot.getLidar(3, 383) < 8) {
+		if (bot.getLidar(3, 383) < 8 && !field[bot.curTile].victimChecked) {
 			checkVisualVictim(bot.camL);
+			printf("found victim turning\n");
+			//field[bot.curTile].victimChecked = 1;
 		}
 
 		if (dir == South && fabs(angle) > angles[dir] - err && fabs(angle) < angles[dir] + err)
