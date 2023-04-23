@@ -2,7 +2,7 @@
 
 int parent[fieldSize];
 int worker[fieldSize];
-
+int diffX = 0, diffY = 0;
 // Check if valid neighbor
 int findNeighbor(unsigned int tile, int dir) {
 	// tiles to the north, east, south, west
@@ -106,16 +106,20 @@ int move2Tile(int cur, int target) {
 	// Drive forward
 	switch (bot.getDirection()) {
 		case North:
-			targetPos = bot.getPrevPos().y - 6.0 / 100;
+			targetPos = bot.getTargetPos(diffX, diffY -= 1).y;
+			//targetPos = bot.getPrevPos().y - 6.0 / 100;
 			break;
 		case East:
-			targetPos = bot.getPrevPos().x + 6.0 / 100;
+			targetPos = bot.getTargetPos(diffX += 1, diffY).x;
+			//targetPos = bot.getPrevPos().x + 6.0 / 100;
 			break;
 		case South:
-			targetPos = bot.getPrevPos().y + 6.0 / 100;
+			targetPos = bot.getTargetPos(diffX, diffY += 1).y;
+			//targetPos = bot.getPrevPos().y + 6.0 / 100;
 			break;
 		case West:
-			targetPos = bot.getPrevPos().x - 6.0 / 100;
+			targetPos = bot.getTargetPos(diffX -= 1, diffY).x;
+			//targetPos = bot.getPrevPos().x - 6.0 / 100;
 			break;
 	}
 	printf("targetPos: %f\n", targetPos);
@@ -159,6 +163,7 @@ int move2Tile(int cur, int target) {
 
 			switch (bot.getDirection()) {
 				case North:
+					diffY += 1;
 					if (left == Hole && right != Hole) { // Left
 						for (int i = 0; i < 4; i++) {
 							blackHole[i]--;
@@ -171,6 +176,7 @@ int move2Tile(int cur, int target) {
 					}
 					break;
 				case East:
+					diffX -= 1;
 					for (int i = 0; i < 4; i++) {
 						blackHole[i] += COLS + 1;
 					}
@@ -186,6 +192,7 @@ int move2Tile(int cur, int target) {
 					}
 					break;
 				case South:
+					diffY -= 1;
 					for (int i = 0; i < 4; i++) {
 						blackHole[i] += COLS * 2;
 					}
@@ -201,6 +208,7 @@ int move2Tile(int cur, int target) {
 					}
 					break;
 				case West:
+					diffX += 1;
 					for (int i = 0; i < 4; i++) {
 						blackHole[i] += COLS - 1;
 					}
@@ -284,11 +292,30 @@ int move2Tile(int cur, int target) {
 				bot.blueTile = target;
 			}
 			break;
+		case Purple: // Room 2 -> Room 3
+			if (bot.curRoom == 3 && target == bot.purpleTile) {
+				printf("room 3 -> 2\n");
+				bot.delay(3000);
+				bot.curRoom = 2;
+			}
+			else if (bot.curRoom == 2 && target == bot.purpleTile) {
+				printf("room 2 -> 3\n");
+				bot.delay(3000);
+				bot.curRoom = 3;
+			}
+			else if (target % 2 == 0 && (int(target / 10 * 10) % (COLS * 2) == 0 || (int(target / 10 * 10) + 10) % (COLS * 2) == 0) && bot.purpleTile < 0) {
+				printf("entering ROOM 3 for the first time tile = %d\n", target);
+				bot.delay(3000);
+				bot.curRoom = 3;
+				bot.purpleTile = target;
+			}
+
+			break;
 		default:
 			field[target].color = tileColor;
 			break;
 	}
-
+	
 	bot.updatePrevPos();
 	return target;
 }

@@ -7,13 +7,16 @@ const int ROWS = 40;
 const int COLS = 40;
 const int fieldSize = ROWS * COLS;
 
+
+
 class Bot {
 private:
-	// Current position
 	struct Pos {
 		double x = 0;
 		double y = 0;
-	} pos, prevPos, startPos;
+	};
+	// Current position
+	Pos pos, prevPos, startPos;
 
 	// Angle in radians
 	double angle = 0;
@@ -52,7 +55,7 @@ public:
 	const float getLidar(int layer, int point);
 	Pos getPos();
 	Pos getPrevPos();
-	Pos getTilePos(int tile);
+	Pos getTargetPos(int diffX, int diffY);
 	double getAngle();
 	int getDirection();
 	void speed(double lSpd, double rSpd);

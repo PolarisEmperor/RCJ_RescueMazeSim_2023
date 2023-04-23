@@ -176,29 +176,38 @@ bool isEmptyCol(int col) {
 }
 
 void createMap() {
-	string map;
-	unsigned int width, height, startX = 0, startY = 0, endX, endY;
+	unsigned int width, height, startX = 0, startY = 0, endX, endY, rows, cols;
 
 	// Calculate Height and Width of map
 	while (isEmptyCol(startX)) startX++;
 	endX = startX;
 	while (!isEmptyCol(endX)) endX++;
 	height = (endX - startX + 1) * 2 + 1;
-	printf("Height = %d\n", height);
 
 	while (isEmptyRow(startY)) startY++;
 	endY = startY;
 	while (!isEmptyRow(endY)) endY++;
+
 	width = (endY - startY + 1) * 2 + 1;
+	rows = (endY - startY) / 2 + 1;
+	cols = (endX - startX) / 2 + 1;
+
+	printf("Height = %d\n", height);
 	printf("Width = %d\n", width);
-
-	map.reserve(width * height);
-
-	printf("map size = %ud\n", map.size());
+	printf("Rows = %d\nCols = %d\n", rows, cols);
+	vector<vector<string>> map(width, vector<string>(height, string("")));
+	printf("%d %d\n", width * height, map.size());
+	
+	// Find out where start tile is
+	
 
 	for (int i = 0; i < fieldSize; i++) {
-		if (field[i].visited)
+		if (field[i].visited) {
+			if (i == bot.startTile) {
+				printf("start tile\n");
+			}
 			printf("%d ", i);
+		}
 	}
 	printf("\n");
 }
