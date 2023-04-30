@@ -52,7 +52,7 @@ bool HSU(Mat roi) {
 
 	threshold(roi, roi, thresh, max_thresh, THRESH_BINARY_INV); // create thresholded image
 
-	printf("==========CHECKING BORDERS==========\n");
+	//printf("==========CHECKING BORDERS==========\n");
 	int matRows = roi.rows;
 	int matCols = roi.cols;
 	double* p;
@@ -161,19 +161,25 @@ bool checkVisualVictim(Camera* cam) {
 			Mat thresholded;
 			cvtColor(roi, roi, COLOR_BGR2GRAY);
 			threshold(roi, roi, 120, 255, THRESH_BINARY);
-			findContours(roi, maskcontours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
+			if (maskcontours.size() == 1) {
+				findContours(roi, maskcontours, RETR_TREE, CHAIN_APPROX_SIMPLE);
+			}
+			else {
+				findContours(roi, maskcontours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
+			}
 
+			printf("# of Contours: %d", maskcontours.size());
 			if (maskcontours.size() > 0) {
 				largest = *max_element(maskcontours.begin(), maskcontours.end(), comp);
 				RotatedRect rotateRect = minAreaRect(largest);
 				boundRect = boundingRect(largest);
 				double area = roi.rows * roi.cols;
 
-				//printf("\nCountour Area: %f\n", contourArea(largest));
+				printf("\nCountour Area: %f\n", contourArea(largest));
 				//printf("angle %f rows %d cols %d\n", rotateRect.angle, roi.rows, roi.cols);
 
-				//imshow("roi", roi);
-				//waitKey(1);
+				imshow("roi", roi);
+				waitKey(1);
 
 				// poison or corrosive hazard signs
 				if (rotateRect.angle < 52 && rotateRect.angle > 38 && (float)roi.cols / (float)roi.rows > 0.6 && (float)roi.cols / (float)roi.rows < 1.2 && roi.rows > frame.rows / 2) {
@@ -186,7 +192,7 @@ bool checkVisualVictim(Camera* cam) {
 					//imshow("black", black);
 					//waitKey(1);
 					//findContours(black, contours, RETR_LIST, CHAIN_APPROX_SIMPLE);
-					//printf("contour count %I64u\n", contours.size());
+					printf("contour count %I64u\n", maskcontours.size());
 					//printf("area %f\n", area);
 					for (int i = 0; i < maskcontours.size(); i++) {
 						blackarea += contourArea(maskcontours[i]);
@@ -196,21 +202,20 @@ bool checkVisualVictim(Camera* cam) {
 					//PosX = gps->getValues()[0] * 100;
 					//PosZ = gps->getValues()[2] * 100;
 
-					//printf("blackarea %f, area %f\n", blackarea, area);
+					printf("blackarea %f, area %f, largest %f\n", blackarea, area, contourArea(largest));
 					printf("black/area: %f\n", blackarea / area);
 
-					if (blackarea / area > 0.5 && blackarea / area < 0.63) {
-						printf("poison\n");
-						sendVictimSignal('P');
-						//changeMessage(PosX, PosZ, 'P');
+					if (blackarea / area > 0.32 && blackarea / area < 0.44 && maskcontours.size() >= 2) {
+						printf("CORROSIVE\n");
+						sendVictimSignal('C');
+						//changeMessage(PosX, PosZ, 'C');
 						//boardLoc(loc).victimChecked = true;
 						return true;
 					}
-
-					if (blackarea / area > 0.32 && blackarea / area < 0.44) {
-						printf("corrosive\n");
-						sendVictimSignal('C');
-						//changeMessage(PosX, PosZ, 'C');
+					else if (maskcontours.size() >= 10 && blackarea / area > 0.64 && blackarea / area < 0.76) {
+						printf("POISON\n");
+						sendVictimSignal('P');
+						//changeMessage(PosX, PosZ, 'P');
 						//boardLoc(loc).victimChecked = true;
 						return true;
 					}
