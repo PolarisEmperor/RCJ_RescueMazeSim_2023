@@ -35,12 +35,14 @@ void sendVictimSignal(char ch) {
 
 	printf("GPS %d %d sending message\n", x, y);
 
-	for (int i = 0; i < 2 && bot.update(); i++) {
+	bool update = bot.update();
+	for (int i = 0; i < 2 && update; i++) {
 		bot.stop();
-		bot.delay(400);
-		bot.emitter->send(message, sizeof(message));
-		bot.stop();
-		bot.delay(500);
+		bot.delay(650);
+		if (i == 1) {
+			bot.emitter->send(message, sizeof(message));
+		}
+		update = bot.update();
 	}
 }
 
