@@ -3,6 +3,9 @@
 // C/C++ INCLUDES
 #include <stdio.h>
 #include <algorithm>
+#include <iostream>
+#include <vector>
+#include <string>
 
 // WEBOTS INCLUDES
 #include <webots/Robot.hpp>

@@ -2,7 +2,17 @@
 
 using namespace std;
 
+// Shape of curve. Shape looks like a quarter circle
+enum cornerDirection { tl, tr, br, bl };
+
+char bigmap[3 * ROWS + ROWS + 1][3 * COLS + COLS + 1] = { 0 };
+int mapX = (bot.curTile % COLS) * 2 + 2, mapY = (bot.curTile / ROWS) * 2 + 2;
 Tile field[fieldSize];
+
+void updateMapCoords() {
+	mapX = (bot.curTile % COLS) * 2 + 2;
+	mapY = (bot.curTile / ROWS) * 2 + 2;
+}
 
 void setWalls(int tile, bool N, bool E, bool S, bool W) {
 	// tiles to the north, east, south, west directions
@@ -43,26 +53,100 @@ unsigned char moveBits(unsigned char bits, int n) {
 	return bits;
 }
 
+void editMapTile(int tile) {
+	updateMapCoords();
+	// North
+	if (field[tile].N) {
+		bigmap[mapY - 2][mapX - 1] = '1';
+	}
+	if (field[tile + 1].N) {
+		bigmap[mapY - 2][mapX + 1] = '1';
+	}
+	if (field[tile].N && field[tile + 1].N) {
+		bigmap[mapY - 2][mapX] = '1';
+	}
+	// East
+	if (field[tile + 1].E) {
+		bigmap[mapY - 1][mapX + 2] = '1';
+	}
+	if (field[tile + COLS + 1].E) {
+		bigmap[mapY + 1][mapX + 2] = '1';
+	}
+	if (field[tile + 1].E && field[tile + COLS + 1].E) {
+		bigmap[mapY][mapX + 2] = '1';
+	}
+	// South
+	if (field[tile + COLS].S) {
+		bigmap[mapY + 2][mapX - 1] = '1';
+	}
+	if (field[tile + COLS + 1].S) {
+		bigmap[mapY + 2][mapX + 1] = '1';
+	}
+	if (field[tile + COLS].S && field[tile + COLS + 1].S) {
+		bigmap[mapY + 2][mapX] = '1';
+	}
+	// West
+	if (field[tile].W) {
+		bigmap[mapY - 1][mapX - 2] = '1';
+	}
+	if (field[tile + COLS].W) {
+		bigmap[mapY + 1][mapX - 2] = '1';
+	}
+	if (field[tile].W && field[tile + COLS].W) {
+		bigmap[mapY][mapX - 2] = '1';
+	}
+	// Corners
+	if (field[tile].N && field[tile].W) {
+		bigmap[mapY - 2][mapX - 2] = '1';			
+	}
+	if (field[tile + 1].N && field[tile + 1].E) {
+		bigmap[mapY - 2][mapX + 2] = '1';
+	}
+	if (field[tile + COLS].S && field[tile + COLS].W) {
+		bigmap[mapY + 2][mapX - 2] = '1';
+	}
+	if (field[tile + COLS + 1].S && field[tile + COLS + 1].E) {
+		bigmap[mapY + 2][mapX + 2] = '1';
+	}
+
+	// Start tile
+	if (tile == bot.startTile) {
+		bigmap[mapY - 1][mapX - 1] = '5';
+		bigmap[mapY - 1][mapX + 1] = '5';
+		bigmap[mapY + 1][mapX - 1] = '5';
+		bigmap[mapY + 1][mapX + 1] = '5';
+	}
+}
+
 // Get tile data(set bits of walls)
 void getTile(int tile) {
-	int directions[4] = { tile, tile + 1, tile + COLS + 1, tile + COLS }; // sub-tiles
-	int outer[] = { tile - COLS, tile - COLS + 1, tile + 2, tile + 2 + COLS, tile + COLS + COLS, tile + COLS + COLS + 1, tile - 1, tile - 1 + COLS }; // neighbors of sub-tiles
-	int n = 30; // lidar range
-	int check[] = { 511-n, 0+n, 127-n, 127+n, 255-n, 255+n, 383-n, 383+n }; // lidar values to check
+	printf("%d %d\n", bot.curTile % COLS, bot.curTile / ROWS);
+	if (bot.getDirection() < 0) return;
+	const float concaveThreshold = 6.8;
+	const float convexThreshold = 8.4;
+	const int outer[] = { tile - COLS, tile - COLS + 1, tile + 2, tile + 2 + COLS, tile + COLS + COLS, tile + COLS + COLS + 1, tile - 1, tile - 1 + COLS }; // neighbors of sub-tiles
+	const int directions[4] = { tile, tile + 1, tile + COLS + 1, tile + COLS }; // sub-tiles
+	const int n = 30; // lidar range
+	const int check[] = { 511 - n, 0 + n, 127 - n, 127 + n, 255 - n, 255 + n, 383 - n, 383 + n }; // lidar values to check
+	const int distFromWall = 8;
 	int dir = bot.getDirection();
 	int bit = 1;
-	int distFromWall = 9;
+
 	bool wall[8] = { 0 };
 
-	if (field[tile].visited) return;
+	//if (field[tile].visited || dir < 0) return;
 	// clear structure
 	for (int i = 0; i < 4; i++) {
 		field[directions[i]].N = field[directions[i]].E = field[directions[i]].S = field[directions[i]].W = 0;
+		for (int j = 0; j < 4; j++) {
+			field[directions[i]].corner = -1;
+		}
 	}
 
 	// Scan for walls with Lidar
 	for (int i = 0; i < sizeof(check) / sizeof(check[0]); i++) {
 		if (bot.getLidar(3, check[i]) < distFromWall) {
+			// robot facing west
 			if (i + bot.getDirection() * 2 > 7) {
 				wall[i + bot.getDirection() * 2 - 8] = true;
 			}
@@ -110,26 +194,129 @@ void getTile(int tile) {
 	// Check for side half walls
 	//if (bot.curRoom == 2) {
 		//printf("CURDIR %d\n", bot.getDirection());
-		for (int i = North; i <= West; i++) {
-			for (int j = i * 128 - n; j < i * 128 + n; j++) {
-				if (bot.getLidar(3, i * 128 - 30) < 7 || bot.getLidar(3, i * 128 + 30) < 7) break;
-				if (bot.getLidar(3, j) < 7) {
-					int wall = i + dir; // what side the wall is on
-					if (wall >= 4) wall -= 4; // fix side
+	for (int i = North; i <= West; i++) {
+		for (int j = i * 128 - n; j < i * 128 + n; j++) {
+			if (bot.getLidar(3, i * 128 - 30) < 7 || bot.getLidar(3, i * 128 + 30) < 7) break;
+			if (bot.getLidar(3, j) < 7) {
+				int wall = i + dir; // what side the wall is on
+				if (wall >= 4) wall -= 4; // fix side
 
-					// set bits
-					field[outer[wall * 2]].bits |= (wall % 2 == 0) ? 2 : 4;
-					field[outer[wall * 2 + 1]].bits |= (wall % 2 == 0) ? 8 : 1;
+				// set bits
+				field[outer[wall * 2]].bits |= (wall % 2 == 0) ? 2 : 4;
+				field[outer[wall * 2 + 1]].bits |= (wall % 2 == 0) ? 8 : 1;
 
-					printf("mid wall thingy  dir %d\n", i);
-					printf("WALL %d\n", wall);
-					printf("tile %d %d\n", outer[wall * 2], (wall % 2 == 0) ? 2 : 4);
-					printf("tile %d %d\n", outer[wall* 2 + 1], (wall % 2 == 0) ? 8 : 1);
-					break;
+				printf("mid wall thingy  dir %d\n", i);
+				printf("WALL %d\n", wall);
+				printf("tile %d %d\n", outer[wall * 2], (wall % 2 == 0) ? 2 : 4);
+				printf("tile %d %d\n", outer[wall * 2 + 1], (wall % 2 == 0) ? 8 : 1);
+				break;
+			}
+		}
+	}
+	//}
+
+	if (bot.curRoom == 3) {
+		int realTile = 0;
+		int realDir = 0;
+		float lidarValue = 0;
+
+		printf("CURVED CHECK\n");
+		printf("%f %f %f %f %f\n", bot.getLidar(3, 0), bot.getLidar(3, 18), bot.getLidar(3, 32), bot.getLidar(3, 65), bot.getLidar(3, 96));
+
+		std::vector<float> v;
+		double average[4] = { 0 };
+		for (int start = 0; start < 385; start += 128) {
+			for (int i = 0; i < 4; i++) {
+				for (int j = i * 32 + start; j < i * 32 + 32 + start; j++) {
+					if (bot.getLidar(3, j) == INFINITY) continue;
+					v.push_back(bot.getLidar(3, j));
+				}
+				average[i] = std::accumulate(v.begin(), v.end(), 0.0) / v.size();
+				printf("avg%d: %f\n", i, average[i]);
+				v.clear();
+			}
+		
+			if (average[1] < 7 && fabs(average[1] - average[0]) < 0.6 && fabs(average[3] - average[2]) < 0.6) {
+				printf("%d concave\n", start);
+			}
+			else if (average[2] < 8 && fabs(average[2] - average[3]) < 0.8) {
+				printf("%d side bottom\n", start);
+			}
+			else if (average[3] < 9 && fabs(average[2] - average[3]) > 2.0) {
+				printf("%d side top\n", start);
+			}
+			else if (average[0] < 9) {
+				if (fabs(average[0] - average[1]) < 1.0) {
+					printf("%d front left\n", start);
+				}
+				else if (average[1] / average[0] > 1.0) {
+					printf("%d front right\n", start);
 				}
 			}
 		}
-	//}
+
+		/*printf("%f %f %f %f\n", bot.getLidar(3, 446), bot.getLidar(3, 65), bot.getLidar(3, 190), bot.getLidar(3, 321));
+		printf("%f %f %f\n", bot.getLidar(3, 0), bot.getLidar(3, 255), bot.getLidar(3, 383));*/
+		//if ((lidarValue = bot.getLidar(3, 446)) < convexThreshold) {
+		//	// convex
+		//	if (bot.getLidar(3, 383) > lidarValue && bot.getLidar(3, 383) < 12) {
+		//		printf("CONVEX 446west\n");
+		//	}
+		//	else if (lidarValue > bot.getLidar(3, 480) && lidarValue - bot.getLidar(3, 480) < 1.5) {
+		//		printf("CONVEX 446north\n");
+		//	}
+		//	// concave
+		//	else if (lidarValue < concaveThreshold) {
+		//		realTile = directions[bot.getDirection()];
+		//		realDir = tl + bot.getDirection();
+		//		field[realTile].corner = realDir;
+		//		printf("%d %d\n", realTile, realDir);
+		//	}
+		//}
+		//if ((lidarValue = bot.getLidar(3, 65)) < convexThreshold) {
+		//	if (bot.getLidar(3, 127) > lidarValue && bot.getLidar(3, 127) < 12) {
+		//		printf("CONVEX 65east\n");
+		//	}
+		//	else if (lidarValue > bot.getLidar(3, 32) && lidarValue - bot.getLidar(3, 32) < 1.5) {
+		//		printf("CONVEX 65north\n");
+		//	}
+		//	else if (lidarValue < concaveThreshold) {
+		//		realTile = directions[(bot.getDirection() + 1 > 3) ? 0 : bot.getDirection() + 1];
+		//		realDir = (tr + bot.getDirection() > 3) ? 0 : tr + bot.getDirection();
+		//		field[realTile].corner = realDir;
+		//		printf("%d %d\n", realTile, realDir);
+		//	}
+		//}
+		//if ((lidarValue = bot.getLidar(3, 190)) < convexThreshold) {
+		//	if (bot.getLidar(3, 127) > lidarValue && bot.getLidar(3, 127) < 12) {
+		//		printf("CONVEX 190east\n");
+		//	}
+		//	else if (bot.getLidar(3, 255) > lidarValue && bot.getLidar(3, 255) < 12) {
+		//		printf("CONVEX 190south\n");
+		//	}
+		//	else if (lidarValue < concaveThreshold) {
+		//		realTile = directions[(bot.getDirection() + 2 > 3) ? bot.getDirection() - 2 : bot.getDirection() + 2];
+		//		realDir = (br + bot.getDirection() > 3) ? 1 : br + bot.getDirection();
+		//		field[realTile].corner = realDir;
+		//		printf("%d %d\n", realTile, realDir);
+		//	}
+		//}
+		//if ((lidarValue = bot.getLidar(3, 321)) < convexThreshold) {
+		//	if (bot.getLidar(3, 383) > lidarValue && bot.getLidar(3, 383) < 12) {
+		//		printf("CONVEX 321west\n");
+		//	}
+		//	else if (bot.getLidar(3, 255) > lidarValue && bot.getLidar(3, 255) < 12) {
+		//		printf("CONVEX 321south\n");
+		//	}
+		//	else if (lidarValue < concaveThreshold) {
+		//		realTile = directions[(bot.getDirection() + 3 > 3) ? bot.getDirection() - 1 : bot.getDirection() + 3];
+		//		realDir = (bl + bot.getDirection() > 3) ? 2 : bl + bot.getDirection();
+		//		field[realTile].corner = realDir;
+		//		printf("%d %d\n", realTile, realDir);
+		//	}
+		//}
+		//bot.delay(1000);
+	}
 
 	//// fix direction
 	//for (int i = 0; i < 4; i++)
@@ -157,6 +344,15 @@ void getTile(int tile) {
 		printf("%d\n", field[directions[i]].bits);
 
 	field[directions[0]].visited = 1;
+
+	editMapTile(tile);
+
+	for (int i = 0; i < 5; i++) {
+		for (int j = 0; j < 5; j++) {
+			printf("%c ", bigmap[mapY - 2 + i][mapX - 2 + j]);
+		}
+		printf("\n");
+	}
 }
 
 bool isEmptyRow(int row) {
@@ -175,7 +371,7 @@ bool isEmptyCol(int col) {
 	return true;
 }
 
-void createMap() {
+void mapBonus() {
 	unsigned int width, height, startX = 0, startY = 0, endX, endY, rows, cols;
 
 	// Calculate Height and Width of map
@@ -195,43 +391,21 @@ void createMap() {
 	printf("Height = %d\n", height);
 	printf("Width = %d\n", width);
 	printf("Rows = %d\nCols = %d\n", rows, cols);
-	vector<vector<string>> map(width, vector<string>(height, string("")));
-	printf("%d %d\n", width * height, map.size());
 	
-	// Find out where start tile is
-	
-
-	for (int i = 0; i < fieldSize; i++) {
-		if (field[i].visited) {
-			if (i == bot.startTile) {
-				printf("start tile\n");
-			}
-			printf("%d ", i);
+	vector<vector<string>> realmap(height, vector<string>(width));
+	cout << realmap[0][0] << endl;
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < width; j++) {
+			realmap[i][j] = { bigmap[startY * 2 + i][startX * 2 + j] };
+			cout << realmap[i][j] << " ";
 		}
+		printf("\n");
 	}
-	printf("\n");
-}
-
-void sendMap() {
-	createMap();
-	const unsigned int width = 9, height = 9;
-	string map[width][height] = {
-		{ "1", "1", "1", "1", "1", "H", "1", "1", "1" },
-		{ "1", "5", "0", "5", "0", "0", "0", "0", "1" },
-		{ "1", "0", "0", "0", "0", "0", "0", "0", "1" },
-		{ "1", "5", "0", "5", "0", "0", "0", "0", "1" },
-		{ "1", "0", "0", "0", "0", "0", "0", "0", "1" },
-		{ "1", "0", "0", "0", "0", "0", "0", "0", "S" },
-		{ "1", "0", "0", "0", "0", "0", "0", "0", "1" },
-		{ "1", "0", "0", "0", "0", "0", "0", "0", "1" },
-		{ "1", "U", "1", "1", "1", "1", "1", "1", "1" }
-	};
 
 	string flattened = "";
 	for (int i = 0; i < width; i++) {
 		for (int j = 0; j < height; j++) {
-			printf("%s ", map[i][j]);
-			flattened += map[i][j] + ","; // Flatten the array with comma separators
+			flattened += realmap[i][j] + ","; // Flatten the array with comma separators
 		}
 		printf("\n");
 	}

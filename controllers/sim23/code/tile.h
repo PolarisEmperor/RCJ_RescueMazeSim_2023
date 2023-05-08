@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <vector>
+#include <numeric>
 #include "lib.h"
 #include "bot.h"
 
@@ -17,13 +19,17 @@ struct Tile {
 		};
 		ubyte bits;
 	};
+	int corner;
 	bool visited; // has robot visited tile already
 	bool victimChecked; // victim seen
 	unsigned char color; // Tile color
 };
 
 extern Tile field[fieldSize];
+extern std::vector<std::vector<std::string>> Map;
+extern char bigmap[3 * ROWS + ROWS + 1][3 * ROWS + ROWS + 1];
+
 
 void setWalls(int tile, bool N, bool E, bool S, bool W);
 void getTile(int tile);
-void sendMap();
+void mapBonus();

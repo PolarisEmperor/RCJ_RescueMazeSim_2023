@@ -3,6 +3,7 @@
 int parent[fieldSize];
 int worker[fieldSize];
 int diffX = 0, diffY = 0;
+
 // Check if valid neighbor
 int findNeighbor(unsigned int tile, int dir) {
 	// tiles to the north, east, south, west
@@ -11,7 +12,6 @@ int findNeighbor(unsigned int tile, int dir) {
 	switch (dir) {
 		case North:
 			if ((field[tile].bits & (1 << North)) == 0 && (field[neighbors[East]].bits & (1 << North)) == 0 && (field[neighbors[North]].bits & (1 << East)) == 0) {
-				printf("tile %d %d\n", tile, field[tile].bits);
 				return neighbors[dir];
 			}
 			break;
@@ -53,7 +53,7 @@ int bfs(int tile) {
 			neighbor = findNeighbor(*cur, i); // find neighbor
 			if (neighbor >= 0) { // valid neighbor
 				if (parent[neighbor] < 0) {
-					printf("cur %d neighbor %d\n", *cur, neighbor);
+					//printf("cur %d neighbor %d\n", *cur, neighbor);
 					parent[neighbor] = *cur; // neighbor came from cur
 					*next++ = neighbor; // add neighbor to worker array
 				}
@@ -122,16 +122,16 @@ int move2Tile(int cur, int target) {
 			//targetPos = bot.getPrevPos().x - 6.0 / 100;
 			break;
 	}
-	printf("targetPos: %f\n", targetPos);
+	//printf("targetPos: %f\n", targetPos);
 	bot.stop();
 	
 	while (bot.update()) {
-		if (bot.getLidar(3, 127) < 8 && !field[cur].victimChecked) {
+		if (bot.getLidar(3, 127) < 6 && !field[cur].victimChecked) {
 			if (checkVisualVictim(bot.camR) ) {
 				printf("found victim at tile %d\n", cur);
 			}
 		}
-		if (bot.getLidar(3, 383) < 8 && !field[cur].victimChecked) {
+		if (bot.getLidar(3, 383) < 6 && !field[cur].victimChecked) {
 			if (checkVisualVictim(bot.camL)) {
 				printf("found victim at tile %d\n", cur);
 			}
@@ -277,17 +277,17 @@ int move2Tile(int cur, int target) {
 		case Blue: // Room 1 -> Room 2
 			if (bot.curRoom == 2 && target == bot.blueTile) {
 				printf("room 2 -> 1\n");
-				bot.delay(3000);
+				//bot.delay(3000);
 				bot.curRoom = 1;
 			}
 			else if (bot.curRoom == 1 && target == bot.blueTile) {
 				printf("room 1 -> 2\n");
-				bot.delay(3000);
+				//bot.delay(3000);
 				bot.curRoom = 2;
 			}
 			else if (target % 2 == 0 && (int(target / 10 * 10) % (COLS * 2) == 0 || (int(target / 10 * 10) + 10) % (COLS * 2) == 0) && bot.blueTile < 0) {
 				printf("entering ROOM 2 for the first time tile = %d\n", target);
-				bot.delay(3000);
+				//bot.delay(3000);
 				bot.curRoom = 2;
 				bot.blueTile = target;
 			}
@@ -295,17 +295,17 @@ int move2Tile(int cur, int target) {
 		case Purple: // Room 2 -> Room 3
 			if (bot.curRoom == 3 && target == bot.purpleTile) {
 				printf("room 3 -> 2\n");
-				bot.delay(3000);
+				//bot.delay(3000);
 				bot.curRoom = 2;
 			}
 			else if (bot.curRoom == 2 && target == bot.purpleTile) {
 				printf("room 2 -> 3\n");
-				bot.delay(3000);
+				//bot.delay(3000);
 				bot.curRoom = 3;
 			}
 			else if (target % 2 == 0 && (int(target / 10 * 10) % (COLS * 2) == 0 || (int(target / 10 * 10) + 10) % (COLS * 2) == 0) && bot.purpleTile < 0) {
 				printf("entering ROOM 3 for the first time tile = %d\n", target);
-				bot.delay(3000);
+				//bot.delay(3000);
 				bot.curRoom = 3;
 				bot.purpleTile = target;
 			}
@@ -315,7 +315,7 @@ int move2Tile(int cur, int target) {
 			field[target].color = tileColor;
 			break;
 	}
-	
+
 	bot.updatePrevPos();
 	return target;
 }

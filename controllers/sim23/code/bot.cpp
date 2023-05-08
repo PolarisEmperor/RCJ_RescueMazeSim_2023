@@ -29,7 +29,7 @@ Bot::Bot() {
 
 	// Set room values
 	curRoom = 1;
-	curTile = startTile = fieldSize / 2;
+	curTile = startTile = (ROWS / 2 * COLS) + (COLS / 2);
 	checkpointTile = curTile;
 	blueTile = purpleTile =	redTile = greenTile = -1;
 
@@ -38,8 +38,7 @@ Bot::Bot() {
 
 // Robot destructor
 Bot::~Bot() {
-	sendMap();
-
+	mapBonus();
 	// Send the letter 'E' to signify exit
 	char message = 'E';
 	emitter->send(&message, 1);
@@ -93,37 +92,11 @@ void Bot::updatePrevPos() {
 	prevPos.y = pos.y;
 }
 
-// Testing something (not working)
-//Bot::Pos Bot::getTilePos(int tile) {
-//	Pos tilePos;
-//	int row = tile / ROWS;
-//	int col = tile % COLS;
-//	int startRow = startTile / ROWS;
-//	int startCol = startTile % COLS;
-//	int diffX = startCol - col;
-//	int diffY = abs(startRow - row);
-//
-//	if (diffX < 0) diffX = (COLS + diffX) * -1;
-//
-//	//if (row < startRow) diffX = (COLS + diffX) * -1;
-//	//if (col < startCol) diffY = (ROWS - diffY) * -1;
-//
-//	/*tilePos.x = startPos.x + (0.06 * (col - startCol));
-//	tilePos.y = startPos.y + (0.06 * (row - startRow));*/
-//	printf("r %d c  %d sr %d sc %d\n", row, col, startRow, startCol);
-//	printf("diff %d %d\n", diffX, diffY);
-//	//printf("%f %f\n", tilePos.x, tilePos.y);
-//
-//	return pos;
-//}
-
 Bot::Pos Bot::getTargetPos(int diffX, int diffY) {
 	Pos targetPos = startPos;
 
 	targetPos.x += diffX * 0.06;
 	targetPos.y += diffY * 0.06;
-
-	printf("%f %f\n", targetPos.x, targetPos.y);
 
 	return targetPos;
 }
@@ -215,14 +188,14 @@ void Bot::turn(int dir, double spd) {
 
 	int prevDir = getDirection();
 	while (update()) {
-		if (bot.getLidar(3, 127) < 8 && !field[bot.curTile].victimChecked) {
+		if (bot.getLidar(3, 127) < 6 && !field[bot.curTile].victimChecked) {
 			checkVisualVictim(bot.camR);
-			printf("found victim turning\n");
+			//printf("found victim turning\n");
 			//field[bot.curTile].victimChecked = 1;
 		}
-		if (bot.getLidar(3, 383) < 8 && !field[bot.curTile].victimChecked) {
+		if (bot.getLidar(3, 383) < 6 && !field[bot.curTile].victimChecked) {
 			checkVisualVictim(bot.camL);
-			printf("found victim turning\n");
+			//printf("found victim turning\n");
 			//field[bot.curTile].victimChecked = 1;
 		}
 
