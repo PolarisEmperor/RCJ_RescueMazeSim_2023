@@ -6,7 +6,7 @@
 #include "lib.h"
 #include "bot.h"
 
-enum TileColor { Normal, Hole = 2, Swamp, Checkpoint, Blue = 6, Purple, Red, Green };
+enum TileColor { Normal, Hole = 2, Swamp, Checkpoint, Start, Blue, Purple, Red, Green };
 typedef unsigned char ubyte;
 
 struct Tile {
@@ -22,7 +22,7 @@ struct Tile {
 	int corner;
 	bool visited; // has robot visited tile already
 	bool victimChecked; // victim seen
-	unsigned char color; // Tile color
+	char color; // Tile color
 };
 
 extern Tile field[fieldSize];

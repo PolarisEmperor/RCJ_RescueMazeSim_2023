@@ -170,18 +170,18 @@ bool checkVisualVictim(Camera* cam) {
 				findContours(roi, maskcontours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
 			}
 
-			printf("# of Contours: %d", maskcontours.size());
+			//printf("# of Contours: %d", maskcontours.size());
 			if (maskcontours.size() > 0) {
 				largest = *max_element(maskcontours.begin(), maskcontours.end(), comp);
 				RotatedRect rotateRect = minAreaRect(largest);
 				boundRect = boundingRect(largest);
 				double area = roi.rows * roi.cols;
 
-				printf("\nCountour Area: %f\n", contourArea(largest));
+				//printf("\nCountour Area: %f\n", contourArea(largest));
 				//printf("angle %f rows %d cols %d\n", rotateRect.angle, roi.rows, roi.cols);
 
-				imshow("roi", roi);
-				waitKey(1);
+				//imshow("roi", roi);
+				//waitKey(1);
 
 				// poison or corrosive hazard signs
 				if (rotateRect.angle < 52 && rotateRect.angle > 38 && (float)roi.cols / (float)roi.rows > 0.6 && (float)roi.cols / (float)roi.rows < 1.2 && roi.rows > frame.rows / 2) {

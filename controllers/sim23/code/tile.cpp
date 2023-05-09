@@ -53,6 +53,7 @@ unsigned char moveBits(unsigned char bits, int n) {
 	return bits;
 }
 
+// Map out walls and victims/hazards
 void editMapTile(int tile) {
 	updateMapCoords();
 	// North
@@ -108,19 +109,19 @@ void editMapTile(int tile) {
 	if (field[tile + COLS + 1].S && field[tile + COLS + 1].E) {
 		bigmap[mapY + 2][mapX + 2] = '1';
 	}
-
-	// Start tile
-	if (tile == bot.startTile) {
-		bigmap[mapY - 1][mapX - 1] = '5';
-		bigmap[mapY - 1][mapX + 1] = '5';
-		bigmap[mapY + 1][mapX - 1] = '5';
-		bigmap[mapY + 1][mapX + 1] = '5';
+	
+	char color = field[tile].color + '0';
+	printf("%c\n", color);
+	if (color != '0') {
+		bigmap[mapY - 1][mapX - 1] = color;
+		bigmap[mapY - 1][mapX + 1] = color;
+		bigmap[mapY + 1][mapX - 1] = color;
+		bigmap[mapY + 1][mapX + 1] = color;
 	}
 }
 
 // Get tile data(set bits of walls)
 void getTile(int tile) {
-	printf("%d %d\n", bot.curTile % COLS, bot.curTile / ROWS);
 	if (bot.getDirection() < 0) return;
 	const float concaveThreshold = 6.8;
 	const float convexThreshold = 8.4;
@@ -153,7 +154,7 @@ void getTile(int tile) {
 			else {
 				wall[i + bot.getDirection() * 2] = true;
 			}
-			printf("wall dir %d bot dir %d real dir %d\n", i, bot.getDirection(), (i + bot.getDirection() * 2 > 7) ? (i + bot.getDirection() * 2) - 8 : i + bot.getDirection() * 2);
+			//printf("wall dir %d bot dir %d real dir %d\n", i, bot.getDirection(), (i + bot.getDirection() * 2 > 7) ? (i + bot.getDirection() * 2) - 8 : i + bot.getDirection() * 2);
 			//field[directions[dir]].bits += bit; // set wall bit
 		}
 		// odd:        next wall  next tile
@@ -205,10 +206,10 @@ void getTile(int tile) {
 				field[outer[wall * 2]].bits |= (wall % 2 == 0) ? 2 : 4;
 				field[outer[wall * 2 + 1]].bits |= (wall % 2 == 0) ? 8 : 1;
 
-				printf("mid wall thingy  dir %d\n", i);
-				printf("WALL %d\n", wall);
-				printf("tile %d %d\n", outer[wall * 2], (wall % 2 == 0) ? 2 : 4);
-				printf("tile %d %d\n", outer[wall * 2 + 1], (wall % 2 == 0) ? 8 : 1);
+				//printf("mid wall thingy  dir %d\n", i);
+				//printf("WALL %d\n", wall);
+				//printf("tile %d %d\n", outer[wall * 2], (wall % 2 == 0) ? 2 : 4);
+				//printf("tile %d %d\n", outer[wall * 2 + 1], (wall % 2 == 0) ? 8 : 1);
 				break;
 			}
 		}
@@ -378,16 +379,17 @@ void mapBonus() {
 	while (isEmptyCol(startX)) startX++;
 	endX = startX;
 	while (!isEmptyCol(endX)) endX++;
-	height = (endX - startX + 1) * 2 + 1;
 
 	while (isEmptyRow(startY)) startY++;
 	endY = startY;
 	while (!isEmptyRow(endY)) endY++;
 
-	width = (endY - startY + 1) * 2 + 1;
-	rows = (endY - startY) / 2 + 1;
-	cols = (endX - startX) / 2 + 1;
+	printf("endY %d startY %d endX %d startX %d\n", endY, startY, endX, startX);
 
+	rows = (endY - startY) / 2 + 1;
+	cols = (endX - startX - 1) / 2 + 1;
+	width = cols * 4 + 1;
+	height = rows * 4 + 1;
 	printf("Height = %d\n", height);
 	printf("Width = %d\n", width);
 	printf("Rows = %d\nCols = %d\n", rows, cols);
@@ -403,8 +405,8 @@ void mapBonus() {
 	}
 
 	string flattened = "";
-	for (int i = 0; i < width; i++) {
-		for (int j = 0; j < height; j++) {
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < width; j++) {
 			flattened += realmap[i][j] + ","; // Flatten the array with comma separators
 		}
 		printf("\n");

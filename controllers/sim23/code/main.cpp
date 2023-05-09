@@ -9,7 +9,7 @@ int main() {
 
 	parent[bot.startTile] = bot.startTile; // set starting point
 	memset(bigmap, '0', sizeof(bigmap));
-
+	field[bot.startTile].color = Start;
 	
 	// SIMULATION LOOP
 	while (bot.update()) {

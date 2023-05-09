@@ -285,11 +285,13 @@ int move2Tile(int cur, int target) {
 				//bot.delay(3000);
 				bot.curRoom = 2;
 			}
-			else if (target % 2 == 0 && (int(target / 10 * 10) % (COLS * 2) == 0 || (int(target / 10 * 10) + 10) % (COLS * 2) == 0) && bot.blueTile < 0) {
+			else if (target % 2 == 0 && (int(target / 10 * 10) % (COLS * 2) == 0 || (int(target / 10 * 10) - 20) % (COLS * 2) == 0) && bot.blueTile < 0) {
 				printf("entering ROOM 2 for the first time tile = %d\n", target);
-				//bot.delay(3000);
+				bot.delay(3000);
 				bot.curRoom = 2;
 				bot.blueTile = target;
+				field[target].color = Blue;
+				printf("tile %d color %d\n", target, field[target].color);
 			}
 			break;
 		case Purple: // Room 2 -> Room 3
@@ -303,16 +305,19 @@ int move2Tile(int cur, int target) {
 				//bot.delay(3000);
 				bot.curRoom = 3;
 			}
-			else if (target % 2 == 0 && (int(target / 10 * 10) % (COLS * 2) == 0 || (int(target / 10 * 10) + 10) % (COLS * 2) == 0) && bot.purpleTile < 0) {
+			else if (target % 2 == 0 && (int(target / 10 * 10) % (COLS * 2) == 0 || (int(target / 10 * 10) - 20) % (COLS * 2) == 0) && bot.purpleTile < 0) {
 				printf("entering ROOM 3 for the first time tile = %d\n", target);
 				//bot.delay(3000);
 				bot.curRoom = 3;
 				bot.purpleTile = target;
+				field[target].color = Purple;
 			}
 
 			break;
 		default:
-			field[target].color = tileColor;
+			if (tileColor != 0 && target % 2 == 0 && ((int(target / 10 * 10) - 10) % (COLS * 2) == 0 || (int(target / 10 * 10) - 20) % (COLS * 2) == 0)) {
+				field[target].color = tileColor;
+			}
 			break;
 	}
 
