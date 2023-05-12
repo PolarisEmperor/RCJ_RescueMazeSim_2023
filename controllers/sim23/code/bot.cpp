@@ -235,6 +235,8 @@ int Bot::getTileColor(int x, int y) {
 	unsigned char g = Camera::imageGetGreen(img, camB->getWidth(), x, y);
 	unsigned char b = Camera::imageGetBlue(img, camB->getWidth(), x, y);
 
+	//printf("R: %d, G: %d, B: %d\n", r, g, b);
+
 	if (r == whiteConst && g == whiteConst && b == whiteConst) return Normal;
 	if (r < holeThreshold && g < holeThreshold && b < holeThreshold) return Hole;
 	if (r > checkptThreshold && g > checkptThreshold && b > checkptThreshold) return Checkpoint;
@@ -243,11 +245,30 @@ int Bot::getTileColor(int x, int y) {
 
 	bool hi[3] = { r - minColor > closeThreshold, g - minColor > closeThreshold, b - minColor > closeThreshold };
 
-	if (hi[0] && !hi[1] && !hi[2]) return Red;
-	if (!hi[0] && !hi[1] && hi[2]) return Blue;
-	if (hi[0] && !hi[1] && hi[2]) return Purple;
-	if (hi[0] && hi[1] && !hi[2]) return Swamp;
-	if (!hi[0] && hi[1] && hi[2]) return Checkpoint;
+	if (hi[0] && !hi[1] && !hi[2]) {
+		//printf("RED "); 
+		return Red;
+	}
+	if (!hi[0] && !hi[1] && hi[2]) {
+		//printf("BLUE "); 
+		return Blue;
+	}
+	if (hi[0] && !hi[1] && hi[2]) {
+		//printf("PURPLE "); 
+		return Purple;
+	}
+	if (hi[0] && hi[1] && !hi[2]) {
+		//printf("SWAMP "); 
+		return Swamp;
+	}
+	if (!hi[0] && hi[1] && hi[2]) {
+		//printf("CHECKPT "); 
+		return Checkpoint;
+	}
+	if (!hi[0] && hi[1] && !hi[2]) {
+		//printf("GREEN "); 
+		return Green;
+	}
 
 	return Normal;
 }
