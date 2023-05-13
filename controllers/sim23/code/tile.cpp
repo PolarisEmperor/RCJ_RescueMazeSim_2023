@@ -59,42 +59,54 @@ void editMapTile(int tile) {
 	// North
 	if (field[tile].N) {
 		bigmap[mapY - 2][mapX - 1] = '1';
+		bigmap[mapY - 2][mapX] = '1';
 	}
 	if (field[tile + 1].N) {
 		bigmap[mapY - 2][mapX + 1] = '1';
-	}
-	if (field[tile].N && field[tile + 1].N) {
 		bigmap[mapY - 2][mapX] = '1';
+	}
+	if (!field[tile].N && !field[tile + 1].N && field[tile - COLS].E) {
+		bigmap[mapY - 2][mapX] = '1';
+		bigmap[mapY - 3][mapX] = '1';
 	}
 	// East
 	if (field[tile + 1].E) {
 		bigmap[mapY - 1][mapX + 2] = '1';
+		bigmap[mapY][mapX + 2] = '1';
 	}
 	if (field[tile + COLS + 1].E) {
 		bigmap[mapY + 1][mapX + 2] = '1';
-	}
-	if (field[tile + 1].E && field[tile + COLS + 1].E) {
 		bigmap[mapY][mapX + 2] = '1';
+	}
+	if (!field[tile + 1].E && !field[tile + COLS + 1].E && field[tile + 2].S) {
+		bigmap[mapY][mapX + 2] = '1';
+		bigmap[mapY][mapX + 3] = '1';
 	}
 	// South
 	if (field[tile + COLS].S) {
 		bigmap[mapY + 2][mapX - 1] = '1';
+		bigmap[mapY + 2][mapX] = '1';
 	}
 	if (field[tile + COLS + 1].S) {
 		bigmap[mapY + 2][mapX + 1] = '1';
-	}
-	if (field[tile + COLS].S && field[tile + COLS + 1].S) {
 		bigmap[mapY + 2][mapX] = '1';
+	}
+	if (!field[tile + COLS].S && !field[tile + COLS + 1].S && field[tile + COLS * 2].E) {
+		bigmap[mapY + 2][mapX] = '1';
+		bigmap[mapY + 3][mapX] = '1';
 	}
 	// West
 	if (field[tile].W) {
 		bigmap[mapY - 1][mapX - 2] = '1';
+		bigmap[mapY][mapX - 2] = '1';
 	}
 	if (field[tile + COLS].W) {
 		bigmap[mapY + 1][mapX - 2] = '1';
-	}
-	if (field[tile].W && field[tile + COLS].W) {
 		bigmap[mapY][mapX - 2] = '1';
+	}
+	if (!field[tile].W && !field[tile + COLS].W && field[tile + 1].S) {
+		bigmap[mapY][mapX - 2] = '1';
+		bigmap[mapY][mapX - 3] = '1';
 	}
 	// Corners
 	if (field[tile].N && field[tile].W) {

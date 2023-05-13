@@ -7,8 +7,6 @@ const int ROWS = 40;
 const int COLS = 40;
 const int fieldSize = ROWS * COLS;
 
-
-
 class Bot {
 private:
 	struct Pos {
