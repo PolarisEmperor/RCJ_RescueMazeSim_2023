@@ -2,4 +2,4 @@
 *.vscode
 x64
 .vs
-.pyc
+*.pyc
