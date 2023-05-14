@@ -35,7 +35,7 @@ public:
 	webots::Camera *camR = robot->getCamera("rCam");
 	webots::Camera *camL = robot->getCamera("lCam");
 	webots::Camera *camB = robot->getCamera("bCam");
-	webots::Lidar *lidar = robot->getLidar("lidar");
+	webots::Lidar *lidar = robot->getLidarPoint("lidar");
 
 	int curRoom;		// Current room
 	int curTile;		// Current Tile
@@ -50,7 +50,8 @@ public:
 	~Bot();
 	void delay(int ms);
 	bool update();
-	const float getLidar(int layer, int point);
+	const float getLidarPoint(int layer, int point);
+	const float* getLidarLayer(int layer);
 	Pos getPos();
 	Pos getPrevPos();
 	Pos getTargetPos(int diffX, int diffY);

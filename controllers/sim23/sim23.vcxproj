@@ -155,14 +155,22 @@
     <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\TouchSensor.cpp" />
     <ClCompile Include="code\bfs.cpp" />
     <ClCompile Include="code\bot.cpp" />
+    <ClCompile Include="code\cumulative_map.cpp" />
     <ClCompile Include="code\main.cpp" />
+    <ClCompile Include="code\map_tile.cpp" />
+    <ClCompile Include="code\point.cpp" />
+    <ClCompile Include="code\snapshot.cpp" />
     <ClCompile Include="code\tile.cpp" />
     <ClCompile Include="code\victim.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="code\bfs.h" />
     <ClInclude Include="code\bot.h" />
+    <ClInclude Include="code\cumulative_map.h" />
     <ClInclude Include="code\lib.h" />
+    <ClInclude Include="code\map_tile.h" />
+    <ClInclude Include="code\point.h" />
+    <ClInclude Include="code\snapshot.h" />
     <ClInclude Include="code\tile.h" />
     <ClInclude Include="code\victim.h" />
   </ItemGroup>

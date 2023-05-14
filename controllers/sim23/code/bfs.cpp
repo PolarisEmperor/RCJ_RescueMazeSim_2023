@@ -126,12 +126,12 @@ int move2Tile(int cur, int target) {
 	bot.stop();
 	
 	while (bot.update()) {
-		if (bot.getLidar(3, 127) < 6 && !field[cur].victimChecked) {
+		if (bot.getLidarPoint(3, 127) < 6 && !field[cur].victimChecked) {
 			if (checkVisualVictim(bot.camR) ) {
 				printf("found victim at tile %d\n", cur);
 			}
 		}
-		if (bot.getLidar(3, 383) < 6 && !field[cur].victimChecked) {
+		if (bot.getLidarPoint(3, 383) < 6 && !field[cur].victimChecked) {
 			if (checkVisualVictim(bot.camL)) {
 				printf("found victim at tile %d\n", cur);
 			}
@@ -239,7 +239,7 @@ int move2Tile(int cur, int target) {
 		if (bot.getDirection() == South && bot.getPos().y > targetPos) break;
 		if (bot.getDirection() == East && bot.getPos().x > targetPos) break;
 		if (bot.getDirection() == West && bot.getPos().x < targetPos) break;
-		if (bot.getLidar(3, 0) < distFromWall) break;
+		if (bot.getLidarPoint(3, 0) < distFromWall) break;
 
 		// IMU Straighten
 		switch (bot.getDirection()) {

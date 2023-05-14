@@ -158,7 +158,7 @@ void getTile(int tile) {
 
 	// Scan for walls with Lidar
 	for (int i = 0; i < sizeof(check) / sizeof(check[0]); i++) {
-		if (bot.getLidar(3, check[i]) < distFromWall) {
+		if (bot.getLidarPoint(3, check[i]) < distFromWall) {
 			// robot facing west
 			if (i + bot.getDirection() * 2 > 7) {
 				wall[i + bot.getDirection() * 2 - 8] = true;
@@ -209,8 +209,8 @@ void getTile(int tile) {
 		//printf("CURDIR %d\n", bot.getDirection());
 	for (int i = North; i <= West; i++) {
 		for (int j = i * 128 - n; j < i * 128 + n; j++) {
-			if (bot.getLidar(3, i * 128 - 30) < 7 || bot.getLidar(3, i * 128 + 30) < 7) break;
-			if (bot.getLidar(3, j) < 7) {
+			if (bot.getLidarPoint(3, i * 128 - 30) < 7 || bot.getLidarPoint(3, i * 128 + 30) < 7) break;
+			if (bot.getLidarPoint(3, j) < 7) {
 				int wall = i + dir; // what side the wall is on
 				if (wall >= 4) wall -= 4; // fix side
 
@@ -234,15 +234,15 @@ void getTile(int tile) {
 		float lidarValue = 0;
 
 		printf("CURVED CHECK\n");
-		printf("%f %f %f %f %f\n", bot.getLidar(3, 0), bot.getLidar(3, 18), bot.getLidar(3, 32), bot.getLidar(3, 65), bot.getLidar(3, 96));
+		printf("%f %f %f %f %f\n", bot.getLidarPoint(3, 0), bot.getLidarPoint(3, 18), bot.getLidarPoint(3, 32), bot.getLidarPoint(3, 65), bot.getLidarPoint(3, 96));
 
 		std::vector<float> v;
 		double average[4] = { 0 };
 		for (int start = 0; start < 385; start += 128) {
 			for (int i = 0; i < 4; i++) {
 				for (int j = i * 32 + start; j < i * 32 + 32 + start; j++) {
-					if (bot.getLidar(3, j) == INFINITY) continue;
-					v.push_back(bot.getLidar(3, j));
+					if (bot.getLidarPoint(3, j) == INFINITY) continue;
+					v.push_back(bot.getLidarPoint(3, j));
 				}
 				average[i] = std::accumulate(v.begin(), v.end(), 0.0) / v.size();
 				printf("avg%d: %f\n", i, average[i]);

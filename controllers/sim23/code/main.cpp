@@ -1,6 +1,7 @@
 #include "lib.h"
 #include "bot.h"
 #include "bfs.h"
+#include "cumulative_map.h"
 
 extern int parent[fieldSize];
 
@@ -13,6 +14,8 @@ int main() {
 	
 	// SIMULATION LOOP
 	while (bot.update()) {
+		
+
 		getTile(bot.curTile);
 		target = bfs(bot.curTile); // do bfs
 		//printf("cur = %d target = %d\n", bot.curTile, target);

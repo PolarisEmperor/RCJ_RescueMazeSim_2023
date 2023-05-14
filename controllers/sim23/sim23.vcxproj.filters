@@ -115,6 +115,18 @@
     <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\TouchSensor.cpp">
       <Filter>Webots Files</Filter>
     </ClCompile>
+    <ClCompile Include="code\cumulative_map.cpp">
+      <Filter>Code\room4-full</Filter>
+    </ClCompile>
+    <ClCompile Include="code\map_tile.cpp">
+      <Filter>Code\room4-full</Filter>
+    </ClCompile>
+    <ClCompile Include="code\point.cpp">
+      <Filter>Code\room4-full</Filter>
+    </ClCompile>
+    <ClCompile Include="code\snapshot.cpp">
+      <Filter>Code\room4-full</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Code">
@@ -122,6 +134,12 @@
     </Filter>
     <Filter Include="Webots Files">
       <UniqueIdentifier>{e7cad9ab-78be-4d9f-a251-45d62975e70c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\room4-full">
+      <UniqueIdentifier>{6a293f85-a168-4e1d-9c18-62f0ceeddeb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\room4-bootleg">
+      <UniqueIdentifier>{e0eebe9d-b58e-4df3-8d8c-9566bf2d3bb9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +157,18 @@
     </ClInclude>
     <ClInclude Include="code\victim.h">
       <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="code\cumulative_map.h">
+      <Filter>Code\room4-full</Filter>
+    </ClInclude>
+    <ClInclude Include="code\map_tile.h">
+      <Filter>Code\room4-full</Filter>
+    </ClInclude>
+    <ClInclude Include="code\point.h">
+      <Filter>Code\room4-full</Filter>
+    </ClInclude>
+    <ClInclude Include="code\snapshot.h">
+      <Filter>Code\room4-full</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

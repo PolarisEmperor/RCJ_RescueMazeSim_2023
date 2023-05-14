@@ -102,8 +102,12 @@ Bot::Pos Bot::getTargetPos(int diffX, int diffY) {
 }
 
 // Get lidar readings from specified point and layer in cm
-const float Bot::getLidar(int layer, int point) {
+const float Bot::getLidarPoint(int layer, int point) {
 	return lidar->getRangeImage()[(lidar->getHorizontalResolution() * layer) + point] * 100;
+}
+
+const float* Bot::getLidarLayer(int layer) {
+	return lidar->getLayerRangeImage(layer);
 }
 
 // Get current angle
@@ -188,12 +192,12 @@ void Bot::turn(int dir, double spd) {
 
 	int prevDir = getDirection();
 	while (update()) {
-		if (bot.getLidar(3, 127) < 6 && !field[bot.curTile].victimChecked) {
+		if (bot.getLidarPoint(3, 127) < 6 && !field[bot.curTile].victimChecked) {
 			checkVisualVictim(bot.camR);
 			//printf("found victim turning\n");
 			//field[bot.curTile].victimChecked = 1;
 		}
-		if (bot.getLidar(3, 383) < 6 && !field[bot.curTile].victimChecked) {
+		if (bot.getLidarPoint(3, 383) < 6 && !field[bot.curTile].victimChecked) {
 			checkVisualVictim(bot.camL);
 			//printf("found victim turning\n");
 			//field[bot.curTile].victimChecked = 1;
