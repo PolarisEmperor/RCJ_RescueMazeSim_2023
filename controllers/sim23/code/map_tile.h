@@ -4,11 +4,11 @@
 #include <set>
 #include "snapshot.h"
 
-class Tile {
+class MapTile {
 
 public:
-    Tile();
-    Tile(Snapshot snapshot);
+    MapTile();
+    MapTile(Snapshot snapshot);
     bool addSnapshotToTile(Snapshot snapshot);
     static std::pair<int, int> calculateTile(Point point);
 

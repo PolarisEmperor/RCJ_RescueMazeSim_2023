@@ -14,13 +14,13 @@ TileMap::TileMap() {
     tileCount = 0;
 }
 
-Tile& TileMap::getTile(std::pair<int, int>& t) {
+MapTile& TileMap::getTile(std::pair<int, int>& t) {
     return tiles[t.first][t.second];
 }
 
-void TileMap::createTile(std::pair<int, int>& t, Tile tile) {
+void TileMap::createTile(std::pair<int, int>& t, MapTile tile) {
     if (!tiles.count(t.first)) {
-        tiles[t.first] = std::unordered_map<int, Tile>();
+        tiles[t.first] = std::unordered_map<int, MapTile>();
     }
     if (!tiles[t.first].count(t.second)) {
         tiles[t.first][t.second] = tile;
@@ -48,22 +48,22 @@ void TileMap::addSnapshot(const float* distList, const float GPSx, const float G
     }
 
     //TODO - check backward: 512 and 0 may be part of same snap
-    std::pair<int, int> previousTile = Tile::calculateTile(pointList[0]);
+    std::pair<int, int> previousTile = MapTile::calculateTile(pointList[0]);
     int start = 0;
     for (int i = 1; i < pointList.size(); i++) {
-        if (Tile::calculateTile(pointList[i]) != previousTile) {
+        if (MapTile::calculateTile(pointList[i]) != previousTile) {
             Snapshot s = Snapshot(std::vector<Point>(pointList.begin() + start, pointList.begin() + (i - 1)), snapshotCount, false);
 
             if (tileExists(previousTile)) {
-                Tile& t = getTile(previousTile);
+                MapTile& t = getTile(previousTile);
                 t.addSnapshotToTile(s);
             }
             else {
-                createTile(previousTile, Tile(s));
+                createTile(previousTile, MapTile(s));
             }
 
             start = i;
-            previousTile = Tile::calculateTile(pointList[i]);
+            previousTile = MapTile::calculateTile(pointList[i]);
         }
     }
 
