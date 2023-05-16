@@ -35,7 +35,7 @@ public:
 	webots::Camera *camR = robot->getCamera("rCam");
 	webots::Camera *camL = robot->getCamera("lCam");
 	webots::Camera *camB = robot->getCamera("bCam");
-	webots::Lidar *lidar = robot->getLidarPoint("lidar");
+	webots::Lidar *lidar = robot->getLidar("lidar");
 
 	int curRoom;		// Current room
 	int curTile;		// Current Tile
@@ -63,6 +63,7 @@ public:
 	void turn(int dir, double spd = 2);
 	int getTileColor(int x, int y);
 	void updatePrevPos();
+	bool checkLOPemitter();
 };
 
 extern class Bot bot;

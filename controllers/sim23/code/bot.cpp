@@ -276,3 +276,14 @@ int Bot::getTileColor(int x, int y) {
 
 	return Normal;
 }
+
+bool Bot::checkLOPemitter() {
+	if (receiver->getQueueLength() > 0) {
+		char* message = (char*)receiver->getData();
+		if (message[0] == 'L') {
+			receiver->nextPacket();
+			return true;
+		}
+	}
+	return false;
+}

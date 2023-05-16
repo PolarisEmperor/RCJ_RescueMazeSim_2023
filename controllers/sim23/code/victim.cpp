@@ -46,6 +46,10 @@ void sendVictimSignal(char ch) {
 	}
 }
 
+bool comp(vector<Point> first, vector<Point> second) {
+	return (contourArea(first) < contourArea(second));
+}
+
 // HSU victim detection
 bool HSU(Mat roi) {
 	vector<vector<Point>> contours;
@@ -54,18 +58,18 @@ bool HSU(Mat roi) {
 
 	threshold(roi, roi, thresh, max_thresh, THRESH_BINARY_INV); // create thresholded image
 
-	//printf("==========CHECKING BORDERS==========\n");
-	int matRows = roi.rows;
-	int matCols = roi.cols;
-	double* p;
-	//checks if contour is touching border
-	for (int i = 0; i < matRows; i++) {
-		p = roi.ptr<double>(i);
-		if (p[0] >= 120 || p[matCols] >= 120){
-			printf("CONTOUR ON BORDER!\n");
-			return false;
-		}
-	}
+	////printf("==========CHECKING BORDERS==========\n");
+	//int matRows = roi.rows;
+	//int matCols = roi.cols;
+	//double* p;
+	////checks if contour is touching border
+	//for (int i = 0; i < matRows; i++) {
+	//	p = roi.ptr<double>(i);
+	//	if (p[0] >= 120 || p[matCols] >= 120){
+	//		printf("CONTOUR ON BORDER!\n");
+	//		return false;
+	//	}
+	//}
 
 	Mat top(roi, Rect(0, 0, roi.cols, roi.rows / 4));
 	Mat mid(roi, Rect(0, roi.rows / 3, roi.cols, roi.rows / 4));
@@ -115,10 +119,6 @@ bool HSU(Mat roi) {
 	case 221: sendVictimSignal('U'); return true;
 	default: return false;
 	}
-}
-
-bool comp(vector<Point> first, vector<Point> second) {
-	return (contourArea(first) < contourArea(second));
 }
 
 // Victim/Hazard sign detection
@@ -180,7 +180,7 @@ bool checkVisualVictim(Camera* cam) {
 				//printf("\nCountour Area: %f\n", contourArea(largest));
 				//printf("angle %f rows %d cols %d\n", rotateRect.angle, roi.rows, roi.cols);
 
-				//imshow("roi", roi);
+				imshow("roi", roi);
 				//waitKey(1);
 
 				// poison or corrosive hazard signs
@@ -223,6 +223,23 @@ bool checkVisualVictim(Camera* cam) {
 					}
 				}
 				// HSU
+				vector<vector<Point>> roiContours;
+				findContours(roi, roiContours, RETR_TREE, CHAIN_APPROX_SIMPLE);
+				vector<Point>biggest = *max_element(roiContours.begin(), roiContours.end(), comp);
+				RotatedRect rectRotate = minAreaRect(biggest);
+				Rect rectBound = boundingRect(biggest);
+				float hsuArea = 0;
+				for (int i = 0; i < roiContours.size(); i++) {
+					hsuArea += contourArea(roiContours[i]);
+				}
+				float roicol = roi.rows * roi.cols;
+				float ratio = hsuArea / roicol;
+				//printf("area: %f, roicol: %f, ratio: %f\n", hsuArea, roicol, ratio);
+				if (ratio < 1.1) {
+					//printf("RATIO TOO LOW\n");
+					return false;
+				}
+
 				if (rotateRect.angle > 85 &&
 					rotateRect.angle < 95 &&
 					roi.rows > frame.rows / 2 &&
