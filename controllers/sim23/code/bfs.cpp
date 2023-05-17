@@ -125,17 +125,7 @@ int move2Tile(int cur, int target) {
 	bot.stop();
 	
 	while (bot.update()) {
-<<<<<<< Updated upstream
-		if (bot.getLidarPoint(3, 127) < 6 && !field[cur].victimChecked) {
-			if (checkVisualVictim(bot.camR) ) {
-				printf("found victim at tile %d\n", cur);
-			}
-		}
-		if (bot.getLidarPoint(3, 383) < 6 && !field[cur].victimChecked) {
-			if (checkVisualVictim(bot.camL)) {
-				printf("found victim at tile %d\n", cur);
-=======
-		if (bot.getLidar(3, 127) < 7 && !field[cur].victimChecked) {
+		if (bot.getLidarPoint(3, 127) < 7 && !field[cur].victimChecked) {
 			char victim = checkVisualVictim(bot.camR);
 			if (victim > 0) {
 				int wall = bot.getDirection() + 1;
@@ -144,14 +134,13 @@ int move2Tile(int cur, int target) {
 				mapVictim(cur, wall, victim);
 			}
 		}
-		if (bot.getLidar(3, 383) < 7 && !field[cur].victimChecked) {
+		if (bot.getLidarPoint(3, 383) < 7 && !field[cur].victimChecked) {
 			char victim = checkVisualVictim(bot.camL);
 			if (victim > 0) {
 				int wall = bot.getDirection() - 1;
 				if (wall < 0) wall += 4;
 				printf("found left victim at tile %d %d %d\n", cur, wall, victim);
 				mapVictim(cur, wall, victim);
->>>>>>> Stashed changes
 			}
 		}
 

@@ -191,18 +191,7 @@ void Bot::turn(int dir, double spd) {
 
 	int prevDir = getDirection();
 	while (update()) {
-<<<<<<< Updated upstream
-		if (bot.getLidarPoint(3, 127) < 6 && !field[bot.curTile].victimChecked) {
-			checkVisualVictim(bot.camR);
-			//printf("found victim turning\n");
-			//field[bot.curTile].victimChecked = 1;
-		}
-		if (bot.getLidarPoint(3, 383) < 6 && !field[bot.curTile].victimChecked) {
-			checkVisualVictim(bot.camL);
-			//printf("found victim turning\n");
-			//field[bot.curTile].victimChecked = 1;
-=======
-		if (bot.getLidar(3, 127) < 7 && !field[bot.curTile].victimChecked) {
+		if (bot.getLidarPoint(3, 127) < 7 && !field[bot.curTile].victimChecked) {
 			char victim = checkVisualVictim(bot.camR);
 			if (victim > 0) {
 				int wall = bot.getDirection() + 1;
@@ -210,14 +199,13 @@ void Bot::turn(int dir, double spd) {
 				//mapVictim(bot.curTile, wall, victim);
 			}
 		}
-		if (bot.getLidar(3, 383) < 7 && !field[bot.curTile].victimChecked) {
+		if (bot.getLidarPoint(3, 383) < 7 && !field[bot.curTile].victimChecked) {
 			char victim = checkVisualVictim(bot.camL);
 			if (victim > 0) {
 				int wall = bot.getDirection() - 1;
 				if (wall < 0) wall += 4;
 				//mapVictim(bot.curTile, wall, victim);
 			}
->>>>>>> Stashed changes
 		}
 
 		if (dir == South && fabs(angle) > angles[dir] - err && fabs(angle) < angles[dir] + err)
