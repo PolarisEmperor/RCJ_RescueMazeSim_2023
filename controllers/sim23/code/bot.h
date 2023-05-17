@@ -41,6 +41,7 @@ public:
 	int curTile;		// Current Tile
 	int startTile;		// Starting tile
 	int checkpointTile; // Checkpoint Tile
+	int checkpointRoom; // Checkpoinst Room
 	int blueTile;		// Room 1 -> Room 2
 	int purpleTile;		// Room 2 -> Room 3
 	int redTile;		// Room 3 -> Room 4

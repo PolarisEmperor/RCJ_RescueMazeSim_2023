@@ -11,9 +11,8 @@ int findNeighbor(unsigned int tile, int dir) {
 
 	switch (dir) {
 		case North:
-			if ((field[tile].bits & (1 << North)) == 0 && (field[neighbors[East]].bits & (1 << North)) == 0 && (field[neighbors[North]].bits & (1 << East)) == 0) {
+			if ((field[tile].bits & (1 << North)) == 0 && (field[neighbors[East]].bits & (1 << North)) == 0 && (field[neighbors[North]].bits & (1 << East)) == 0)
 				return neighbors[dir];
-			}
 			break;
 		case East:
 			if ((field[neighbors[East]].bits & (1 << East)) == 0 && (field[neighbors[South] + 1].bits & (1 << East)) == 0 && (field[neighbors[East] + 1].bits & (1 << South)) == 0)
@@ -126,6 +125,7 @@ int move2Tile(int cur, int target) {
 	bot.stop();
 	
 	while (bot.update()) {
+<<<<<<< Updated upstream
 		if (bot.getLidarPoint(3, 127) < 6 && !field[cur].victimChecked) {
 			if (checkVisualVictim(bot.camR) ) {
 				printf("found victim at tile %d\n", cur);
@@ -134,6 +134,24 @@ int move2Tile(int cur, int target) {
 		if (bot.getLidarPoint(3, 383) < 6 && !field[cur].victimChecked) {
 			if (checkVisualVictim(bot.camL)) {
 				printf("found victim at tile %d\n", cur);
+=======
+		if (bot.getLidar(3, 127) < 7 && !field[cur].victimChecked) {
+			char victim = checkVisualVictim(bot.camR);
+			if (victim > 0) {
+				int wall = bot.getDirection() + 1;
+				if (wall >= 4) wall -= 4;
+				printf("found right victim at tile %d %d %d\n", cur, wall, victim);
+				mapVictim(cur, wall, victim);
+			}
+		}
+		if (bot.getLidar(3, 383) < 7 && !field[cur].victimChecked) {
+			char victim = checkVisualVictim(bot.camL);
+			if (victim > 0) {
+				int wall = bot.getDirection() - 1;
+				if (wall < 0) wall += 4;
+				printf("found left victim at tile %d %d %d\n", cur, wall, victim);
+				mapVictim(cur, wall, victim);
+>>>>>>> Stashed changes
 			}
 		}
 
@@ -342,6 +360,7 @@ int move2Tile(int cur, int target) {
 			break;
 		case Checkpoint:
 			bot.checkpointTile = target;
+			bot.checkpointRoom = bot.curRoom;
 		default:
 			if (tileColor != 0 && target % 2 == 0 && ((curRow % 2 == 0 && curCol % 2 == 0))) {
 				field[target].color = tileColor;

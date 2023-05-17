@@ -27,9 +27,10 @@ struct Tile {
 
 extern Tile field[fieldSize];
 extern std::vector<std::vector<std::string>> Map;
-extern char bigmap[3 * ROWS + ROWS + 1][3 * ROWS + ROWS + 1];
+extern std::string bigmap[3 * ROWS + ROWS + 1][3 * ROWS + ROWS + 1];
 
 
 void setWalls(int tile, bool N, bool E, bool S, bool W);
 void getTile(int tile);
 void mapBonus();
+void mapVictim(int tile, int direction, char code);

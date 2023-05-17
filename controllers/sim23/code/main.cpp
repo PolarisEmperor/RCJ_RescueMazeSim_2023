@@ -9,7 +9,11 @@ int main() {
 	int target = -1;
 
 	parent[bot.startTile] = bot.startTile; // set starting point
-	memset(bigmap, '0', sizeof(bigmap));
+	for (int i = 0; i < 3 * ROWS + ROWS + 1; i++) {
+		for (int j = 0; j < 3 * ROWS + ROWS + 1; j++) {
+			bigmap[i][j] = "0";
+		}
+	}
 	field[bot.startTile].color = Start;
 	
 	// SIMULATION LOOP
@@ -32,16 +36,15 @@ int main() {
 					bot.curTile = move2Tile(bot.curTile, bot.purpleTile);
 					bot.curRoom = 2;
 					bfs(bot.curTile);
-					//bot.delay(3000);
 				case 2:
 					printf("i need to go home! room 2 = %d\n", bot.blueTile);
 					bot.curTile = move2Tile(bot.curTile, bot.blueTile);
 					bot.curRoom = 1;
 					bfs(bot.curTile);
-					//bot.delay(3000);
 				case 1:
 					printf("i need to go home! start tile = %d\n", bot.startTile);
 					move2Tile(bot.curTile, bot.startTile);
+					mapBonus();
 			}
 			break;
 		}

@@ -3,5 +3,5 @@
 #include "tile.h"
 #include "bot.h"
 
-bool checkVisualVictim(webots::Camera *);
+char checkVisualVictim(webots::Camera *);
 void sendVictimSignal(char ch);

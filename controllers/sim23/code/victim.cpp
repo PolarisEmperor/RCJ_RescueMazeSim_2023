@@ -51,7 +51,7 @@ bool comp(vector<Point> first, vector<Point> second) {
 }
 
 // HSU victim detection
-bool HSU(Mat roi) {
+char HSU(Mat roi) {
 	vector<vector<Point>> contours;
 	unsigned char slicedContours = 0;
 	double area = 0;
@@ -81,7 +81,7 @@ bool HSU(Mat roi) {
 		area += contourArea(contours[i]);
 	}
 	//printf("top contour: %f, ", area);
-	if (area < double(top.rows * top.cols * 0.05) || area > double(top.rows * top.cols * 0.3)) return true;
+	if (area < double(top.rows * top.cols * 0.05) || area > double(top.rows * top.cols * 0.3)) return 0;
 	slicedContours = (unsigned char)contours.size() * 100;
 	findContours(mid, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE); // find contours
 	area = 0;
@@ -103,7 +103,7 @@ bool HSU(Mat roi) {
 	//printf("bot contour: %f, ", area);
 	//printf("bot.rows: %d, ", bot.rows);
 	//printf("bot.cols: %d, \n", bot.cols);
-	if (area < double(bot.rows * bot.cols * 0.05) || area > double(bot.rows * bot.cols * 0.3)) return true;
+	if (area < double(bot.rows * bot.cols * 0.05) || area > double(bot.rows * bot.cols * 0.3)) return 0;
 	slicedContours += (unsigned char)contours.size();
 
 	//imshow("letter", roi);
@@ -114,15 +114,15 @@ bool HSU(Mat roi) {
 
 	//printf("SlicedContour: %d--------------------------\n", slicedContours);
 	switch (slicedContours) {
-	case 212: sendVictimSignal('H'); return true;
-	case 111: sendVictimSignal('S'); return true;
-	case 221: sendVictimSignal('U'); return true;
-	default: return false;
+		case 212: sendVictimSignal('H'); return 'H';
+		case 111: sendVictimSignal('S'); return 'S';
+		case 221: sendVictimSignal('U'); return 'U';
+	default: return 0;
 	}
 }
 
 // Victim/Hazard sign detection
-bool checkVisualVictim(Camera* cam) {
+char checkVisualVictim(Camera* cam) {
 	//if (boardLoc(loc).victimChecked) return false; // don't repeatedly check the same tile
 
 	Mat frame_HSV, frame_red, frame_yellow;
@@ -130,7 +130,7 @@ bool checkVisualVictim(Camera* cam) {
 	//imshow("camView", frame);
 	if (frame.empty()) {
 		cout << "Could not open or find the image!\n" << endl;
-		return false;
+		return 0;
 	}
 
 	Mat clone = frame.clone();
@@ -212,14 +212,14 @@ bool checkVisualVictim(Camera* cam) {
 						sendVictimSignal('C');
 						//changeMessage(PosX, PosZ, 'C');
 						//boardLoc(loc).victimChecked = true;
-						return true;
+						return 'C';
 					}
 					else if (maskcontours.size() >= 10 && blackarea / area > 0.64 && blackarea / area < 0.76) {
 						printf("POISON\n");
 						sendVictimSignal('P');
 						//changeMessage(PosX, PosZ, 'P');
 						//boardLoc(loc).victimChecked = true;
-						return true;
+						return 'P';
 					}
 				}
 				// HSU
@@ -246,11 +246,12 @@ bool checkVisualVictim(Camera* cam) {
 					(((float)roi.cols / (float)roi.rows > 1.0 && (float)roi.cols / (float)roi.rows < 1.5) ||
 						(/*roundAngle(angle) == -1 && */ (float)roi.cols / (float)roi.rows > 0.7 && (float)roi.cols / (float)roi.rows < 1.5))) 
 				{
-					if (HSU(roi)) {
-						return true;
+					char hsu = HSU(roi);
+					if (hsu) {
+						return hsu;
 					}
 					else {
-						return false;
+						return 0;
 					}
 					//if (roundAngle(angle) == -1) roi = roi(Rect(0, 5, roi.cols, roi.rows - 10));
 					roi = roi(Rect(2, 0, roi.cols - 4, roi.rows)); // resize
@@ -285,17 +286,17 @@ bool checkVisualVictim(Camera* cam) {
 					sendVictimSignal('F');
 					//changeMessage(PosX, PosZ, 'F');
 					//boardLoc(loc).victimChecked = true;
-					return true;
+					return 'F';
 				}
 				else {
 					printf("organic peroxide\n");
 					sendVictimSignal('O');
 					//changeMessage(PosX, PosZ, 'O');
 					//boardLoc(loc).victimChecked = true;
-					return true;
+					return 'O';
 				}
 			}
 		}
 	}
-	return false;
+	return 0;
 }
