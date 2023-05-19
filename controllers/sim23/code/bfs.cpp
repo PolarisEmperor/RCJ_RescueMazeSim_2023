@@ -11,19 +11,19 @@ int findNeighbor(unsigned int tile, int dir) {
 
 	switch (dir) {
 		case North:
-			if ((field[tile].bits & (1 << North)) == 0 && (field[neighbors[East]].bits & (1 << North)) == 0 && (field[neighbors[North]].bits & (1 << East)) == 0)
+			if (field[neighbors[North]].color != Hole && field[neighbors[North] + 1].color != Hole && (field[tile].bits & (1 << North)) == 0 && (field[neighbors[East]].bits & (1 << North)) == 0 && (field[neighbors[North]].bits & (1 << East)) == 0)
 				return neighbors[dir];
 			break;
 		case East:
-			if ((field[neighbors[East]].bits & (1 << East)) == 0 && (field[neighbors[South] + 1].bits & (1 << East)) == 0 && (field[neighbors[East] + 1].bits & (1 << South)) == 0)
+			if (field[neighbors[East] + 1].color != Hole && field[neighbors[East] + 1 + COLS].color != Hole && (field[neighbors[East]].bits & (1 << East)) == 0 && (field[neighbors[South] + 1].bits & (1 << East)) == 0 && (field[neighbors[East] + 1].bits & (1 << South)) == 0)
 				return neighbors[dir];
 			break;
 		case South:
-			if ((field[neighbors[South]].bits & (1 << South)) == 0 && (field[neighbors[South] + 1].bits & (1 << South)) == 0 && (field[neighbors[South] + COLS].bits & (1 << East)) == 0)
+			if (field[neighbors[South] + COLS].color != Hole && field[neighbors[South] + COLS + 1].color != Hole && (field[neighbors[South]].bits & (1 << South)) == 0 && (field[neighbors[South] + 1].bits & (1 << South)) == 0 && (field[neighbors[South] + COLS].bits & (1 << East)) == 0)
 				return neighbors[dir];
 			break;
 		case West:
-			if ((field[tile].bits & (1 << West)) == 0 && (field[neighbors[South]].bits & (1 << West)) == 0 && (field[neighbors[West]].bits & (1 << South)) == 0)
+			if (field[neighbors[West]].color != Hole && field[neighbors[West] + COLS].color != Hole && (field[tile].bits & (1 << West)) == 0 && (field[neighbors[South]].bits & (1 << West)) == 0 && (field[neighbors[West]].bits & (1 << South)) == 0)
 				return neighbors[dir];
 			break;
 	}
@@ -152,6 +152,10 @@ int move2Tile(int cur, int target) {
 		if (left == Hole || right == Hole) { // bottom cam sees black
 			bot.stop();
 
+			// get the walls of the black hole tile
+			bot.delay(100);
+			if (left == Hole && right == Hole) getBlackHole(cur);
+
 			// back up to prev pos
 			bot.speed(-6, -6);
 			printf("theres a black hole, backing up\n");
@@ -233,12 +237,14 @@ int move2Tile(int cur, int target) {
 			}
 
 			for (int i = 0; i < 4; i++) {
-				setWalls(blackHole[i], 1, 1, 1, 1);
-				field[blackHole[i]].visited = 1;
+				//setWalls(blackHole[i], 1, 1, 1, 1);
+				printf("hole %d\n", blackHole[i]);
+				//field[blackHole[i]].visited = 1;
 				field[blackHole[i]].color = Hole;
 			}
 
 			printf("there was a black hole. robot on tile %d\n", cur);
+			editMapTile(blackHole[0]);
 			return cur;
 		}
 
@@ -326,10 +332,13 @@ int move2Tile(int cur, int target) {
 			}
 			else if (target % 2 == 0 && ((curRow % 2 == 0 && curCol % 2 == 0)) && bot.greenTile < 0) {
 				printf("entering ROOM 4 for the first time tile = %d\n", target);
-				bot.curRoom = 4;
+				if (bot.curRoom == 4) bot.curRoom = 1;
+				else if (bot.curRoom == 1) bot.curRoom = 4;
 				bot.greenTile = target;
 				field[target].color = Green;
+				bot.room4done = true;
 			}
+			
 			break;
 		case Red: // Room 3 -> Room 4
 			if (bot.curRoom == 4 && target == bot.redTile) {

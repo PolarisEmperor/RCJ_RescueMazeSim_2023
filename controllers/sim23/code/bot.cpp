@@ -31,7 +31,9 @@ Bot::Bot() {
 	curRoom = 1;
 	curTile = startTile = (ROWS / 2 * COLS) + (COLS / 2);
 	checkpointTile = curTile;
+	checkpointRoom = curRoom;
 	blueTile = purpleTile =	redTile = greenTile = -1;
+	room4done = false;
 
 	startPos = { -9999, -9999 };
 }
@@ -183,6 +185,29 @@ void Bot::move(double cm, double spd) {
 	updatePrevPos();
 }
 
+int Bot::roundAngle() {
+	enum Directions { N0, N1, E0, E1, S0, S1, W0, W1 };
+
+	if (angle > 0 && angle < 0.785)
+		return N0;
+	if (angle > -0.785 && angle < 0)
+		return N1;
+	if (angle > -1.57 && angle < -0.785)
+		return E0;
+	if (angle > -2.355 && angle < -1.57)
+		return E1;
+	if (angle >= -3.15 && angle <= -2.355)
+		return S0;
+	if (angle >= 2.355 && angle <= 3.15)
+		return S1;
+	if (angle > 1.57 && angle < 2.355)
+		return W0;
+	if (angle > 0.785 && angle < 1.57)
+		return W1;
+
+	return -1;
+}
+
 // Turn to global compass direction
 // N:0 E:1 S:2 W:3
 void Bot::turn(int dir, double spd) {
@@ -194,17 +219,21 @@ void Bot::turn(int dir, double spd) {
 		if (bot.getLidarPoint(3, 127) < 7 && !field[bot.curTile].victimChecked) {
 			char victim = checkVisualVictim(bot.camR);
 			if (victim > 0) {
-				int wall = bot.getDirection() + 1;
-				if (wall >= 4) wall -= 4;
-				//mapVictim(bot.curTile, wall, victim);
+				printf("direction %d\n", bot.getDirection());
+				int wall = bot.roundAngle() + 2;
+				printf("%d\n", wall);
+				if (wall >= 8) wall -= 8;
+				mapAngledVictim(bot.curTile, wall, victim);
 			}
 		}
 		if (bot.getLidarPoint(3, 383) < 7 && !field[bot.curTile].victimChecked) {
 			char victim = checkVisualVictim(bot.camL);
 			if (victim > 0) {
-				int wall = bot.getDirection() - 1;
-				if (wall < 0) wall += 4;
-				//mapVictim(bot.curTile, wall, victim);
+				printf("direction %d\n", bot.getDirection());
+				int wall = bot.roundAngle() - 2;
+				printf("%d\n", wall);
+				if (wall < 0) wall += 8;
+				mapAngledVictim(bot.curTile, wall, victim);
 			}
 		}
 

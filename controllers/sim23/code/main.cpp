@@ -18,11 +18,14 @@ int main() {
 	
 	// SIMULATION LOOP
 	while (bot.update()) {
-		
+		if (bot.checkLOPemitter()) {
+			bot.curTile = bot.checkpointTile;
+			bot.curRoom = bot.checkpointRoom;
+		}
 
 		getTile(bot.curTile);
 		target = bfs(bot.curTile); // do bfs
-		//printf("cur = %d target = %d\n", bot.curTile, target);
+		printf("cur = %d target = %d\n", bot.curTile, target);
 		
 		if (target != -1 && bot.curTile != target) {
 			bot.curTile = move2Tile(bot.curTile, target);
