@@ -21,7 +21,6 @@ private:
 
 	// Current global compass direction
 	int curDir = -1;
-
 public:
 	webots::Robot *robot = new webots::Robot();
 	webots::Motor *lm = robot->getMotor("wheel2 motor");
@@ -46,6 +45,7 @@ public:
 	int purpleTile;		// Room 2 -> Room 3
 	int redTile;		// Room 3 -> Room 4
 	int greenTile;		// Room 1 -> Room 4
+	bool room4done;		// has it traversed room 4 yet
 
 	Bot();
 	~Bot();
@@ -65,6 +65,7 @@ public:
 	int getTileColor(int x, int y);
 	void updatePrevPos();
 	bool checkLOPemitter();
+	int roundAngle();
 };
 
 extern class Bot bot;

@@ -9,9 +9,9 @@ string bigmap[3 * ROWS + ROWS + 1][3 * COLS + COLS + 1];
 int mapX = (bot.curTile % COLS) * 2 + 2, mapY = (bot.curTile / ROWS) * 2 + 2;
 Tile field[fieldSize];
 
-void updateMapCoords() {
-	mapX = (bot.curTile % COLS) * 2 + 2;
-	mapY = (bot.curTile / ROWS) * 2 + 2;
+void updateMapCoords(int tile) {
+	mapX = (tile % COLS) * 2 + 2;
+	mapY = (tile / ROWS) * 2 + 2;
 }
 
 void setWalls(int tile, bool N, bool E, bool S, bool W) {
@@ -55,7 +55,7 @@ unsigned char moveBits(unsigned char bits, int n) {
 
 // Map out walls
 void editMapTile(int tile) {
-	updateMapCoords();
+	updateMapCoords(tile);
 	// North
 	if (field[tile].N) {
 		if (bigmap[mapY - 2][mapX - 1] == "0") bigmap[mapY - 2][mapX - 1] = "1";
@@ -109,16 +109,16 @@ void editMapTile(int tile) {
 		bigmap[mapY][mapX - 3] = "1";
 	}
 	// Corners
-	if (field[tile].N && field[tile].W) {
+	if ((field[tile].N && field[tile].W) || (bigmap[mapY - 2][mapX - 1] == "1" && bigmap[mapY - 2][mapX - 3] == "1") || (bigmap[mapY - 1][mapX - 2] == "1" && bigmap[mapY - 3][mapX - 2] == "1")) {
 		bigmap[mapY - 2][mapX - 2] = "1";
 	}
-	if (field[tile + 1].N && field[tile + 1].E) {
+	if ((field[tile + 1].N && field[tile + 1].E) || (bigmap[mapY - 2][mapX + 1] == "1" && bigmap[mapY - 2][mapX + 3] == "1") || (bigmap[mapY - 1][mapX + 2] == "1" && bigmap[mapY - 3][mapX + 2] == "1")) {
 		bigmap[mapY - 2][mapX + 2] = "1";
 	}
-	if (field[tile + COLS].S && field[tile + COLS].W) {
+	if ((field[tile + COLS].S && field[tile + COLS].W) || (bigmap[mapY + 2][mapX - 1] == "1" && bigmap[mapY + 2][mapX - 3] == "1") || (bigmap[mapY + 1][mapX - 2] == "1" && bigmap[mapY + 3][mapX - 2] == "1")) {
 		bigmap[mapY + 2][mapX - 2] = "1";
 	}
-	if (field[tile + COLS + 1].S && field[tile + COLS + 1].E) {
+	if ((field[tile + COLS + 1].S && field[tile + COLS + 1].E) || (bigmap[mapY + 2][mapX + 1] == "1" && bigmap[mapY + 2][mapX + 3] == "1") || (bigmap[mapY + 1][mapX + 2] == "1" && bigmap[mapY + 3][mapX + 2] == "1")) {
 		bigmap[mapY + 2][mapX + 2] = "1";
 	}
 	
@@ -134,28 +134,59 @@ void editMapTile(int tile) {
 
 // Map victim
 void mapVictim(int tile, int direction, char code) {
-	updateMapCoords();
+	string *p = 0;
+	updateMapCoords(tile);
 	switch (direction) {
 		case North:
-			bigmap[mapY - 2][mapX + 1] = { code };
+			p = &bigmap[mapY - 2][mapX + 1];
 			break;
 		case East:
-			bigmap[mapY + 1][mapX + 2] = { code };
+			p = &bigmap[mapY + 1][mapX + 2];
 			break;
 		case South:
-			bigmap[mapY + 2][mapX + 1] = { code };
+			p = &bigmap[mapY + 2][mapX + 1];
 			break;
 		case West:
-			bigmap[mapY + 1][mapX - 2] = { code };
+			p = &bigmap[mapY + 1][mapX - 2];
 			break;
 	}
-	for (int i = 0; i < 5; i++) {
-		for (int j = 0; j < 5; j++) {
-			cout << bigmap[mapY - 2 + i][mapX - 2 + j] << " ";
-			//printf("%s ", bigmap[mapY - 2 + i][mapX - 2 + j]);
-		}
-		printf("\n");
+	if (*p == "1") *p = { code };
+	else if (*p != "0") *p += { code };
+}
+
+void mapAngledVictim(int tile, int direction, char code) {
+	string *p = 0;
+	enum Directions { N0, N1, E0, E1, S0, S1, W0, W1 };
+	updateMapCoords(tile);
+	switch (direction) {
+		case N0:
+			p = &bigmap[mapY - 2][mapX - 1];
+			break;
+		case N1:
+			p = &bigmap[mapY - 2][mapX + 1];
+			break;
+		case E0:
+			p = &bigmap[mapY - 1][mapX + 2];
+			break;
+		case E1:
+			p = &bigmap[mapY + 1][mapX + 2];
+			break;
+		case S0:
+			p = &bigmap[mapY + 2][mapX + 1];
+			break;
+		case S1:
+			p = &bigmap[mapY + 2][mapX - 1];
+			break;
+		case W0:
+			p = &bigmap[mapY + 1][mapX - 2];
+			break;
+		case W1:
+			p = &bigmap[mapY - 1][mapX - 2];
+			break;
 	}
+
+	if (*p == "1") *p = { code };
+	else if (*p != "0") *p += { code };
 }
 
 // Get tile data(set bits of walls)
@@ -393,6 +424,93 @@ void getTile(int tile) {
 		}
 		printf("\n");
 	}
+
+	if (!field[tile].N && !field[tile + 1].N && !field[tile - COLS].victimChecked && !field[tile - COLS + 1].victimChecked && field[tile - COLS].color == Hole && field[tile - COLS + 1].color == Hole) {
+		bot.turn(North);
+		getBlackHole(tile);
+	}
+	if (!field[tile + 1].E && !field[tile + COLS + 1].E && !field[tile + 2].victimChecked && !field[tile + COLS + 2].victimChecked && field[tile + 2].color == Hole && field[tile + COLS + 2].color == Hole) {
+		bot.turn(East);
+		getBlackHole(tile);
+	}
+	if (!field[tile + COLS].S && !field[tile + COLS + 1].S && !field[tile + COLS * 2].victimChecked && !field[tile + COLS * 2 + 1].victimChecked && field[tile + COLS * 2].color == Hole && field[tile + COLS * 2 + 1].color == Hole) {
+		bot.turn(South);
+		getBlackHole(tile);
+	}
+	if (!field[tile].W && !field[tile + COLS].W && !field[tile - 1].victimChecked && !field[tile + COLS - 1].victimChecked && field[tile - 1].color == Hole && field[tile + COLS - 1].color == Hole) {
+		bot.turn(West);
+		getBlackHole(tile);
+	}
+}
+
+void getBlackHole(int tile) {
+	printf("BLACK HOLE WALL SCAN\n");
+	switch (bot.getDirection()) {
+		case North:
+			field[tile - COLS * 2].victimChecked = field[tile - COLS * 2 + 1].victimChecked = field[tile - COLS].victimChecked = field[tile - COLS + 1].victimChecked = 1;
+			tile -= COLS * 2;
+			break;
+		case East:
+			field[tile + 2].victimChecked = field[tile + 3].victimChecked = field[tile + COLS + 2].victimChecked = field[tile + COLS + 3].victimChecked = 1;
+			tile += 2;
+			break;
+		case South:
+			field[tile + COLS * 2].victimChecked = field[tile + COLS * 2 + 1].victimChecked = field[tile + COLS * 3].victimChecked = field[tile + COLS * 3 + 1].victimChecked = 1;
+			tile += COLS * 2;
+			break;
+		case West:
+			field[tile - 2].victimChecked = field[tile - 1].victimChecked = field[tile + COLS - 2].victimChecked = field[tile + COLS - 1].victimChecked = 1;
+			tile -= 2;
+			break;
+	}
+	bool wall[8] = { 0 };
+	const int wallThreshold = 16;
+	const int check[] = { 507, 5, 40, 70, 0, 0, 441, 471 };
+
+	for (int i = 0; i < 8; i++) {
+		if (check[i] == 0) continue;
+		if (bot.getLidarPoint(3, check[i]) < wallThreshold) {
+			printf("%d %f\n", i, bot.getLidarPoint(3, check[i]));
+			if (i + bot.getDirection() * 2 > 7) {
+				wall[i + bot.getDirection() * 2 - 8] = true;
+			}
+			else {
+				wall[i + bot.getDirection() * 2] = true;
+			}
+		}
+	}
+
+	for (int i = 0; i < 8; i++) {
+		if (wall[i]) {
+			switch (i) {
+				case 0:
+					setWalls(tile, 1, 0, 0, 0);
+					break;
+				case 1:
+					setWalls(tile + 1, 1, 0, 0, 0);
+					break;
+				case 2:
+					setWalls(tile + 1, 0, 1, 0, 0);
+					break;
+				case 3:
+					setWalls(tile + COLS + 1, 0, 1, 0, 0);
+					break;
+				case 4:
+					setWalls(tile + COLS + 1, 0, 0, 1, 0);
+					break;
+				case 5:
+					setWalls(tile + COLS, 0, 0, 1, 0);
+					break;
+				case 6:
+					setWalls(tile + COLS, 0, 0, 0, 1);
+					break;
+				case 7:
+					setWalls(tile, 0, 0, 0, 1);
+					break;
+			}
+		}
+	}
+	editMapTile(tile);
 }
 
 bool isEmptyRow(int row) {
@@ -411,6 +529,7 @@ bool isEmptyCol(int col) {
 	return true;
 }
 
+// Mapping bonus
 void mapBonus() {
 	unsigned int width, height, startX = 0, startY = 0, endX, endY, rows, cols;
 
@@ -425,7 +544,7 @@ void mapBonus() {
 
 	printf("endY %d startY %d endX %d startX %d\n", endY, startY, endX, startX);
 
-	rows = (endY - startY) / 2 + 1;
+	rows = (endY - startY - 1) / 2 + 1;
 	cols = (endX - startX - 1) / 2 + 1;
 	width = cols * 4 + 1;
 	height = rows * 4 + 1;

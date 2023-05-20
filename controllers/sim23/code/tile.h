@@ -32,5 +32,8 @@ extern std::string bigmap[3 * ROWS + ROWS + 1][3 * ROWS + ROWS + 1];
 
 void setWalls(int tile, bool N, bool E, bool S, bool W);
 void getTile(int tile);
+void getBlackHole(int tile);
 void mapBonus();
 void mapVictim(int tile, int direction, char code);
+void mapAngledVictim(int tile, int direction, char code);
+void editMapTile(int tile);
