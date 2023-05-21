@@ -19,36 +19,20 @@ void setWalls(int tile, bool N, bool E, bool S, bool W) {
 	int neighbors[4] = { tile - COLS, tile + 1, tile + COLS, tile - 1 };
 	
 	if (N) {
-		std::cout << field[tile].N << std::endl;
-		std::cout << field[neighbors[North]].S << std::endl;
 		field[tile].N = 1;
 		field[neighbors[North]].S = 1;
-		std::cout << field[tile].N << std::endl;
-		std::cout << field[neighbors[North]].S << std::endl;
 	}
 	if (E) {
-		std::cout << field[tile].E << std::endl;
-		std::cout << field[neighbors[East]].W << std::endl;
 		field[tile].E = 1;
 		field[neighbors[East]].W = 1;
-		std::cout << field[tile].E << std::endl;
-		std::cout << field[neighbors[East]].W << std::endl;
 	}
 	if (S) {
-		std::cout << field[tile].S << std::endl;
-		std::cout << field[neighbors[South]].N << std::endl;
 		field[tile].S = 1;
 		field[neighbors[South]].N = 1;
-		std::cout << field[tile].S << std::endl;
-		std::cout << field[neighbors[South]].N << std::endl;
 	}
 	if (W) {
-		std::cout << field[tile].W << std::endl;
-		std::cout << field[neighbors[West]].E << std::endl;
 		field[tile].W = 1;
 		field[neighbors[West]].E = 1;
-		std::cout << field[tile].W << std::endl;
-		std::cout << field[neighbors[West]].E << std::endl;
 	}
 }
 
@@ -436,21 +420,28 @@ void getTile(int tile) {
 	if (bot.room4done && (tile == bot.redTile || tile == bot.greenTile)) {
 		switch (bot.getDirection()) {
 			case North:
-				setWalls(tile, 1, 0, 0, 0);
-				setWalls(tile + 1, 1, 0, 0, 0);
+				setWalls(tile, 1, 0, 0, 1);
+				setWalls(tile + 1, 1, 1, 0, 0);
+				setWalls(tile + COLS, 0, 1, 0, 0);
+				setWalls(tile + 1, 0, 0, 0, 1);
 				break;
 			case East:
-				setWalls(tile + 1, 0, 1, 0, 0);
-				setWalls(tile + COLS + 1, 0, 1, 0, 0);
+				setWalls(tile, 1, 0, 0, 0);
+				setWalls(tile + 1, 1, 1, 0, 0);
+				setWalls(tile + COLS, 0, 0, 1, 0);
+				setWalls(tile + COLS + 1, 0, 1, 1, 0);
 				break;
 			case South:
-				setWalls(tile + COLS + 1, 0, 0, 1, 0);
-				setWalls(tile + COLS, 0, 0, 1, 0);
-
+				setWalls(tile, 0, 0, 0, 1);
+				setWalls(tile + 1, 0, 1, 0, 0);
+				setWalls(tile + COLS, 0, 0, 1, 1);
+				setWalls(tile + COLS + 1, 0, 1, 1, 0);
 				break;
 			case West:
-				setWalls(tile, 0, 0, 0, 1);
-				setWalls(tile + COLS, 0, 0, 0, 1);
+				setWalls(tile, 1, 0, 0, 1);
+				setWalls(tile + 1, 1, 0, 0, 0);
+				setWalls(tile + COLS, 0, 0, 1, 1);
+				setWalls(tile + COLS + 1, 0, 0, 1, 0);
 				break;
 		}
 	}

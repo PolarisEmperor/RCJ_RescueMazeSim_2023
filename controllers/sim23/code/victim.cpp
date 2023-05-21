@@ -167,7 +167,7 @@ char checkVisualVictim(Camera* cam) {
 				//printf("\nCountour Area: %f\n", contourArea(largest));
 				//printf("angle %f rows %d cols %d\n", rotateRect.angle, roi.rows, roi.cols);
 
-				imshow("roi", roi);
+				//imshow("roi", roi);
 				//waitKey(1);
 
 				// poison or corrosive hazard signs

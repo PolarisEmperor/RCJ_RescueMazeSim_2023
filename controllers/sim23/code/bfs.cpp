@@ -336,18 +336,18 @@ int move2Tile(int cur, int target) {
 			break;
 		case Green: // Room 1 -> Room 4
 			if (bot.curRoom == 4 && target == bot.greenTile) {
-				printf("room 4 -> 1\n");
+				//printf("room 4 -> 1\n");
 				//bot.curRoom = 1;
 			}
 			else if (bot.curRoom == 1 && target == bot.greenTile) {
-				printf("room 1 -> 4\n");
+				//printf("room 1 -> 4\n");
 				//bot.curRoom = 4;
 			}
 			else if (target % 2 == 0 && ((curRow % 2 == 0 && curCol % 2 == 0)) && bot.greenTile < 0) {
 				printf("entering ROOM 4 for the first time tile = %d\n", target);
 				//if (bot.curRoom == 4) bot.curRoom = 1;
 				//else if (bot.curRoom == 1) bot.curRoom = 4;
-				bot.curRoom = 4;
+				if (!bot.room4done) bot.curRoom = 4;
 				bot.greenTile = target;
 				field[target].color = Green;
 			}

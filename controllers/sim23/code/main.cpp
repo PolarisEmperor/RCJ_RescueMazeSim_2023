@@ -27,7 +27,7 @@ int main() {
 			printf("lack of progress called\n");
 		}
 
-		if (bot.curRoom == 4) {
+		if (bot.curRoom == 4 && !bot.room4done) {
 			int color = bot.getTileColor(0, 0);
 			int wallTraceColor;
 			bool LOProom4 = false;

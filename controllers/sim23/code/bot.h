@@ -3,8 +3,8 @@
 
 enum Direction { North, East, South, West };
 
-const int ROWS = 40;
-const int COLS = 40;
+const int ROWS = 60;
+const int COLS = 60;
 const int fieldSize = ROWS * COLS;
 
 class Bot {
