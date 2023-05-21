@@ -350,6 +350,7 @@ int move2Tile(int cur, int target) {
 				if (!bot.room4done) bot.curRoom = 4;
 				bot.greenTile = target;
 				field[target].color = Green;
+				editMapTile(target);
 			}
 			
 			break;
@@ -367,6 +368,7 @@ int move2Tile(int cur, int target) {
 				bot.redTile = target;
 				field[target].color = Red;
 				if (!bot.room4done) bot.curRoom = 4;
+				editMapTile(target);
 			}
 			break;
 		case Checkpoint:
