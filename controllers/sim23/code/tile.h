@@ -25,7 +25,7 @@ struct Tile {
 	char color; // Tile color
 };
 
-extern Tile field[fieldSize];
+extern volatile Tile field[fieldSize];
 extern std::vector<std::vector<std::string>> Map;
 extern std::string bigmap[3 * ROWS + ROWS + 1][3 * ROWS + ROWS + 1];
 

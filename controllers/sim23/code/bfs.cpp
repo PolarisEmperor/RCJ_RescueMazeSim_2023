@@ -11,20 +11,31 @@ int findNeighbor(unsigned int tile, int dir) {
 
 	switch (dir) {
 		case North:
-			if (field[neighbors[North]].color != Hole && field[neighbors[North] + 1].color != Hole && (field[tile].bits & (1 << North)) == 0 && (field[neighbors[East]].bits & (1 << North)) == 0 && (field[neighbors[North]].bits & (1 << East)) == 0)
+			if (field[neighbors[North]].color != Hole && field[neighbors[North] + 1].color != Hole && (field[tile].bits & (1 << North)) == 0 && (field[neighbors[East]].bits & (1 << North)) == 0 && (field[neighbors[North]].bits & (1 << East)) == 0) {
+				if (field[neighbors[North]].color >= Red && bot.room4done) break;
 				return neighbors[dir];
+			}
 			break;
 		case East:
-			if (field[neighbors[East] + 1].color != Hole && field[neighbors[East] + 1 + COLS].color != Hole && (field[neighbors[East]].bits & (1 << East)) == 0 && (field[neighbors[South] + 1].bits & (1 << East)) == 0 && (field[neighbors[East] + 1].bits & (1 << South)) == 0)
+			if (field[neighbors[East] + 1].color != Hole && field[neighbors[East] + 1 + COLS].color != Hole && (field[neighbors[East]].bits & (1 << East)) == 0 && (field[neighbors[South] + 1].bits & (1 << East)) == 0 && (field[neighbors[East] + 1].bits & (1 << South)) == 0) {
+				if (field[neighbors[East]].color >= Red && bot.room4done) break;
 				return neighbors[dir];
+			}
+				
 			break;
 		case South:
-			if (field[neighbors[South] + COLS].color != Hole && field[neighbors[South] + COLS + 1].color != Hole && (field[neighbors[South]].bits & (1 << South)) == 0 && (field[neighbors[South] + 1].bits & (1 << South)) == 0 && (field[neighbors[South] + COLS].bits & (1 << East)) == 0)
+			if (field[neighbors[South] + COLS].color != Hole && field[neighbors[South] + COLS + 1].color != Hole && (field[neighbors[South]].bits & (1 << South)) == 0 && (field[neighbors[South] + 1].bits & (1 << South)) == 0 && (field[neighbors[South] + COLS].bits & (1 << East)) == 0) {
+				if (field[neighbors[South]].color >= Red && bot.room4done) break;
 				return neighbors[dir];
+			}
+				
 			break;
 		case West:
-			if (field[neighbors[West]].color != Hole && field[neighbors[West] + COLS].color != Hole && (field[tile].bits & (1 << West)) == 0 && (field[neighbors[South]].bits & (1 << West)) == 0 && (field[neighbors[West]].bits & (1 << South)) == 0)
+			if (field[neighbors[West]].color != Hole && field[neighbors[West] + COLS].color != Hole && (field[tile].bits & (1 << West)) == 0 && (field[neighbors[South]].bits & (1 << West)) == 0 && (field[neighbors[West]].bits & (1 << South)) == 0) {
+				if (field[neighbors[West]].color >= Red && bot.room4done) break;
 				return neighbors[dir];
+			}
+				
 			break;
 	}
 	return -1; // Tile is not a neighbor
@@ -290,6 +301,7 @@ int move2Tile(int cur, int target) {
 
 	switch (tileColor) {
 		case Blue: // Room 1 -> Room 2
+			printf("%d %d %d\n", target, cur, bot.blueTile);
 			if (bot.curRoom == 2 && target == bot.blueTile) {
 				printf("room 2 -> 1\n");
 				bot.curRoom = 1;
@@ -302,6 +314,7 @@ int move2Tile(int cur, int target) {
 				printf("entering ROOM 2 for the first time tile = %d\n", target);
 				bot.blueTile = target;
 				field[target].color = Blue;
+				bot.curRoom = 2;
 				printf("tile %d color %d\n", target, field[target].color);
 			}
 			break;
@@ -324,41 +337,42 @@ int move2Tile(int cur, int target) {
 		case Green: // Room 1 -> Room 4
 			if (bot.curRoom == 4 && target == bot.greenTile) {
 				printf("room 4 -> 1\n");
-				bot.curRoom = 1;
+				//bot.curRoom = 1;
 			}
 			else if (bot.curRoom == 1 && target == bot.greenTile) {
 				printf("room 1 -> 4\n");
-				bot.curRoom = 4;
+				//bot.curRoom = 4;
 			}
 			else if (target % 2 == 0 && ((curRow % 2 == 0 && curCol % 2 == 0)) && bot.greenTile < 0) {
 				printf("entering ROOM 4 for the first time tile = %d\n", target);
-				if (bot.curRoom == 4) bot.curRoom = 1;
-				else if (bot.curRoom == 1) bot.curRoom = 4;
+				//if (bot.curRoom == 4) bot.curRoom = 1;
+				//else if (bot.curRoom == 1) bot.curRoom = 4;
+				bot.curRoom = 4;
 				bot.greenTile = target;
 				field[target].color = Green;
-				bot.room4done = true;
 			}
 			
 			break;
 		case Red: // Room 3 -> Room 4
 			if (bot.curRoom == 4 && target == bot.redTile) {
 				printf("room 4 -> 3\n");
-				bot.curRoom = 3;
+				//bot.curRoom = 3;
 			}
 			else if (bot.curRoom == 3 && target == bot.redTile) {
 				printf("room 3 -> 4\n");
-				bot.curRoom = 4;
+				//bot.curRoom = 4;
 			}
 			else if (target % 2 == 0 && ((curRow % 2 == 0 && curCol % 2 == 0)) && bot.redTile < 0) {
 				printf("entering ROOM 4 for the first time tile = %d\n", target);
-				bot.curRoom = 4;
 				bot.redTile = target;
 				field[target].color = Red;
+				if (!bot.room4done) bot.curRoom = 4;
 			}
 			break;
 		case Checkpoint:
 			bot.checkpointTile = target;
 			bot.checkpointRoom = bot.curRoom;
+			printf("checkpoint %d\n", bot.checkpointTile);
 		default:
 			if (tileColor != 0 && target % 2 == 0 && ((curRow % 2 == 0 && curCol % 2 == 0))) {
 				field[target].color = tileColor;

@@ -7,7 +7,7 @@ enum cornerDirection { tl, tr, br, bl };
 
 string bigmap[3 * ROWS + ROWS + 1][3 * COLS + COLS + 1];
 int mapX = (bot.curTile % COLS) * 2 + 2, mapY = (bot.curTile / ROWS) * 2 + 2;
-Tile field[fieldSize];
+volatile Tile field[fieldSize];
 
 void updateMapCoords(int tile) {
 	mapX = (tile % COLS) * 2 + 2;
@@ -19,20 +19,36 @@ void setWalls(int tile, bool N, bool E, bool S, bool W) {
 	int neighbors[4] = { tile - COLS, tile + 1, tile + COLS, tile - 1 };
 	
 	if (N) {
+		std::cout << field[tile].N << std::endl;
+		std::cout << field[neighbors[North]].S << std::endl;
 		field[tile].N = 1;
 		field[neighbors[North]].S = 1;
+		std::cout << field[tile].N << std::endl;
+		std::cout << field[neighbors[North]].S << std::endl;
 	}
 	if (E) {
+		std::cout << field[tile].E << std::endl;
+		std::cout << field[neighbors[East]].W << std::endl;
 		field[tile].E = 1;
 		field[neighbors[East]].W = 1;
+		std::cout << field[tile].E << std::endl;
+		std::cout << field[neighbors[East]].W << std::endl;
 	}
 	if (S) {
+		std::cout << field[tile].S << std::endl;
+		std::cout << field[neighbors[South]].N << std::endl;
 		field[tile].S = 1;
 		field[neighbors[South]].N = 1;
+		std::cout << field[tile].S << std::endl;
+		std::cout << field[neighbors[South]].N << std::endl;
 	}
 	if (W) {
+		std::cout << field[tile].W << std::endl;
+		std::cout << field[neighbors[West]].E << std::endl;
 		field[tile].W = 1;
 		field[neighbors[West]].E = 1;
+		std::cout << field[tile].W << std::endl;
+		std::cout << field[neighbors[West]].E << std::endl;
 	}
 }
 
@@ -204,7 +220,7 @@ void getTile(int tile) {
 
 	bool wall[8] = { 0 };
 
-	//if (field[tile].visited || dir < 0) return;
+	if (field[tile].visited || dir < 0) return;
 	// clear structure
 	for (int i = 0; i < 4; i++) {
 		field[directions[i]].N = field[directions[i]].E = field[directions[i]].S = field[directions[i]].W = 0;
@@ -416,6 +432,29 @@ void getTile(int tile) {
 	field[directions[0]].visited = 1;
 
 	editMapTile(tile);
+
+	if (bot.room4done && (tile == bot.redTile || tile == bot.greenTile)) {
+		switch (bot.getDirection()) {
+			case North:
+				setWalls(tile, 1, 0, 0, 0);
+				setWalls(tile + 1, 1, 0, 0, 0);
+				break;
+			case East:
+				setWalls(tile + 1, 0, 1, 0, 0);
+				setWalls(tile + COLS + 1, 0, 1, 0, 0);
+				break;
+			case South:
+				setWalls(tile + COLS + 1, 0, 0, 1, 0);
+				setWalls(tile + COLS, 0, 0, 1, 0);
+
+				break;
+			case West:
+				setWalls(tile, 0, 0, 0, 1);
+				setWalls(tile + COLS, 0, 0, 0, 1);
+				break;
+		}
+	}
+
 
 	for (int i = 0; i < 5; i++) {
 		for (int j = 0; j < 5; j++) {
