@@ -1,0 +1,2327 @@
+#VRML_SIM R2022b utf8
+        EXTERNPROTO "../protos/TexturedBackgroundLight.proto"
+        EXTERNPROTO "../protos/TexturedBackground.proto"
+        EXTERNPROTO "../protos/curvedWall.proto"
+        EXTERNPROTO "../protos/halfTile.proto"
+        EXTERNPROTO "../protos/HazardMap.proto"
+        EXTERNPROTO "../protos/obstacle.proto"
+        EXTERNPROTO "../protos/Victim.proto"
+        EXTERNPROTO "../protos/worldTile.proto"
+        EXTERNPROTO "../protos/Area4_1.proto"
+        EXTERNPROTO "../protos/Area4_2.proto"
+        IMPORTABLE EXTERNPROTO "../protos/custom_robot.proto"
+
+        WorldInfo {
+          basicTimeStep 16
+          coordinateSystem "NUE"
+          contactProperties [
+            ContactProperties {
+              material1  "TILE"
+              material2  "NO_FRIC"
+              coulombFriction 0
+              bounce 0
+              bumpSound ""
+              rollSound ""
+              slideSound ""
+            }
+          ]
+        }
+        DEF Viewpoint Viewpoint {
+          orientation -0.683263 0.683263 0.257493 2.63756
+          position -0.08 1.6 1.36
+        }
+        TexturedBackground {
+        }
+        TexturedBackgroundLight {
+        }
+        
+        DEF WALLTILES Group {
+            children [
+              
+        DEF TILE halfTile {
+            xPos 0
+            zPos 0
+            floor TRUE
+            topWall 1
+            rightWall 0
+            bottomWall 0
+            leftWall 1
+            tile1Walls [ 0, 0, 0, 0 ]
+            tile2Walls [ 0, 0, 0, 0 ]
+            tile3Walls [ 0, 0, 0, 0 ]
+            tile4Walls [ 0, 0, 0, 0 ]
+            tile1External [ TRUE, FALSE, FALSE, TRUE ]
+            tile2External [ TRUE, FALSE, FALSE, FALSE ]
+            tile3External [ FALSE, FALSE, FALSE, TRUE ]
+            tile4External [ FALSE, FALSE, FALSE, FALSE ]
+            curve [0,0,0,1]
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "0"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 3
+          }
+        
+        DEF TILE worldTile {
+            xPos 0
+            zPos 1
+            floor TRUE
+            topWall 0
+            rightWall 1
+            bottomWall 0
+            leftWall 1
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal TRUE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "1"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 0
+            zPos 2
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 5
+            leftWall 3
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal TRUE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "2"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 0
+            zPos 3
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 15
+            leftWall 6
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal TRUE
+            leftExternal TRUE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "3"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 0
+            zPos 4
+            floor FALSE
+            topWall 0
+            rightWall 6
+            bottomWall 15
+            leftWall 6
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "4"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 0
+            zPos 5
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 0
+            leftWall 2
+            topExternal TRUE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal TRUE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "5"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 0
+            zPos 6
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 0
+            leftWall 1
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal TRUE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "6"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF START_TILE worldTile {
+            xPos 0
+            zPos 7
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 5
+            leftWall 3
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal TRUE
+            leftExternal TRUE
+            start TRUE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "7"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE halfTile {
+            xPos 1
+            zPos 0
+            floor TRUE
+            topWall 1
+            rightWall 0
+            bottomWall 0
+            leftWall 0
+            tile1Walls [ 0, 0, 0, 0 ]
+            tile2Walls [ 0, 0, 0, 0 ]
+            tile3Walls [ 0, 0, 0, 0 ]
+            tile4Walls [ 0, 0, 0, 0 ]
+            tile1External [ TRUE, FALSE, FALSE, FALSE ]
+            tile2External [ TRUE, FALSE, FALSE, FALSE ]
+            tile3External [ FALSE, FALSE, FALSE, FALSE ]
+            tile4External [ FALSE, FALSE, FALSE, FALSE ]
+            curve [0,0,4,0]
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "8"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 3
+          }
+        
+        DEF TILE halfTile {
+            xPos 1
+            zPos 1
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 0
+            leftWall 0
+            tile1Walls [ 0, 0, 0, 0 ]
+            tile2Walls [ 0, 0, 0, 0 ]
+            tile3Walls [ 0, 0, 0, 0 ]
+            tile4Walls [ 0, 1, 0, 0 ]
+            tile1External [ FALSE, FALSE, FALSE, FALSE ]
+            tile2External [ FALSE, FALSE, FALSE, FALSE ]
+            tile3External [ FALSE, FALSE, FALSE, FALSE ]
+            tile4External [ FALSE, FALSE, FALSE, FALSE ]
+            curve [0,0,0,0]
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "9"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 2
+          }
+        
+        DEF TILE worldTile {
+            xPos 1
+            zPos 2
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 0
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint TRUE
+            swamp FALSE
+            width 8
+            height 8
+            id "10"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 1
+            zPos 3
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 6
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "11"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 1
+            zPos 4
+            floor TRUE
+            topWall 0
+            rightWall 6
+            bottomWall 0
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal TRUE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "12"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 1
+            zPos 5
+            floor TRUE
+            topWall 0
+            rightWall 6
+            bottomWall 3
+            leftWall 0
+            topExternal FALSE
+            rightExternal TRUE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "13"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 1
+            zPos 6
+            floor TRUE
+            topWall 0
+            rightWall 6
+            bottomWall 0
+            leftWall 0
+            topExternal FALSE
+            rightExternal TRUE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "14"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 1
+            zPos 7
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 1
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal TRUE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "15"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 2
+            zPos 0
+            floor TRUE
+            topWall 3
+            rightWall 6
+            bottomWall 3
+            leftWall 0
+            topExternal TRUE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "16"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE halfTile {
+            xPos 2
+            zPos 1
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 0
+            leftWall 0
+            tile1Walls [ 0, 0, 0, 0 ]
+            tile2Walls [ 0, 0, 0, 0 ]
+            tile3Walls [ 0, 0, 0, 0 ]
+            tile4Walls [ 0, 0, 0, 0 ]
+            tile1External [ FALSE, FALSE, FALSE, FALSE ]
+            tile2External [ FALSE, FALSE, FALSE, FALSE ]
+            tile3External [ FALSE, FALSE, FALSE, FALSE ]
+            tile4External [ FALSE, FALSE, FALSE, FALSE ]
+            curve [4,1,0,0]
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "17"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 3
+          }
+        
+        DEF TILE worldTile {
+            xPos 2
+            zPos 2
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 3
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "18"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE halfTile {
+            xPos 2
+            zPos 3
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 0
+            leftWall 0
+            tile1Walls [ 0, 0, 0, 0 ]
+            tile2Walls [ 0, 2, 0, 0 ]
+            tile3Walls [ 0, 0, 0, 0 ]
+            tile4Walls [ 0, 0, 0, 0 ]
+            tile1External [ FALSE, FALSE, FALSE, FALSE ]
+            tile2External [ FALSE, FALSE, FALSE, FALSE ]
+            tile3External [ FALSE, FALSE, FALSE, FALSE ]
+            tile4External [ FALSE, FALSE, FALSE, FALSE ]
+            curve [0,0,0,0]
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "19"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 2
+          }
+        
+        DEF TILE worldTile {
+            xPos 2
+            zPos 4
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 5
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal TRUE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "20"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 2
+            zPos 5
+            floor FALSE
+            topWall 0
+            rightWall 0
+            bottomWall 0
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "21"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 2
+            zPos 6
+            floor FALSE
+            topWall 0
+            rightWall 6
+            bottomWall 15
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "22"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 2
+            zPos 7
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 1
+            leftWall 0
+            topExternal TRUE
+            rightExternal FALSE
+            bottomExternal TRUE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "23"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.10196078431372549 0.10196078431372549 0.9019607843137255 
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 3
+            zPos 0
+            floor TRUE
+            topWall 2
+            rightWall 0
+            bottomWall 0
+            leftWall 0
+            topExternal TRUE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "24"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 3
+            zPos 1
+            floor TRUE
+            topWall 0
+            rightWall 2
+            bottomWall 0
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp TRUE
+            width 8
+            height 8
+            id "25"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE halfTile {
+            xPos 3
+            zPos 2
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 0
+            leftWall 0
+            tile1Walls [ 0, 0, 0, 0 ]
+            tile2Walls [ 0, 0, 0, 0 ]
+            tile3Walls [ 0, 0, 2, 0 ]
+            tile4Walls [ 0, 0, 0, 0 ]
+            tile1External [ FALSE, FALSE, FALSE, FALSE ]
+            tile2External [ FALSE, FALSE, FALSE, FALSE ]
+            tile3External [ FALSE, FALSE, FALSE, FALSE ]
+            tile4External [ FALSE, FALSE, FALSE, FALSE ]
+            curve [0,0,0,0]
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "26"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE halfTile {
+            xPos 3
+            zPos 3
+            floor TRUE
+            topWall 0
+            rightWall 3
+            bottomWall 3
+            leftWall 0
+            tile1Walls [ 0, 0, 0, 0 ]
+            tile2Walls [ 0, 0, 0, 0 ]
+            tile3Walls [ 0, 0, 0, 0 ]
+            tile4Walls [ 0, 0, 0, 0 ]
+            tile1External [ FALSE, FALSE, FALSE, FALSE ]
+            tile2External [ FALSE, FALSE, FALSE, FALSE ]
+            tile3External [ FALSE, FALSE, FALSE, FALSE ]
+            tile4External [ FALSE, FALSE, FALSE, FALSE ]
+            curve [0,0,0,0]
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "27"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 2
+          }
+        
+        DEF TILE worldTile {
+            xPos 3
+            zPos 4
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 3
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal TRUE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "28"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.30196078431372547 0.10196078431372549 0.6 
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 3
+            zPos 5
+            floor FALSE
+            topWall 0
+            rightWall 6
+            bottomWall 15
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "29"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 3
+            zPos 6
+            floor TRUE
+            topWall 0
+            rightWall 2
+            bottomWall 0
+            leftWall 0
+            topExternal TRUE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal TRUE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "30"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 3
+            zPos 7
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 1
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal TRUE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "31"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE halfTile {
+            xPos 4
+            zPos 0
+            floor TRUE
+            topWall 3
+            rightWall 2
+            bottomWall 0
+            leftWall 0
+            tile1Walls [ 0, 0, 0, 0 ]
+            tile2Walls [ 0, 0, 0, 0 ]
+            tile3Walls [ 0, 0, 5, 0 ]
+            tile4Walls [ 0, 0, 0, 0 ]
+            tile1External [ TRUE, FALSE, FALSE, FALSE ]
+            tile2External [ TRUE, FALSE, FALSE, FALSE ]
+            tile3External [ FALSE, FALSE, FALSE, FALSE ]
+            tile4External [ FALSE, FALSE, FALSE, FALSE ]
+            curve [0,0,0,0]
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "32"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE halfTile {
+            xPos 4
+            zPos 1
+            floor TRUE
+            topWall 0
+            rightWall 1
+            bottomWall 0
+            leftWall 0
+            tile1Walls [ 0, 0, 0, 0 ]
+            tile2Walls [ 0, 0, 0, 0 ]
+            tile3Walls [ 0, 0, 0, 0 ]
+            tile4Walls [ 0, 0, 0, 0 ]
+            tile1External [ FALSE, FALSE, FALSE, FALSE ]
+            tile2External [ FALSE, FALSE, FALSE, FALSE ]
+            tile3External [ FALSE, FALSE, FALSE, FALSE ]
+            tile4External [ FALSE, FALSE, FALSE, FALSE ]
+            curve [0,0,0,0]
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "33"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 2
+          }
+        
+        DEF TILE worldTile {
+            xPos 4
+            zPos 2
+            floor TRUE
+            topWall 0
+            rightWall 1
+            bottomWall 0
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "34"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 4
+            zPos 3
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 2
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "35"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.9058823529411765 0.10196078431372549 0.10196078431372549 
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 4
+            zPos 4
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 0
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "36"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE halfTile {
+            xPos 4
+            zPos 5
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 0
+            leftWall 0
+            tile1Walls [ 0, 0, 0, 0 ]
+            tile2Walls [ 0, 0, 0, 0 ]
+            tile3Walls [ 0, 0, 2, 0 ]
+            tile4Walls [ 0, 0, 0, 0 ]
+            tile1External [ FALSE, FALSE, FALSE, TRUE ]
+            tile2External [ FALSE, FALSE, FALSE, FALSE ]
+            tile3External [ FALSE, FALSE, FALSE, TRUE ]
+            tile4External [ FALSE, FALSE, FALSE, FALSE ]
+            curve [0,0,0,0]
+            start FALSE
+            trap FALSE
+            checkpoint TRUE
+            swamp FALSE
+            width 8
+            height 8
+            id "37"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE halfTile {
+            xPos 4
+            zPos 6
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 0
+            leftWall 0
+            tile1Walls [ 0, 0, 0, 0 ]
+            tile2Walls [ 0, 0, 0, 0 ]
+            tile3Walls [ 0, 0, 0, 0 ]
+            tile4Walls [ 0, 0, 0, 0 ]
+            tile1External [ FALSE, FALSE, FALSE, FALSE ]
+            tile2External [ FALSE, FALSE, FALSE, FALSE ]
+            tile3External [ FALSE, FALSE, FALSE, FALSE ]
+            tile4External [ FALSE, FALSE, FALSE, FALSE ]
+            curve [0,0,0,0]
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "38"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 2
+          }
+        
+        DEF TILE worldTile {
+            xPos 4
+            zPos 7
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 1
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal TRUE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "39"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 5
+            zPos 0
+            floor TRUE
+            topWall 2
+            rightWall 0
+            bottomWall 0
+            leftWall 0
+            topExternal TRUE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "40"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 4
+          }
+        
+        DEF TILE worldTile {
+            xPos 5
+            zPos 1
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 0
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "41"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 4
+          }
+        
+        DEF TILE worldTile {
+            xPos 5
+            zPos 2
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 0
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "42"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 4
+          }
+        
+        DEF TILE worldTile {
+            xPos 5
+            zPos 3
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 1
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "43"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 4
+          }
+        
+        DEF TILE halfTile {
+            xPos 5
+            zPos 4
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 0
+            leftWall 0
+            tile1Walls [ 0, 0, 0, 0 ]
+            tile2Walls [ 0, 0, 0, 0 ]
+            tile3Walls [ 0, 0, 0, 0 ]
+            tile4Walls [ 0, 0, 1, 0 ]
+            tile1External [ FALSE, FALSE, FALSE, FALSE ]
+            tile2External [ FALSE, FALSE, FALSE, FALSE ]
+            tile3External [ FALSE, FALSE, FALSE, FALSE ]
+            tile4External [ FALSE, FALSE, FALSE, FALSE ]
+            curve [0,0,0,0]
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "44"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 2
+          }
+        
+        DEF TILE worldTile {
+            xPos 5
+            zPos 5
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 0
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "45"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 5
+            zPos 6
+            floor TRUE
+            topWall 0
+            rightWall 1
+            bottomWall 0
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "46"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 5
+            zPos 7
+            floor FALSE
+            topWall 0
+            rightWall 0
+            bottomWall 1
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal TRUE
+            leftExternal FALSE
+            start FALSE
+            trap TRUE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "47"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 6
+            zPos 0
+            floor TRUE
+            topWall 1
+            rightWall 0
+            bottomWall 0
+            leftWall 0
+            topExternal TRUE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "48"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 4
+          }
+        
+        DEF TILE worldTile {
+            xPos 6
+            zPos 1
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 0
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "49"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 4
+          }
+        
+        DEF TILE worldTile {
+            xPos 6
+            zPos 2
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 0
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "50"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 4
+          }
+        
+        DEF TILE worldTile {
+            xPos 6
+            zPos 3
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 3
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "51"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 4
+          }
+        
+        DEF TILE worldTile {
+            xPos 6
+            zPos 4
+            floor TRUE
+            topWall 0
+            rightWall 6
+            bottomWall 3
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "52"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 6
+            zPos 5
+            floor TRUE
+            topWall 0
+            rightWall 2
+            bottomWall 0
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "53"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 6
+            zPos 6
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 0
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "54"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 6
+            zPos 7
+            floor TRUE
+            topWall 0
+            rightWall 0
+            bottomWall 1
+            leftWall 0
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal TRUE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp TRUE
+            width 8
+            height 8
+            id "55"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 7
+            zPos 0
+            floor TRUE
+            topWall 3
+            rightWall 2
+            bottomWall 0
+            leftWall 0
+            topExternal TRUE
+            rightExternal TRUE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "56"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 4
+          }
+        
+        DEF TILE worldTile {
+            xPos 7
+            zPos 1
+            floor TRUE
+            topWall 0
+            rightWall 1
+            bottomWall 0
+            leftWall 0
+            topExternal FALSE
+            rightExternal TRUE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "57"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 4
+          }
+        
+        DEF TILE worldTile {
+            xPos 7
+            zPos 2
+            floor TRUE
+            topWall 0
+            rightWall 1
+            bottomWall 0
+            leftWall 0
+            topExternal FALSE
+            rightExternal TRUE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "58"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 4
+          }
+        
+        DEF TILE worldTile {
+            xPos 7
+            zPos 3
+            floor TRUE
+            topWall 0
+            rightWall 3
+            bottomWall 6
+            leftWall 0
+            topExternal FALSE
+            rightExternal TRUE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "59"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 4
+          }
+        
+        DEF TILE worldTile {
+            xPos 7
+            zPos 4
+            floor TRUE
+            topWall 0
+            rightWall 2
+            bottomWall 0
+            leftWall 0
+            topExternal FALSE
+            rightExternal TRUE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "60"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 7
+            zPos 5
+            floor TRUE
+            topWall 0
+            rightWall 1
+            bottomWall 0
+            leftWall 0
+            topExternal FALSE
+            rightExternal TRUE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "61"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 7
+            zPos 6
+            floor TRUE
+            topWall 0
+            rightWall 1
+            bottomWall 0
+            leftWall 0
+            topExternal FALSE
+            rightExternal TRUE
+            bottomExternal FALSE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "62"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        
+        DEF TILE worldTile {
+            xPos 7
+            zPos 7
+            floor TRUE
+            topWall 0
+            rightWall 3
+            bottomWall 3
+            leftWall 0
+            topExternal FALSE
+            rightExternal TRUE
+            bottomExternal TRUE
+            leftExternal FALSE
+            start FALSE
+            trap FALSE
+            checkpoint FALSE
+            swamp FALSE
+            width 8
+            height 8
+            id "63"
+            xScale 0.4
+            yScale 0.4
+            zScale 0.4
+            tileColor 0.635 0.635 0.635
+            room 1
+          }
+        Solid {
+
+                translation 0.06000000000000005 -0.03 -0.545
+
+                rotation 0 1 0 0
+
+                name "Area4"
+
+                children [
+
+            DEF CURVED Shape { 
+appearance Appearance { 
+material Material { 
+diffuseColor 0.2 0.47 0.52 
+} 
+}
+geometry IndexedFaceSet { 
+coord Coordinate { 
+point [
+0.10980 0 0.32220,0.10980 0.06 0.32220,0.11760 0 0.32280,0.11760 0.06 0.32280,0.12000 0 0.32340,0.12000 0.06 0.32340,
+]
+}
+coordIndex [
+0,2,3,1,-1,2,4,5,3,-1,4,0,1,5,-1,1,3,5,-1,
+]
+}
+}DEF CURVED Shape { 
+appearance Appearance { 
+material Material { 
+diffuseColor 0.2 0.47 0.52 
+} 
+}
+geometry IndexedFaceSet { 
+coord Coordinate { 
+point [
+0.22920 0 0.30000,0.22920 0.06 0.30000,0.22740 0 0.30120,0.22740 0.06 0.30120,0.22440 0 0.30300,0.22440 0.06 0.30300,0.22080 0 0.30540,0.22080 0.06 0.30540,0.21960 0 0.30720,0.21960 0.06 0.30720,0.21840 0 0.30900,0.21840 0.06 0.30900,0.21780 0 0.31320,0.21780 0.06 0.31320,0.21900 0 0.31500,0.21900 0.06 0.31500,0.22140 0 0.31620,0.22140 0.06 0.31620,0.22620 0 0.31620,0.22620 0.06 0.31620,0.23520 0 0.31560,0.23520 0.06 0.31560,0.24180 0 0.31500,0.24180 0.06 0.31500,0.24480 0 0.31560,0.24480 0.06 0.31560,0.24660 0 0.31680,0.24660 0.06 0.31680,0.24840 0 0.31800,0.24840 0.06 0.31800,0.25380 0 0.32280,0.25380 0.06 0.32280,0.25500 0 0.32460,0.25500 0.06 0.32460,0.25440 0 0.32700,0.25440 0.06 0.32700,0.25140 0 0.32760,0.25140 0.06 0.32760,0.24960 0 0.32880,0.24960 0.06 0.32880,0.24720 0 0.33120,0.24720 0.06 0.33120,0.24540 0 0.33240,0.24540 0.06 0.33240,0.24300 0 0.33300,0.24300 0.06 0.33300,0.22560 0 0.33360,0.22560 0.06 0.33360,0.21660 0 0.33420,0.21660 0.06 0.33420,0.25380 0 0.32040,0.25380 0.06 0.32040,0.25140 0 0.31800,0.25140 0.06 0.31800,0.22320 0 0.30480,0.22320 0.06 0.30480,0.24240 0 0.30060,0.24240 0.06 0.30060,
+]
+}
+coordIndex [
+0,2,3,1,-1,2,4,5,3,-1,4,6,7,5,-1,6,8,9,7,-1,8,10,11,9,-1,10,12,13,11,-1,12,14,15,13,-1,14,16,17,15,-1,16,18,19,17,-1,18,20,21,19,-1,20,22,23,21,-1,22,24,25,23,-1,24,26,27,25,-1,26,28,29,27,-1,28,30,31,29,-1,30,32,33,31,-1,32,34,35,33,-1,34,36,37,35,-1,36,38,39,37,-1,38,40,41,39,-1,40,42,43,41,-1,42,44,45,43,-1,44,46,47,45,-1,46,48,49,47,-1,48,50,51,49,-1,50,52,53,51,-1,52,54,55,53,-1,54,56,57,55,-1,56,0,1,57,-1,1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,-1,
+]
+}
+}DEF CURVED Shape { 
+appearance Appearance { 
+material Material { 
+diffuseColor 0.2 0.47 0.52 
+} 
+}
+geometry IndexedFaceSet { 
+coord Coordinate { 
+point [
+0.16800 0 0.29580,0.16800 0.06 0.29580,0.16740 0 0.29820,0.16740 0.06 0.29820,0.16740 0 0.32280,0.16740 0.06 0.32280,0.16800 0 0.32580,0.16800 0.06 0.32580,0.16860 0 0.33480,0.16860 0.06 0.33480,0.17040 0 0.33720,0.17040 0.06 0.33720,0.17280 0 0.34020,0.17280 0.06 0.34020,0.18600 0 0.34080,0.18600 0.06 0.34080,0.18780 0 0.33960,0.18780 0.06 0.33960,0.19020 0 0.33840,0.19020 0.06 0.33840,0.19260 0 0.33600,0.19260 0.06 0.33600,0.19320 0 0.33360,0.19320 0.06 0.33360,0.19440 0 0.33180,0.19440 0.06 0.33180,0.19440 0 0.32940,0.19440 0.06 0.32940,0.19560 0 0.32760,0.19560 0.06 0.32760,0.19680 0 0.32520,0.19680 0.06 0.32520,0.19740 0 0.32280,0.19740 0.06 0.32280,0.19800 0 0.31980,0.19800 0.06 0.31980,0.19860 0 0.30780,0.19860 0.06 0.30780,0.19800 0 0.30480,0.19800 0.06 0.30480,0.19680 0 0.30300,0.19680 0.06 0.30300,0.19620 0 0.30060,0.19620 0.06 0.30060,0.19620 0 0.29700,0.19620 0.06 0.29700,
+]
+}
+coordIndex [
+0,2,3,1,-1,2,4,5,3,-1,4,6,7,5,-1,6,8,9,7,-1,8,10,11,9,-1,10,12,13,11,-1,12,14,15,13,-1,14,16,17,15,-1,16,18,19,17,-1,18,20,21,19,-1,20,22,23,21,-1,22,24,25,23,-1,24,26,27,25,-1,26,28,29,27,-1,28,30,31,29,-1,30,32,33,31,-1,32,34,35,33,-1,34,36,37,35,-1,36,38,39,37,-1,38,40,41,39,-1,40,42,43,41,-1,42,44,45,43,-1,44,0,1,45,-1,1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,-1,
+]
+}
+}DEF CURVED Shape { 
+appearance Appearance { 
+material Material { 
+diffuseColor 0.2 0.47 0.52 
+} 
+}
+geometry IndexedFaceSet { 
+coord Coordinate { 
+point [
+0.14520 0 0.29220,0.14520 0.06 0.29220,0.14340 0 0.29400,0.14340 0.06 0.29400,0.14100 0 0.29520,0.14100 0.06 0.29520,0.13800 0 0.29700,0.13800 0.06 0.29700,0.13620 0 0.29820,0.13620 0.06 0.29820,0.13320 0 0.30000,0.13320 0.06 0.30000,0.12960 0 0.30240,0.12960 0.06 0.30240,0.12420 0 0.30720,0.12420 0.06 0.30720,0.12300 0 0.31380,0.12300 0.06 0.31380,0.12420 0 0.31560,0.12420 0.06 0.31560,0.12540 0 0.31740,0.12540 0.06 0.31740,0.12780 0 0.31920,0.12780 0.06 0.31920,0.12960 0 0.32040,0.12960 0.06 0.32040,0.13260 0 0.32100,0.13260 0.06 0.32100,0.13500 0 0.32160,0.13500 0.06 0.32160,0.13680 0 0.32280,0.13680 0.06 0.32280,0.14160 0 0.32280,0.14160 0.06 0.32280,0.14400 0 0.32400,0.14400 0.06 0.32400,0.14700 0 0.32460,0.14700 0.06 0.32460,0.14880 0 0.32580,0.14880 0.06 0.32580,0.15180 0 0.32640,0.15180 0.06 0.32640,0.15360 0 0.32760,0.15360 0.06 0.32760,0.15660 0 0.32940,0.15660 0.06 0.32940,0.15780 0 0.33120,0.15780 0.06 0.33120,0.15600 0 0.33420,0.15600 0.06 0.33420,0.15360 0 0.33720,0.15360 0.06 0.33720,0.15000 0 0.34140,0.15000 0.06 0.34140,0.14640 0 0.34380,0.14640 0.06 0.34380,0.14520 0 0.34560,0.14520 0.06 0.34560,0.14280 0 0.34560,0.14280 0.06 0.34560,0.14100 0 0.34680,0.14100 0.06 0.34680,0.13020 0 0.34740,0.13020 0.06 0.34740,0.12780 0 0.34800,0.12780 0.06 0.34800,0.15300 0 0.33960,0.15300 0.06 0.33960,0.15840 0 0.33360,0.15840 0.06 0.33360,0.15600 0 0.32700,0.15600 0.06 0.32700,0.12360 0 0.30960,0.12360 0.06 0.30960,0.12660 0 0.30660,0.12660 0.06 0.30660,0.13200 0 0.30240,0.13200 0.06 0.30240,
+]
+}
+coordIndex [
+0,2,3,1,-1,2,4,5,3,-1,4,6,7,5,-1,6,8,9,7,-1,8,10,11,9,-1,10,12,13,11,-1,12,14,15,13,-1,14,16,17,15,-1,16,18,19,17,-1,18,20,21,19,-1,20,22,23,21,-1,22,24,25,23,-1,24,26,27,25,-1,26,28,29,27,-1,28,30,31,29,-1,30,32,33,31,-1,32,34,35,33,-1,34,36,37,35,-1,36,38,39,37,-1,38,40,41,39,-1,40,42,43,41,-1,42,44,45,43,-1,44,46,47,45,-1,46,48,49,47,-1,48,50,51,49,-1,50,52,53,51,-1,52,54,55,53,-1,54,56,57,55,-1,56,58,59,57,-1,58,60,61,59,-1,60,62,63,61,-1,62,64,65,63,-1,64,66,67,65,-1,66,68,69,67,-1,68,70,71,69,-1,70,72,73,71,-1,72,74,75,73,-1,74,76,77,75,-1,76,0,1,77,-1,1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,-1,
+]
+}
+}DEF CURVED Shape { 
+appearance Appearance { 
+material Material { 
+diffuseColor 0.2 0.47 0.52 
+} 
+}
+geometry IndexedFaceSet { 
+coord Coordinate { 
+point [
+0.14280 0 0.21840,0.14280 0.06 0.21840,0.13740 0 0.21900,0.13740 0.06 0.21900,0.13380 0 0.21960,0.13380 0.06 0.21960,0.13140 0 0.22020,0.13140 0.06 0.22020,0.12780 0 0.22080,0.12780 0.06 0.22080,0.14520 0 0.21900,0.14520 0.06 0.21900,
+]
+}
+coordIndex [
+0,2,3,1,-1,2,4,5,3,-1,4,6,7,5,-1,6,8,9,7,-1,8,10,11,9,-1,10,0,1,11,-1,1,3,5,7,9,11,-1,
+]
+}
+}DEF CURVED Shape { 
+appearance Appearance { 
+material Material { 
+diffuseColor 0.2 0.47 0.52 
+} 
+}
+geometry IndexedFaceSet { 
+coord Coordinate { 
+point [
+0.24120 0 0.21780,0.24120 0.06 0.21780,0.23940 0 0.21900,0.23940 0.06 0.21900,0.24480 0 0.21840,0.24480 0.06 0.21840,
+]
+}
+coordIndex [
+0,2,3,1,-1,2,4,5,3,-1,4,0,1,5,-1,1,3,5,-1,
+]
+}
+}DEF CURVED Shape { 
+appearance Appearance { 
+material Material { 
+diffuseColor 0.2 0.47 0.52 
+} 
+}
+geometry IndexedFaceSet { 
+coord Coordinate { 
+point [
+0.15600 0 0.20640,0.15600 0.06 0.20640,0.15600 0 0.22200,0.15600 0.06 0.22200,0.15660 0 0.22860,0.15660 0.06 0.22860,0.15780 0 0.23100,0.15780 0.06 0.23100,0.15540 0 0.23280,0.15540 0.06 0.23280,0.15300 0 0.23340,0.15300 0.06 0.23340,0.14100 0 0.23400,0.14100 0.06 0.23400,0.15240 0 0.23580,0.15240 0.06 0.23580,0.14880 0 0.23580,0.14880 0.06 0.23580,0.15540 0 0.23580,0.15540 0.06 0.23580,0.15720 0 0.23460,0.15720 0.06 0.23460,0.15840 0 0.23700,0.15840 0.06 0.23700,0.15960 0 0.23460,0.15960 0.06 0.23460,0.16380 0 0.23520,0.16380 0.06 0.23520,0.16140 0 0.23280,0.16140 0.06 0.23280,0.16680 0 0.23280,0.16680 0.06 0.23280,0.15720 0 0.22020,0.15720 0.06 0.22020,
+]
+}
+coordIndex [
+0,2,3,1,-1,2,4,5,3,-1,4,6,7,5,-1,6,8,9,7,-1,8,10,11,9,-1,10,12,13,11,-1,12,14,15,13,-1,14,16,17,15,-1,16,18,19,17,-1,18,20,21,19,-1,20,22,23,21,-1,22,24,25,23,-1,24,26,27,25,-1,26,28,29,27,-1,28,30,31,29,-1,30,32,33,31,-1,32,0,1,33,-1,1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,-1,
+]
+}
+}DEF CURVED Shape { 
+appearance Appearance { 
+material Material { 
+diffuseColor 0.2 0.47 0.52 
+} 
+}
+geometry IndexedFaceSet { 
+coord Coordinate { 
+point [
+0.18840 0 0.20580,0.18840 0.06 0.20580,0.18840 0 0.23040,0.18840 0.06 0.23040,0.19020 0 0.23340,0.19020 0.06 0.23340,0.19020 0 0.23580,0.19020 0.06 0.23580,
+]
+}
+coordIndex [
+0,2,3,1,-1,2,4,5,3,-1,4,6,7,5,-1,6,0,1,7,-1,1,3,5,7,-1,
+]
+}
+}DEF CURVED Shape { 
+appearance Appearance { 
+material Material { 
+diffuseColor 0.2 0.47 0.52 
+} 
+}
+geometry IndexedFaceSet { 
+coord Coordinate { 
+point [
+0.22500 0 0.20460,0.22500 0.06 0.20460,0.22200 0 0.20520,0.22200 0.06 0.20520,0.22080 0 0.20700,0.22080 0.06 0.20700,0.21900 0 0.20880,0.21900 0.06 0.20880,0.21780 0 0.21120,0.21780 0.06 0.21120,0.21720 0 0.23160,0.21720 0.06 0.23160,0.22020 0 0.23520,0.22020 0.06 0.23520,0.22680 0 0.23580,0.22680 0.06 0.23580,0.22860 0 0.23460,0.22860 0.06 0.23460,0.23280 0 0.23100,0.23280 0.06 0.23100,0.23580 0 0.22860,0.23580 0.06 0.22860,0.23580 0 0.21780,0.23580 0.06 0.21780,0.23460 0 0.21600,0.23460 0.06 0.21600,0.23400 0 0.21240,0.23400 0.06 0.21240,0.23280 0 0.21060,0.23280 0.06 0.21060,0.23160 0 0.20820,0.23160 0.06 0.20820,0.22920 0 0.20520,0.22920 0.06 0.20520,
+]
+}
+coordIndex [
+0,2,3,1,-1,2,4,5,3,-1,4,6,7,5,-1,6,8,9,7,-1,8,10,11,9,-1,10,12,13,11,-1,12,14,15,13,-1,14,16,17,15,-1,16,18,19,17,-1,18,20,21,19,-1,20,22,23,21,-1,22,24,25,23,-1,24,26,27,25,-1,26,28,29,27,-1,28,30,31,29,-1,30,32,33,31,-1,32,0,1,33,-1,1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,-1,
+]
+}
+}DEF CURVED Shape { 
+appearance Appearance { 
+material Material { 
+diffuseColor 0.2 0.47 0.52 
+} 
+}
+geometry IndexedFaceSet { 
+coord Coordinate { 
+point [
+0.14640 0 0.20400,0.14640 0.06 0.20400,0.15720 0 0.20460,0.15720 0.06 0.20460,0.16620 0 0.20520,0.16620 0.06 0.20520,0.17340 0 0.20580,0.17340 0.06 0.20580,0.17820 0 0.20640,0.17820 0.06 0.20640,0.16080 0 0.20460,0.16080 0.06 0.20460,
+]
+}
+coordIndex [
+0,2,3,1,-1,2,4,5,3,-1,4,6,7,5,-1,6,8,9,7,-1,8,10,11,9,-1,10,0,1,11,-1,1,3,5,7,9,11,-1,
+]
+}
+}DEF CURVED Shape { 
+appearance Appearance { 
+material Material { 
+diffuseColor 0.2 0.47 0.52 
+} 
+}
+geometry IndexedFaceSet { 
+coord Coordinate { 
+point [
+0.21000 0 0.20220,0.21000 0.06 0.20220,0.21000 0 0.20460,0.21000 0.06 0.20460,0.20940 0 0.20700,0.20940 0.06 0.20700,0.20880 0 0.21060,0.20880 0.06 0.21060,0.20820 0 0.22140,0.20820 0.06 0.22140,0.20760 0 0.22440,0.20760 0.06 0.22440,0.20700 0 0.22740,0.20700 0.06 0.22740,0.20640 0 0.23100,0.20640 0.06 0.23100,0.20400 0 0.22980,0.20400 0.06 0.22980,0.20280 0 0.22740,0.20280 0.06 0.22740,0.20160 0 0.22560,0.20160 0.06 0.22560,0.19980 0 0.22320,0.19980 0.06 0.22320,0.19800 0 0.22020,0.19800 0.06 0.22020,0.19680 0 0.21720,0.19680 0.06 0.21720,0.19620 0 0.21480,0.19620 0.06 0.21480,0.19440 0 0.21240,0.19440 0.06 0.21240,0.19260 0 0.20940,0.19260 0.06 0.20940,0.19200 0 0.20700,0.19200 0.06 0.20700,0.20520 0 0.23280,0.20520 0.06 0.23280,
+]
+}
+coordIndex [
+0,2,3,1,-1,2,4,5,3,-1,4,6,7,5,-1,6,8,9,7,-1,8,10,11,9,-1,10,12,13,11,-1,12,14,15,13,-1,14,16,17,15,-1,16,18,19,17,-1,18,20,21,19,-1,20,22,23,21,-1,22,24,25,23,-1,24,26,27,25,-1,26,28,29,27,-1,28,30,31,29,-1,30,32,33,31,-1,32,34,35,33,-1,34,36,37,35,-1,36,0,1,37,-1,1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,-1,
+]
+}
+}DEF CURVED Shape { 
+appearance Appearance { 
+material Material { 
+diffuseColor 0.2 0.47 0.52 
+} 
+}
+geometry IndexedFaceSet { 
+coord Coordinate { 
+point [
+0.25020 0 0.15240,0.25020 0.06 0.15240,0.25200 0 0.15360,0.25200 0.06 0.15360,0.26040 0 0.15360,0.26040 0.06 0.15360,
+]
+}
+coordIndex [
+0,2,3,1,-1,2,4,5,3,-1,4,0,1,5,-1,1,3,5,-1,
+]
+}
+}DEF CURVED Shape { 
+appearance Appearance { 
+material Material { 
+diffuseColor 0.2 0.47 0.52 
+} 
+}
+geometry IndexedFaceSet { 
+coord Coordinate { 
+point [
+0.24240 0 0.13560,0.24240 0.06 0.13560,0.24240 0 0.13860,0.24240 0.06 0.13860,0.24180 0 0.14100,0.24180 0.06 0.14100,0.24060 0 0.14340,0.24060 0.06 0.14340,0.24060 0 0.14760,0.24060 0.06 0.14760,0.23640 0 0.14820,0.23640 0.06 0.14820,0.23100 0 0.14880,0.23100 0.06 0.14880,0.22860 0 0.15000,0.22860 0.06 0.15000,0.22680 0 0.15180,0.22680 0.06 0.15180,0.24060 0 0.15240,0.24060 0.06 0.15240,0.24000 0 0.16020,0.24000 0.06 0.16020,0.24060 0 0.16320,0.24060 0.06 0.16320,
+]
+}
+coordIndex [
+0,2,3,1,-1,2,4,5,3,-1,4,6,7,5,-1,6,8,9,7,-1,8,10,11,9,-1,10,12,13,11,-1,12,14,15,13,-1,14,16,17,15,-1,16,18,19,17,-1,18,20,21,19,-1,20,22,23,21,-1,22,0,1,23,-1,1,3,5,7,9,11,13,15,17,19,21,23,-1,
+]
+}
+}DEF CURVED Shape { 
+appearance Appearance { 
+material Material { 
+diffuseColor 0.2 0.47 0.52 
+} 
+}
+geometry IndexedFaceSet { 
+coord Coordinate { 
+point [
+0.22440 0 0.13380,0.22440 0.06 0.13380,0.22440 0 0.16200,0.22440 0.06 0.16200,
+]
+}
+coordIndex [
+0,2,3,1,-1,2,0,1,3,-1,1,3,-1,
+]
+}
+}DEF CURVED Shape { 
+appearance Appearance { 
+material Material { 
+diffuseColor 0.2 0.47 0.52 
+} 
+}
+geometry IndexedFaceSet { 
+coord Coordinate { 
+point [
+0.17040 0 0.12780,0.17040 0.06 0.12780,0.16920 0 0.12960,0.16920 0.06 0.12960,0.16800 0 0.13140,0.16800 0.06 0.13140,0.16620 0 0.13320,0.16620 0.06 0.13320,0.16500 0 0.13500,0.16500 0.06 0.13500,0.16260 0 0.13860,0.16260 0.06 0.13860,0.16200 0 0.14100,0.16200 0.06 0.14100,0.16080 0 0.14280,0.16080 0.06 0.14280,0.15840 0 0.14400,0.15840 0.06 0.14400,0.15960 0 0.15780,0.15960 0.06 0.15780,0.16020 0 0.14640,0.16020 0.06 0.14640,0.17040 0 0.14460,0.17040 0.06 0.14460,0.17340 0 0.14520,0.17340 0.06 0.14520,0.17520 0 0.14820,0.17520 0.06 0.14820,0.17580 0 0.15240,0.17580 0.06 0.15240,0.17700 0 0.15480,0.17700 0.06 0.15480,0.17700 0 0.16080,0.17700 0.06 0.16080,0.17580 0 0.14520,0.17580 0.06 0.14520,0.17460 0 0.14340,0.17460 0.06 0.14340,0.17340 0 0.14160,0.17340 0.06 0.14160,0.17280 0 0.13860,0.17280 0.06 0.13860,0.17220 0 0.13200,0.17220 0.06 0.13200,0.17280 0 0.12840,0.17280 0.06 0.12840,
+]
+}
+coordIndex [
+0,2,3,1,-1,2,4,5,3,-1,4,6,7,5,-1,6,8,9,7,-1,8,10,11,9,-1,10,12,13,11,-1,12,14,15,13,-1,14,16,17,15,-1,16,18,19,17,-1,18,20,21,19,-1,20,22,23,21,-1,22,24,25,23,-1,24,26,27,25,-1,26,28,29,27,-1,28,30,31,29,-1,30,32,33,31,-1,32,34,35,33,-1,34,36,37,35,-1,36,38,39,37,-1,38,40,41,39,-1,40,42,43,41,-1,42,44,45,43,-1,44,0,1,45,-1,1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,-1,
+]
+}
+}DEF CURVED Shape { 
+appearance Appearance { 
+material Material { 
+diffuseColor 0.2 0.47 0.52 
+} 
+}
+geometry IndexedFaceSet { 
+coord Coordinate { 
+point [
+0.19320 0 0.12480,0.19320 0.06 0.12480,0.19020 0 0.12780,0.19020 0.06 0.12780,0.18840 0 0.13020,0.18840 0.06 0.13020,0.18780 0 0.13260,0.18780 0.06 0.13260,0.18720 0 0.13680,0.18720 0.06 0.13680,0.18660 0 0.14400,0.18660 0.06 0.14400,0.18600 0 0.14760,0.18600 0.06 0.14760,0.18540 0 0.15120,0.18540 0.06 0.15120,0.18480 0 0.15780,0.18480 0.06 0.15780,0.18660 0 0.15960,0.18660 0.06 0.15960,0.19800 0 0.16020,0.19800 0.06 0.16020,0.20700 0 0.16080,0.20700 0.06 0.16080,0.20880 0 0.15900,0.20880 0.06 0.15900,0.21060 0 0.15600,0.21060 0.06 0.15600,0.21240 0 0.15480,0.21240 0.06 0.15480,0.21480 0 0.15360,0.21480 0.06 0.15360,0.18900 0 0.15960,0.18900 0.06 0.15960,0.18540 0 0.15360,0.18540 0.06 0.15360,0.18720 0 0.13920,0.18720 0.06 0.13920,0.19980 0 0.12540,0.19980 0.06 0.12540,0.20220 0 0.12660,0.20220 0.06 0.12660,0.20460 0 0.12720,0.20460 0.06 0.12720,0.20700 0 0.12840,0.20700 0.06 0.12840,0.20940 0 0.13020,0.20940 0.06 0.13020,0.21180 0 0.13080,0.21180 0.06 0.13080,0.20940 0 0.12780,0.20940 0.06 0.12780,
+]
+}
+coordIndex [
+0,2,3,1,-1,2,4,5,3,-1,4,6,7,5,-1,6,8,9,7,-1,8,10,11,9,-1,10,12,13,11,-1,12,14,15,13,-1,14,16,17,15,-1,16,18,19,17,-1,18,20,21,19,-1,20,22,23,21,-1,22,24,25,23,-1,24,26,27,25,-1,26,28,29,27,-1,28,30,31,29,-1,30,32,33,31,-1,32,34,35,33,-1,34,36,37,35,-1,36,38,39,37,-1,38,40,41,39,-1,40,42,43,41,-1,42,44,45,43,-1,44,46,47,45,-1,46,48,49,47,-1,48,50,51,49,-1,50,0,1,51,-1,1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,-1,
+]
+}
+}DEF CURVED Shape { 
+appearance Appearance { 
+material Material { 
+diffuseColor 0.2 0.47 0.52 
+} 
+}
+geometry IndexedFaceSet { 
+coord Coordinate { 
+point [
+0.12420 0 0.12060,0.12420 0.06 0.12060,0.12180 0 0.12360,0.12180 0.06 0.12360,0.12180 0 0.12600,0.12180 0.06 0.12600,0.12060 0 0.12780,0.12060 0.06 0.12780,0.12000 0 0.13080,0.12000 0.06 0.13080,0.11880 0 0.13320,0.11880 0.06 0.13320,0.11760 0 0.13500,0.11760 0.06 0.13500,0.11640 0 0.13740,0.11640 0.06 0.13740,0.11520 0 0.13980,0.11520 0.06 0.13980,0.11460 0 0.14400,0.11460 0.06 0.14400,0.11340 0 0.14640,0.11340 0.06 0.14640,0.11280 0 0.14940,0.11280 0.06 0.14940,0.11220 0 0.15480,0.11220 0.06 0.15480,0.11280 0 0.15180,0.11280 0.06 0.15180,0.12420 0 0.12420,0.12420 0.06 0.12420,0.12420 0 0.12780,0.12420 0.06 0.12780,0.12480 0 0.13200,0.12480 0.06 0.13200,0.12540 0 0.13620,0.12540 0.06 0.13620,0.12600 0 0.13980,0.12600 0.06 0.13980,0.12660 0 0.14220,0.12660 0.06 0.14220,0.12720 0 0.14580,0.12720 0.06 0.14580,0.12840 0 0.14760,0.12840 0.06 0.14760,0.12900 0 0.15000,0.12900 0.06 0.15000,0.13020 0 0.15180,0.13020 0.06 0.15180,0.13140 0 0.15420,0.13140 0.06 0.15420,0.13260 0 0.15240,0.13260 0.06 0.15240,0.13380 0 0.15060,0.13380 0.06 0.15060,0.13500 0 0.14820,0.13500 0.06 0.14820,0.13680 0 0.14520,0.13680 0.06 0.14520,0.13800 0 0.14280,0.13800 0.06 0.14280,0.13980 0 0.13980,0.13980 0.06 0.13980,0.14040 0 0.13680,0.14040 0.06 0.13680,0.14160 0 0.13440,0.14160 0.06 0.13440,0.14220 0 0.13080,0.14220 0.06 0.13080,0.14400 0 0.12900,0.14400 0.06 0.12900,0.14520 0 0.12660,0.14520 0.06 0.12660,0.14580 0 0.12420,0.14580 0.06 0.12420,0.14760 0 0.12540,0.14760 0.06 0.12540,0.14820 0 0.12840,0.14820 0.06 0.12840,0.14940 0 0.13080,0.14940 0.06 0.13080,0.15000 0 0.13320,0.15000 0.06 0.13320,0.15120 0 0.13560,0.15120 0.06 0.13560,0.15240 0 0.13800,0.15240 0.06 0.13800,0.15240 0 0.14100,0.15240 0.06 0.14100,0.15360 0 0.14280,0.15360 0.06 0.14280,0.15420 0 0.15540,0.15420 0.06 0.15540,0.14940 0 0.12660,0.14940 0.06 0.12660,0.14760 0 0.12300,0.14760 0.06 0.12300,0.14700 0 0.12060,0.14700 0.06 0.12060,0.13740 0 0.14040,0.13740 0.06 0.14040,0.13440 0 0.14580,0.13440 0.06 0.14580,
+]
+}
+coordIndex [
+0,2,3,1,-1,2,4,5,3,-1,4,6,7,5,-1,6,8,9,7,-1,8,10,11,9,-1,10,12,13,11,-1,12,14,15,13,-1,14,16,17,15,-1,16,18,19,17,-1,18,20,21,19,-1,20,22,23,21,-1,22,24,25,23,-1,24,26,27,25,-1,26,28,29,27,-1,28,30,31,29,-1,30,32,33,31,-1,32,34,35,33,-1,34,36,37,35,-1,36,38,39,37,-1,38,40,41,39,-1,40,42,43,41,-1,42,44,45,43,-1,44,46,47,45,-1,46,48,49,47,-1,48,50,51,49,-1,50,52,53,51,-1,52,54,55,53,-1,54,56,57,55,-1,56,58,59,57,-1,58,60,61,59,-1,60,62,63,61,-1,62,64,65,63,-1,64,66,67,65,-1,66,68,69,67,-1,68,70,71,69,-1,70,72,73,71,-1,72,74,75,73,-1,74,76,77,75,-1,76,78,79,77,-1,78,80,81,79,-1,80,82,83,81,-1,82,84,85,83,-1,84,86,87,85,-1,86,88,89,87,-1,88,90,91,89,-1,90,92,93,91,-1,92,94,95,93,-1,94,96,97,95,-1,96,98,99,97,-1,98,100,101,99,-1,100,0,1,101,-1,1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,-1,
+]
+}
+}DEF CURVED Shape { 
+appearance Appearance { 
+material Material { 
+diffuseColor 0.2 0.47 0.52 
+} 
+}
+geometry IndexedFaceSet { 
+coord Coordinate { 
+point [
+0.19860 0 0.07260,0.19860 0.06 0.07260,0.17940 0 0.07320,0.17940 0.06 0.07320,0.16500 0 0.07380,0.16500 0.06 0.07380,0.15300 0 0.07440,0.15300 0.06 0.07440,0.14820 0 0.07500,0.14820 0.06 0.07500,0.14580 0 0.07560,0.14580 0.06 0.07560,0.14340 0 0.07680,0.14340 0.06 0.07680,0.14100 0 0.07740,0.14100 0.06 0.07740,0.13860 0 0.07860,0.13860 0.06 0.07860,0.13620 0 0.07980,0.13620 0.06 0.07980,0.13320 0 0.08160,0.13320 0.06 0.08160,0.12840 0 0.08640,0.12840 0.06 0.08640,0.12540 0 0.09000,0.12540 0.06 0.09000,0.12420 0 0.09180,0.12420 0.06 0.09180,0.12240 0 0.09420,0.12240 0.06 0.09420,0.11940 0 0.09780,0.11940 0.06 0.09780,0.11760 0 0.10020,0.11760 0.06 0.10020,0.11460 0 0.10380,0.11460 0.06 0.10380,0.11220 0 0.10680,0.11220 0.06 0.10680,0.11040 0 0.10920,0.11040 0.06 0.10920,0.10800 0 0.11220,0.10800 0.06 0.11220,0.10680 0 0.11400,0.10680 0.06 0.11400,0.10500 0 0.11700,0.10500 0.06 0.11700,0.10380 0 0.11940,0.10380 0.06 0.11940,0.10320 0 0.12180,0.10320 0.06 0.12180,0.10200 0 0.12420,0.10200 0.06 0.12420,0.10140 0 0.12720,0.10140 0.06 0.12720,0.10020 0 0.12960,0.10020 0.06 0.12960,0.09960 0 0.13380,0.09960 0.06 0.13380,0.09840 0 0.13620,0.09840 0.06 0.13620,0.09840 0 0.15060,0.09840 0.06 0.15060,0.09900 0 0.15720,0.09900 0.06 0.15720,0.09960 0 0.16380,0.09960 0.06 0.16380,0.10020 0 0.15420,0.10020 0.06 0.15420,0.09960 0 0.14880,0.09960 0.06 0.14880,0.12780 0 0.09000,0.12780 0.06 0.09000,0.13200 0 0.08520,0.13200 0.06 0.08520,0.15120 0 0.07620,0.15120 0.06 0.07620,0.15720 0 0.07560,0.15720 0.06 0.07560,0.16980 0 0.07500,0.16980 0.06 0.07500,0.18600 0 0.07440,0.18600 0.06 0.07440,0.20160 0 0.07380,0.20160 0.06 0.07380,0.20460 0 0.07320,0.20460 0.06 0.07320,0.20700 0 0.07440,0.20700 0.06 0.07440,0.21000 0 0.07500,0.21000 0.06 0.07500,0.21180 0 0.07620,0.21180 0.06 0.07620,0.21480 0 0.07680,0.21480 0.06 0.07680,0.21660 0 0.07860,0.21660 0.06 0.07860,0.21960 0 0.07920,0.21960 0.06 0.07920,0.22140 0 0.08040,0.22140 0.06 0.08040,0.22380 0 0.08160,0.22380 0.06 0.08160,0.22560 0 0.08280,0.22560 0.06 0.08280,0.22740 0 0.08400,0.22740 0.06 0.08400,0.22920 0 0.08520,0.22920 0.06 0.08520,0.23100 0 0.08640,0.23100 0.06 0.08640,0.23280 0 0.08760,0.23280 0.06 0.08760,0.23520 0 0.08880,0.23520 0.06 0.08880,0.23820 0 0.09060,0.23820 0.06 0.09060,0.24060 0 0.09180,0.24060 0.06 0.09180,0.24360 0 0.09360,0.24360 0.06 0.09360,0.24600 0 0.09480,0.24600 0.06 0.09480,0.24780 0 0.09600,0.24780 0.06 0.09600,0.25020 0 0.09660,0.25020 0.06 0.09660,0.25200 0 0.09780,0.25200 0.06 0.09780,0.25440 0 0.09900,0.25440 0.06 0.09900,0.25620 0 0.10020,0.25620 0.06 0.10020,0.25800 0 0.10140,0.25800 0.06 0.10140,0.26220 0 0.10500,0.26220 0.06 0.10500,0.26340 0 0.10740,0.26340 0.06 0.10740,0.26400 0 0.10980,0.26400 0.06 0.10980,0.26520 0 0.11160,0.26520 0.06 0.11160,0.26580 0 0.11400,0.26580 0.06 0.11400,0.26700 0 0.11640,0.26700 0.06 0.11640,0.26760 0 0.11880,0.26760 0.06 0.11880,0.26880 0 0.12120,0.26880 0.06 0.12120,0.26940 0 0.12360,0.26940 0.06 0.12360,0.27060 0 0.12600,0.27060 0.06 0.12600,0.27120 0 0.12840,0.27120 0.06 0.12840,0.27240 0 0.13020,0.27240 0.06 0.13020,0.27300 0 0.13260,0.27300 0.06 0.13260,0.27360 0 0.13680,0.27360 0.06 0.13680,0.27420 0 0.13920,0.27420 0.06 0.13920,0.27480 0 0.14160,0.27480 0.06 0.14160,0.27540 0 0.14460,0.27540 0.06 0.14460,0.27600 0 0.14760,0.27600 0.06 0.14760,0.27660 0 0.15000,0.27660 0.06 0.15000,0.27720 0 0.15240,0.27720 0.06 0.15240,0.27780 0 0.15480,0.27780 0.06 0.15480,0.27840 0 0.15720,0.27840 0.06 0.15720,0.27900 0 0.16020,0.27900 0.06 0.16020,0.27960 0 0.16260,0.27960 0.06 0.16260,0.28020 0 0.16740,0.28020 0.06 0.16740,0.28080 0 0.16980,0.28080 0.06 0.16980,0.28140 0 0.17700,0.28140 0.06 0.17700,0.28200 0 0.18300,0.28200 0.06 0.18300,0.28260 0 0.19380,0.28260 0.06 0.19380,0.28320 0 0.20160,0.28320 0.06 0.20160,0.28260 0 0.20400,0.28260 0.06 0.20400,0.28320 0 0.21000,0.28320 0.06 0.21000,0.28380 0 0.21780,0.28380 0.06 0.21780,0.28260 0 0.22020,0.28260 0.06 0.22020,0.28260 0 0.22260,0.28260 0.06 0.22260,0.28200 0 0.22680,0.28200 0.06 0.22680,0.28140 0 0.22980,0.28140 0.06 0.22980,0.28080 0 0.26580,0.28080 0.06 0.26580,0.28020 0 0.28620,0.28020 0.06 0.28620,0.28080 0 0.28860,0.28080 0.06 0.28860,0.28140 0 0.29160,0.28140 0.06 0.29160,0.28200 0 0.29880,0.28200 0.06 0.29880,0.28320 0 0.30120,0.28320 0.06 0.30120,0.28320 0 0.30420,0.28320 0.06 0.30420,0.28380 0 0.31740,0.28380 0.06 0.31740,0.28380 0 0.32040,0.28380 0.06 0.32040,0.28440 0 0.32760,0.28440 0.06 0.32760,0.28500 0 0.33900,0.28500 0.06 0.33900,0.28560 0 0.35880,0.28560 0.06 0.35880,0.28620 0 0.37080,0.28620 0.06 0.37080,0.28680 0 0.37440,0.28680 0.06 0.37440,0.28740 0 0.39600,0.28740 0.06 0.39600,0.28620 0 0.39780,0.28620 0.06 0.39780,0.28560 0 0.40140,0.28560 0.06 0.40140,0.28500 0 0.40380,0.28500 0.06 0.40380,0.28440 0 0.40620,0.28440 0.06 0.40620,0.28260 0 0.40860,0.28260 0.06 0.40860,0.28200 0 0.41100,0.28200 0.06 0.41100,0.28020 0 0.41400,0.28020 0.06 0.41400,0.28020 0 0.41640,0.28020 0.06 0.41640,0.27840 0 0.41820,0.27840 0.06 0.41820,0.27660 0 0.42180,0.27660 0.06 0.42180,0.27600 0 0.42420,0.27600 0.06 0.42420,0.27300 0 0.42720,0.27300 0.06 0.42720,0.27060 0 0.42840,0.27060 0.06 0.42840,0.26880 0 0.42960,0.26880 0.06 0.42960,0.26580 0 0.43020,0.26580 0.06 0.43020,0.26280 0 0.43140,0.26280 0.06 0.43140,0.25080 0 0.43200,0.25080 0.06 0.43200,0.24600 0 0.43140,0.24600 0.06 0.43140,0.24360 0 0.43020,0.24360 0.06 0.43020,0.24000 0 0.43020,0.24000 0.06 0.43020,0.23640 0 0.42960,0.23640 0.06 0.42960,0.23400 0 0.42900,0.23400 0.06 0.42900,0.23100 0 0.42720,0.23100 0.06 0.42720,0.22920 0 0.42600,0.22920 0.06 0.42600,0.22740 0 0.42480,0.22740 0.06 0.42480,0.22440 0 0.42240,0.22440 0.06 0.42240,0.22260 0 0.42060,0.22260 0.06 0.42060,0.21840 0 0.41700,0.21840 0.06 0.41700,0.21720 0 0.41460,0.21720 0.06 0.41460,0.21540 0 0.41220,0.21540 0.06 0.41220,0.21420 0 0.40980,0.21420 0.06 0.40980,0.21300 0 0.40680,0.21300 0.06 0.40680,0.21240 0 0.40380,0.21240 0.06 0.40380,0.21060 0 0.40200,0.21060 0.06 0.40200,0.21000 0 0.39960,0.21000 0.06 0.39960,0.20880 0 0.39780,0.20880 0.06 0.39780,0.20760 0 0.39600,0.20760 0.06 0.39600,0.20640 0 0.39420,0.20640 0.06 0.39420,0.20520 0 0.39240,0.20520 0.06 0.39240,0.20460 0 0.39000,0.20460 0.06 0.39000,0.20340 0 0.38820,0.20340 0.06 0.38820,0.20160 0 0.38520,0.20160 0.06 0.38520,0.20160 0 0.38220,0.20160 0.06 0.38220,0.19980 0 0.37980,0.19980 0.06 0.37980,0.19980 0 0.36480,0.19980 0.06 0.36480,0.19800 0 0.37380,0.19800 0.06 0.37380,0.19860 0 0.37740,0.19860 0.06 0.37740,0.19920 0 0.38700,0.19920 0.06 0.38700,0.19860 0 0.39000,0.19860 0.06 0.39000,0.19740 0 0.39240,0.19740 0.06 0.39240,0.19680 0 0.39480,0.19680 0.06 0.39480,0.19620 0 0.39720,0.19620 0.06 0.39720,0.19560 0 0.40140,0.19560 0.06 0.40140,0.19440 0 0.40320,0.19440 0.06 0.40320,0.19380 0 0.40560,0.19380 0.06 0.40560,0.19140 0 0.40800,0.19140 0.06 0.40800,0.18840 0 0.40980,0.18840 0.06 0.40980,0.18360 0 0.41340,0.18360 0.06 0.41340,0.18120 0 0.41520,0.18120 0.06 0.41520,0.17880 0 0.41700,0.17880 0.06 0.41700,0.17520 0 0.42000,0.17520 0.06 0.42000,0.17340 0 0.42120,0.17340 0.06 0.42120,0.17160 0 0.42240,0.17160 0.06 0.42240,0.16620 0 0.42660,0.16620 0.06 0.42660,0.16440 0 0.42780,0.16440 0.06 0.42780,0.16140 0 0.42840,0.16140 0.06 0.42840,0.15300 0 0.42900,0.15300 0.06 0.42900,0.15060 0 0.42780,0.15060 0.06 0.42780,0.14580 0 0.42720,0.14580 0.06 0.42720,0.14160 0 0.42660,0.14160 0.06 0.42660,0.13920 0 0.42480,0.13920 0.06 0.42480,0.13680 0 0.42420,0.13680 0.06 0.42420,0.13440 0 0.42300,0.13440 0.06 0.42300,0.13080 0 0.42240,0.13080 0.06 0.42240,0.12900 0 0.42120,0.12900 0.06 0.42120,0.12720 0 0.42000,0.12720 0.06 0.42000,0.12480 0 0.41880,0.12480 0.06 0.41880,0.12300 0 0.41640,0.12300 0.06 0.41640,0.12180 0 0.41400,0.12180 0.06 0.41400,0.11940 0 0.41400,0.11940 0.06 0.41400,0.11760 0 0.41220,0.11760 0.06 0.41220,0.11580 0 0.41100,0.11580 0.06 0.41100,0.11400 0 0.40980,0.11400 0.06 0.40980,0.11220 0 0.40860,0.11220 0.06 0.40860,0.10980 0 0.40740,0.10980 0.06 0.40740,0.10740 0 0.40560,0.10740 0.06 0.40560,0.10440 0 0.40260,0.10440 0.06 0.40260,0.10260 0 0.39960,0.10260 0.06 0.39960,0.10260 0 0.39720,0.10260 0.06 0.39720,0.10200 0 0.39180,0.10200 0.06 0.39180,0.10140 0 0.38940,0.10140 0.06 0.38940,0.10080 0 0.37260,0.10080 0.06 0.37260,0.10020 0 0.36480,0.10020 0.06 0.36480,0.09960 0 0.36120,0.09960 0.06 0.36120,0.09900 0 0.35640,0.09900 0.06 0.35640,0.09840 0 0.35400,0.09840 0.06 0.35400,0.09780 0 0.34200,0.09780 0.06 0.34200,0.09660 0 0.33660,0.09660 0.06 0.33660,0.09720 0 0.33360,0.09720 0.06 0.33360,0.09840 0 0.33180,0.09840 0.06 0.33180,0.09840 0 0.32760,0.09840 0.06 0.32760,0.09780 0 0.31980,0.09780 0.06 0.31980,0.09720 0 0.31620,0.09720 0.06 0.31620,0.09660 0 0.31320,0.09660 0.06 0.31320,0.09600 0 0.30960,0.09600 0.06 0.30960,0.09540 0 0.29040,0.09540 0.06 0.29040,0.09660 0 0.28800,0.09660 0.06 0.28800,0.09720 0 0.28080,0.09720 0.06 0.28080,0.09780 0 0.27780,0.09780 0.06 0.27780,0.09900 0 0.27540,0.09900 0.06 0.27540,0.09900 0 0.27120,0.09900 0.06 0.27120,0.10020 0 0.26940,0.10020 0.06 0.26940,0.10080 0 0.26520,0.10080 0.06 0.26520,0.09960 0 0.26340,0.09960 0.06 0.26340,0.09900 0 0.25980,0.09900 0.06 0.25980,0.09840 0 0.25740,0.09840 0.06 0.25740,0.10140 0 0.25680,0.10140 0.06 0.25680,0.10380 0 0.25740,0.10380 0.06 0.25740,0.10620 0 0.25860,0.10620 0.06 0.25860,0.10920 0 0.25860,0.10920 0.06 0.25860,0.11160 0 0.25980,0.11160 0.06 0.25980,0.11400 0 0.25980,0.11400 0.06 0.25980,0.11520 0 0.26160,0.11520 0.06 0.26160,0.11700 0 0.26280,0.11700 0.06 0.26280,0.13080 0 0.26280,0.13080 0.06 0.26280,0.11640 0 0.25980,0.11640 0.06 0.25980,0.09480 0 0.25560,0.09480 0.06 0.25560,0.09240 0 0.25500,0.09240 0.06 0.25500,0.09000 0 0.25440,0.09000 0.06 0.25440,0.08760 0 0.25320,0.08760 0.06 0.25320,0.08460 0 0.25260,0.08460 0.06 0.25260,0.08160 0 0.25200,0.08160 0.06 0.25200,0.07920 0 0.25140,0.07920 0.06 0.25140,0.07680 0 0.24960,0.07680 0.06 0.24960,0.07440 0 0.24840,0.07440 0.06 0.24840,0.07140 0 0.24780,0.07140 0.06 0.24780,0.06960 0 0.24600,0.06960 0.06 0.24600,0.06720 0 0.24480,0.06720 0.06 0.24480,0.06480 0 0.24300,0.06480 0.06 0.24300,0.06300 0 0.24000,0.06300 0.06 0.24000,0.06180 0 0.23760,0.06180 0.06 0.23760,0.06180 0 0.22440,0.06180 0.06 0.22440,0.06240 0 0.22020,0.06240 0.06 0.22020,0.06300 0 0.21180,0.06300 0.06 0.21180,0.06360 0 0.20760,0.06360 0.06 0.20760,0.06480 0 0.20520,0.06480 0.06 0.20520,0.06480 0 0.20040,0.06480 0.06 0.20040,0.06660 0 0.19800,0.06660 0.06 0.19800,0.06780 0 0.19560,0.06780 0.06 0.19560,0.06840 0 0.19320,0.06840 0.06 0.19320,0.07020 0 0.19080,0.07020 0.06 0.19080,0.07140 0 0.18900,0.07140 0.06 0.18900,0.07260 0 0.18720,0.07260 0.06 0.18720,0.07440 0 0.18420,0.07440 0.06 0.18420,0.08160 0 0.17640,0.08160 0.06 0.17640,0.08340 0 0.17520,0.08340 0.06 0.17520,0.08640 0 0.17340,0.08640 0.06 0.17340,0.08820 0 0.17220,0.08820 0.06 0.17220,0.09000 0 0.17100,0.09000 0.06 0.17100,0.09300 0 0.17040,0.09300 0.06 0.17040,0.09540 0 0.16920,0.09540 0.06 0.16920,0.09780 0 0.16860,0.09780 0.06 0.16860,0.09960 0 0.16740,0.09960 0.06 0.16740,0.10200 0 0.16740,0.10200 0.06 0.16740,0.10440 0 0.16680,0.10440 0.06 0.16680,0.11100 0 0.16620,0.11100 0.06 0.16620,0.11520 0 0.16680,0.11520 0.06 0.16680,0.11700 0 0.16800,0.11700 0.06 0.16800,0.11880 0 0.16680,0.11880 0.06 0.16680,0.12720 0 0.16680,0.12720 0.06 0.16680,0.13440 0 0.16740,0.13440 0.06 0.16740,0.11340 0 0.16500,0.11340 0.06 0.16500,0.07920 0 0.17640,0.07920 0.06 0.17640,0.07440 0 0.18120,0.07440 0.06 0.18120,0.06420 0 0.20280,0.06420 0.06 0.20280,0.06240 0 0.21540,0.06240 0.06 0.21540,0.09660 0 0.28320,0.09660 0.06 0.28320,0.09600 0 0.31860,0.09600 0.06 0.31860,0.09660 0 0.32280,0.09660 0.06 0.32280,0.09600 0 0.34860,0.09600 0.06 0.34860,0.09780 0 0.35820,0.09780 0.06 0.35820,0.09900 0 0.36780,0.09900 0.06 0.36780,0.09960 0 0.37500,0.09960 0.06 0.37500,0.10080 0 0.39420,0.10080 0.06 0.39420,0.10440 0 0.40500,0.10440 0.06 0.40500,0.12060 0 0.41640,0.12060 0.06 0.41640,0.13860 0 0.42720,0.13860 0.06 0.42720,0.14760 0 0.42840,0.14760 0.06 0.42840,0.17760 0 0.41940,0.17760 0.06 0.41940,0.18600 0 0.41340,0.18600 0.06 0.41340,0.19980 0 0.38400,0.19980 0.06 0.38400,0.24840 0 0.43260,0.24840 0.06 0.43260,0.27900 0 0.42180,0.27900 0.06 0.42180,0.28740 0 0.36840,0.28740 0.06 0.36840,0.28680 0 0.35700,0.28680 0.06 0.35700,0.28560 0 0.32580,0.28560 0.06 0.32580,0.28560 0 0.32340,0.28560 0.06 0.32340,0.28920 0 0.32760,0.28920 0.06 0.32760,0.29220 0 0.33180,0.29220 0.06 0.33180,0.30120 0 0.33240,0.30120 0.06 0.33240,0.30540 0 0.33180,0.30540 0.06 0.33180,0.31260 0 0.33120,0.31260 0.06 0.33120,0.31620 0 0.33060,0.31620 0.06 0.33060,0.31740 0 0.32880,0.31740 0.06 0.32880,0.32100 0 0.32580,0.32100 0.06 0.32580,0.32400 0 0.32280,0.32400 0.06 0.32280,0.32580 0 0.32100,0.32580 0.06 0.32100,0.32760 0 0.31800,0.32760 0.06 0.31800,0.32940 0 0.31500,0.32940 0.06 0.31500,0.33060 0 0.31320,0.33060 0.06 0.31320,0.33120 0 0.30540,0.33120 0.06 0.30540,0.33240 0 0.30360,0.33240 0.06 0.30360,0.33300 0 0.30000,0.33300 0.06 0.30000,0.33420 0 0.29760,0.33420 0.06 0.29760,0.33480 0 0.29340,0.33480 0.06 0.29340,0.33600 0 0.29100,0.33600 0.06 0.29100,0.33660 0 0.28860,0.33660 0.06 0.28860,0.33660 0 0.24480,0.33660 0.06 0.24480,0.33600 0 0.24000,0.33600 0.06 0.24000,0.33540 0 0.23760,0.33540 0.06 0.23760,0.33480 0 0.23340,0.33480 0.06 0.23340,0.33420 0 0.22800,0.33420 0.06 0.22800,0.33360 0 0.22560,0.33360 0.06 0.22560,0.33300 0 0.22080,0.33300 0.06 0.22080,0.33240 0 0.21720,0.33240 0.06 0.21720,0.33180 0 0.21480,0.33180 0.06 0.21480,0.33120 0 0.20640,0.33120 0.06 0.20640,0.33000 0 0.20400,0.33000 0.06 0.20400,0.32940 0 0.20100,0.32940 0.06 0.20100,0.32880 0 0.19860,0.32880 0.06 0.19860,0.32760 0 0.19500,0.32760 0.06 0.19500,0.32640 0 0.19320,0.32640 0.06 0.19320,0.32580 0 0.19020,0.32580 0.06 0.19020,0.32520 0 0.18720,0.32520 0.06 0.18720,0.32400 0 0.18360,0.32400 0.06 0.18360,0.32220 0 0.18120,0.32220 0.06 0.18120,0.32040 0 0.17820,0.32040 0.06 0.17820,0.31920 0 0.17580,0.31920 0.06 0.17580,0.31800 0 0.17340,0.31800 0.06 0.17340,0.31200 0 0.16800,0.31200 0.06 0.16800,0.31020 0 0.16680,0.31020 0.06 0.16680,0.30840 0 0.16560,0.30840 0.06 0.16560,0.30600 0 0.16500,0.30600 0.06 0.16500,0.30420 0 0.16260,0.30420 0.06 0.16260,0.30240 0 0.16080,0.30240 0.06 0.16080,0.30060 0 0.15960,0.30060 0.06 0.15960,0.29820 0 0.15900,0.29820 0.06 0.15900,0.29400 0 0.15960,0.29400 0.06 0.15960,0.29160 0 0.16080,0.29160 0.06 0.16080,0.28920 0 0.16140,0.28920 0.06 0.16140,0.28740 0 0.16260,0.28740 0.06 0.16260,0.28560 0 0.16380,0.28560 0.06 0.16380,0.28440 0 0.16560,0.28440 0.06 0.16560,0.28260 0 0.16800,0.28260 0.06 0.16800,0.28140 0 0.16560,0.28140 0.06 0.16560,0.27480 0 0.13440,0.27480 0.06 0.13440,0.26220 0 0.10260,0.26220 0.06 0.10260,
+]
+}
+coordIndex [
+0,2,3,1,-1,2,4,5,3,-1,4,6,7,5,-1,6,8,9,7,-1,8,10,11,9,-1,10,12,13,11,-1,12,14,15,13,-1,14,16,17,15,-1,16,18,19,17,-1,18,20,21,19,-1,20,22,23,21,-1,22,24,25,23,-1,24,26,27,25,-1,26,28,29,27,-1,28,30,31,29,-1,30,32,33,31,-1,32,34,35,33,-1,34,36,37,35,-1,36,38,39,37,-1,38,40,41,39,-1,40,42,43,41,-1,42,44,45,43,-1,44,46,47,45,-1,46,48,49,47,-1,48,50,51,49,-1,50,52,53,51,-1,52,54,55,53,-1,54,56,57,55,-1,56,58,59,57,-1,58,60,61,59,-1,60,62,63,61,-1,62,64,65,63,-1,64,66,67,65,-1,66,68,69,67,-1,68,70,71,69,-1,70,72,73,71,-1,72,74,75,73,-1,74,76,77,75,-1,76,78,79,77,-1,78,80,81,79,-1,80,82,83,81,-1,82,84,85,83,-1,84,86,87,85,-1,86,88,89,87,-1,88,90,91,89,-1,90,92,93,91,-1,92,94,95,93,-1,94,96,97,95,-1,96,98,99,97,-1,98,100,101,99,-1,100,102,103,101,-1,102,104,105,103,-1,104,106,107,105,-1,106,108,109,107,-1,108,110,111,109,-1,110,112,113,111,-1,112,114,115,113,-1,114,116,117,115,-1,116,118,119,117,-1,118,120,121,119,-1,120,122,123,121,-1,122,124,125,123,-1,124,126,127,125,-1,126,128,129,127,-1,128,130,131,129,-1,130,132,133,131,-1,132,134,135,133,-1,134,136,137,135,-1,136,138,139,137,-1,138,140,141,139,-1,140,142,143,141,-1,142,144,145,143,-1,144,146,147,145,-1,146,148,149,147,-1,148,150,151,149,-1,150,152,153,151,-1,152,154,155,153,-1,154,156,157,155,-1,156,158,159,157,-1,158,160,161,159,-1,160,162,163,161,-1,162,164,165,163,-1,164,166,167,165,-1,166,168,169,167,-1,168,170,171,169,-1,170,172,173,171,-1,172,174,175,173,-1,174,176,177,175,-1,176,178,179,177,-1,178,180,181,179,-1,180,182,183,181,-1,182,184,185,183,-1,184,186,187,185,-1,186,188,189,187,-1,188,190,191,189,-1,190,192,193,191,-1,192,194,195,193,-1,194,196,197,195,-1,196,198,199,197,-1,198,200,201,199,-1,200,202,203,201,-1,202,204,205,203,-1,204,206,207,205,-1,206,208,209,207,-1,208,210,211,209,-1,210,212,213,211,-1,212,214,215,213,-1,214,216,217,215,-1,216,218,219,217,-1,218,220,221,219,-1,220,222,223,221,-1,222,224,225,223,-1,224,226,227,225,-1,226,228,229,227,-1,228,230,231,229,-1,230,232,233,231,-1,232,234,235,233,-1,234,236,237,235,-1,236,238,239,237,-1,238,240,241,239,-1,240,242,243,241,-1,242,244,245,243,-1,244,246,247,245,-1,246,248,249,247,-1,248,250,251,249,-1,250,252,253,251,-1,252,254,255,253,-1,254,256,257,255,-1,256,258,259,257,-1,258,260,261,259,-1,260,262,263,261,-1,262,264,265,263,-1,264,266,267,265,-1,266,268,269,267,-1,268,270,271,269,-1,270,272,273,271,-1,272,274,275,273,-1,274,276,277,275,-1,276,278,279,277,-1,278,280,281,279,-1,280,282,283,281,-1,282,284,285,283,-1,284,286,287,285,-1,286,288,289,287,-1,288,290,291,289,-1,290,292,293,291,-1,292,294,295,293,-1,294,296,297,295,-1,296,298,299,297,-1,298,300,301,299,-1,300,302,303,301,-1,302,304,305,303,-1,304,306,307,305,-1,306,308,309,307,-1,308,310,311,309,-1,310,312,313,311,-1,312,314,315,313,-1,314,316,317,315,-1,316,318,319,317,-1,318,320,321,319,-1,320,322,323,321,-1,322,324,325,323,-1,324,326,327,325,-1,326,328,329,327,-1,328,330,331,329,-1,330,332,333,331,-1,332,334,335,333,-1,334,336,337,335,-1,336,338,339,337,-1,338,340,341,339,-1,340,342,343,341,-1,342,344,345,343,-1,344,346,347,345,-1,346,348,349,347,-1,348,350,351,349,-1,350,352,353,351,-1,352,354,355,353,-1,354,356,357,355,-1,356,358,359,357,-1,358,360,361,359,-1,360,362,363,361,-1,362,364,365,363,-1,364,366,367,365,-1,366,368,369,367,-1,368,370,371,369,-1,370,372,373,371,-1,372,374,375,373,-1,374,376,377,375,-1,376,378,379,377,-1,378,380,381,379,-1,380,382,383,381,-1,382,384,385,383,-1,384,386,387,385,-1,386,388,389,387,-1,388,390,391,389,-1,390,392,393,391,-1,392,394,395,393,-1,394,396,397,395,-1,396,398,399,397,-1,398,400,401,399,-1,400,402,403,401,-1,402,404,405,403,-1,404,406,407,405,-1,406,408,409,407,-1,408,410,411,409,-1,410,412,413,411,-1,412,414,415,413,-1,414,416,417,415,-1,416,418,419,417,-1,418,420,421,419,-1,420,422,423,421,-1,422,424,425,423,-1,424,426,427,425,-1,426,428,429,427,-1,428,430,431,429,-1,430,432,433,431,-1,432,434,435,433,-1,434,436,437,435,-1,436,438,439,437,-1,438,440,441,439,-1,440,442,443,441,-1,442,444,445,443,-1,444,446,447,445,-1,446,448,449,447,-1,448,450,451,449,-1,450,452,453,451,-1,452,454,455,453,-1,454,456,457,455,-1,456,458,459,457,-1,458,460,461,459,-1,460,462,463,461,-1,462,464,465,463,-1,464,466,467,465,-1,466,468,469,467,-1,468,470,471,469,-1,470,472,473,471,-1,472,474,475,473,-1,474,476,477,475,-1,476,478,479,477,-1,478,480,481,479,-1,480,482,483,481,-1,482,484,485,483,-1,484,486,487,485,-1,486,488,489,487,-1,488,490,491,489,-1,490,492,493,491,-1,492,494,495,493,-1,494,496,497,495,-1,496,498,499,497,-1,498,500,501,499,-1,500,502,503,501,-1,502,504,505,503,-1,504,506,507,505,-1,506,508,509,507,-1,508,510,511,509,-1,510,512,513,511,-1,512,514,515,513,-1,514,516,517,515,-1,516,518,519,517,-1,518,520,521,519,-1,520,522,523,521,-1,522,524,525,523,-1,524,526,527,525,-1,526,528,529,527,-1,528,530,531,529,-1,530,532,533,531,-1,532,534,535,533,-1,534,536,537,535,-1,536,538,539,537,-1,538,540,541,539,-1,540,542,543,541,-1,542,544,545,543,-1,544,546,547,545,-1,546,548,549,547,-1,548,550,551,549,-1,550,552,553,551,-1,552,554,555,553,-1,554,556,557,555,-1,556,558,559,557,-1,558,560,561,559,-1,560,562,563,561,-1,562,564,565,563,-1,564,566,567,565,-1,566,568,569,567,-1,568,570,571,569,-1,570,572,573,571,-1,572,574,575,573,-1,574,576,577,575,-1,576,578,579,577,-1,578,580,581,579,-1,580,582,583,581,-1,582,584,585,583,-1,584,586,587,585,-1,586,588,589,587,-1,588,590,591,589,-1,590,592,593,591,-1,592,594,595,593,-1,594,596,597,595,-1,596,598,599,597,-1,598,600,601,599,-1,600,602,603,601,-1,602,604,605,603,-1,604,606,607,605,-1,606,608,609,607,-1,608,610,611,609,-1,610,612,613,611,-1,612,614,615,613,-1,614,616,617,615,-1,616,618,619,617,-1,618,620,621,619,-1,620,622,623,621,-1,622,624,625,623,-1,624,626,627,625,-1,626,628,629,627,-1,628,630,631,629,-1,630,632,633,631,-1,632,634,635,633,-1,634,636,637,635,-1,636,638,639,637,-1,638,640,641,639,-1,640,642,643,641,-1,642,644,645,643,-1,644,646,647,645,-1,646,648,649,647,-1,648,650,651,649,-1,650,652,653,651,-1,652,654,655,653,-1,654,656,657,655,-1,656,658,659,657,-1,658,660,661,659,-1,660,662,663,661,-1,662,664,665,663,-1,664,666,667,665,-1,666,668,669,667,-1,668,670,671,669,-1,670,672,673,671,-1,672,674,675,673,-1,674,676,677,675,-1,676,678,679,677,-1,678,680,681,679,-1,680,682,683,681,-1,682,684,685,683,-1,684,686,687,685,-1,686,688,689,687,-1,688,690,691,689,-1,690,692,693,691,-1,692,694,695,693,-1,694,696,697,695,-1,696,698,699,697,-1,698,700,701,699,-1,700,702,703,701,-1,702,704,705,703,-1,704,706,707,705,-1,706,708,709,707,-1,708,710,711,709,-1,710,712,713,711,-1,712,714,715,713,-1,714,716,717,715,-1,716,718,719,717,-1,718,720,721,719,-1,720,722,723,721,-1,722,724,725,723,-1,724,726,727,725,-1,726,728,729,727,-1,728,730,731,729,-1,730,732,733,731,-1,732,734,735,733,-1,734,736,737,735,-1,736,738,739,737,-1,738,740,741,739,-1,740,742,743,741,-1,742,744,745,743,-1,744,746,747,745,-1,746,748,749,747,-1,748,750,751,749,-1,750,0,1,751,-1,1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,109,111,113,115,117,119,121,123,125,127,129,131,133,135,137,139,141,143,145,147,149,151,153,155,157,159,161,163,165,167,169,171,173,175,177,179,181,183,185,187,189,191,193,195,197,199,201,203,205,207,209,211,213,215,217,219,221,223,225,227,229,231,233,235,237,239,241,243,245,247,249,251,253,255,257,259,261,263,265,267,269,271,273,275,277,279,281,283,285,287,289,291,293,295,297,299,301,303,305,307,309,311,313,315,317,319,321,323,325,327,329,331,333,335,337,339,341,343,345,347,349,351,353,355,357,359,361,363,365,367,369,371,373,375,377,379,381,383,385,387,389,391,393,395,397,399,401,403,405,407,409,411,413,415,417,419,421,423,425,427,429,431,433,435,437,439,441,443,445,447,449,451,453,455,457,459,461,463,465,467,469,471,473,475,477,479,481,483,485,487,489,491,493,495,497,499,501,503,505,507,509,511,513,515,517,519,521,523,525,527,529,531,533,535,537,539,541,543,545,547,549,551,553,555,557,559,561,563,565,567,569,571,573,575,577,579,581,583,585,587,589,591,593,595,597,599,601,603,605,607,609,611,613,615,617,619,621,623,625,627,629,631,633,635,637,639,641,643,645,647,649,651,653,655,657,659,661,663,665,667,669,671,673,675,677,679,681,683,685,687,689,691,693,695,697,699,701,703,705,707,709,711,713,715,717,719,721,723,725,727,729,731,733,735,737,739,741,743,745,747,749,751,-1,
+]
+}
+}
+]
+}
+
+            ]
+        }
+        
+        DEF CHECKPOINTBOUNDS Group {
+            children [
+              
+        DEF boundary Group {
+            children [
+              DEF checkpoint0min Transform {
+                    translation -0.42 -0.03 -0.3
+              }
+              DEF checkpoint0max Transform {
+                    translation -0.3 -0.03 -0.18
+              }
+            ]
+          }
+        
+        DEF boundary Group {
+            children [
+              DEF checkpoint1min Transform {
+                    translation -0.06 -0.03 0.06000000000000011
+              }
+              DEF checkpoint1max Transform {
+                    translation 0.06 -0.03 0.1800000000000001
+              }
+            ]
+          }
+        
+            ]
+        }
+        
+        DEF TRAPBOUNDS Group {
+            children [
+              
+        DEF boundary Group {
+            children [
+              DEF trap0min Transform {
+                    translation 0.06000000000000011 -0.03 0.3000000000000001
+              }
+              DEF trap0max Transform {
+                    translation 0.1800000000000001 -0.03 0.4200000000000001
+              }
+            ]
+          }
+        
+            ]
+        }
+        
+        DEF STARTBOUNDS Group {
+            children [
+              
+        DEF boundary Group {
+            children [
+              DEF start0min Transform {
+                    translation -0.54 -0.03 0.3000000000000001
+              }
+              DEF start0max Transform {
+                    translation -0.42 -0.03 0.4200000000000001
+              }
+            ]
+          }
+        
+            ]
+        }
+        
+        DEF SWAMPBOUNDS Group {
+            children [
+              
+        DEF boundary Group {
+            children [
+              DEF swamp0min Transform {
+                    translation -0.18 -0.03 -0.42
+              }
+              DEF swamp0max Transform {
+                    translation -0.06 -0.03 -0.3
+              }
+            ]
+          }
+        
+        DEF boundary Group {
+            children [
+              DEF swamp1min Transform {
+                    translation 0.18 -0.03 0.3000000000000001
+              }
+              DEF swamp1max Transform {
+                    translation 0.3 -0.03 0.4200000000000001
+              }
+            ]
+          }
+        
+            ]
+        }
+        
+        DEF OBSTACLES Group {
+            children [
+              
+            ]
+        }
+        
+        DEF HUMANGROUP Group {
+            children [
+              
+        Victim {
+            translation -0.442 0 -0.45899999999999996
+            rotation 0 1 0 2.355
+            name "Victim0"
+            type "stable"
+            scoreWorth 5
+        }
+        
+        Victim {
+            translation -0.535 0 0.1200000000000001
+            rotation 0 1 0 -1.57
+            name "Victim1"
+            type "stable"
+            scoreWorth 5
+        }
+        
+        Victim {
+            translation -0.36 0 0.185
+            rotation 0 1 0 3.14
+            name "Victim2"
+            type "harmed"
+            scoreWorth 5
+        }
+        
+        Victim {
+            translation -0.12 0 -0.535
+            rotation 0 1 0 3.14
+            name "Victim3"
+            type "harmed"
+            scoreWorth 5
+        }
+        
+        Victim {
+            translation -0.119 0 0.185
+            rotation 0 1 0 3.14
+            name "Victim4"
+            type "unharmed"
+            scoreWorth 5
+        }
+        
+        Victim {
+            translation -0.03 0 -0.4144
+            rotation 0 1 0 3.14
+            name "Victim5"
+            type "unharmed"
+            scoreWorth 5
+        }
+        
+        Victim {
+            translation 0.1500000000000001 0 0.054400000000000004
+            rotation 0 1 0 0
+            name "Victim6"
+            type "stable"
+            scoreWorth 5
+        }
+        
+        Victim {
+            translation 0.4150000000000001 0 0.24
+            rotation 0 1 0 1.57
+            name "Victim7"
+            type "unharmed"
+            scoreWorth 5
+        }
+        
+                    Victim {
+                        translation 0.16680000000000006 0 -0.43100000000000005
+                        rotation 0 1 0 1.0121970114513341
+                        name "Victim8"
+                        type "stable"
+                        scoreWorth 15
+                    }
+                    
+            ]
+        }
+        
+        DEF HAZARDGROUP Group {
+            children [
+              
+        HazardMap {
+            translation -0.5344 0 -0.12
+            rotation 0 1 0 -1.57
+            name "Hazard0"
+            type "P"
+            scoreWorth 10
+        }
+        
+        HazardMap {
+            translation -0.36 0 0.1744000000000001
+            rotation 0 1 0 0
+            name "Hazard1"
+            type "F"
+            scoreWorth 10
+        }
+        
+        HazardMap {
+            translation -0.27799999999999997 0 -0.39799999999999996
+            rotation 0 1 0 -2.355
+            name "Hazard2"
+            type "C"
+            scoreWorth 10
+        }
+        
+        HazardMap {
+            translation 0.1856 0 0.24
+            rotation 0 1 0 -1.57
+            name "Hazard3"
+            type "P"
+            scoreWorth 10
+        }
+        
+        HazardMap {
+            translation 0.3056000000000001 0 0
+            rotation 0 1 0 -1.57
+            name "Hazard4"
+            type "O"
+            scoreWorth 10
+        }
+        
+                    HazardMap {
+                        translation 0.30600000000000005 0 -0.11360000000000003
+                        rotation 0 1 0 -0.24497866312686414
+                        name "Hazard5"
+                        type "F"
+                        scoreWorth 30
+                    }
+                    
+                    HazardMap {
+                        translation 0.19080000000000005 0 -0.12260000000000004
+                        rotation 0 1 0 -0.3217505543966422
+                        name "Hazard6"
+                        type "C"
+                        scoreWorth 30
+                    }
+                    
+                    HazardMap {
+                        translation 0.15720000000000006 0 -0.21140000000000003
+                        rotation 0 1 0 4.352025656524324
+                        name "Hazard7"
+                        type "P"
+                        scoreWorth 30
+                    }
+                    
+            ]
+        }
+        
+        DEF MAINSUPERVISOR Robot {
+            children [
+              Receiver {
+                channel 1
+              }
+              Emitter {
+                channel 1
+              }
+            ]
+            supervisor TRUE
+            controller "MainSupervisor"
+            customData "480"
+            window "MainSupervisorWindow"
+          }
+        
