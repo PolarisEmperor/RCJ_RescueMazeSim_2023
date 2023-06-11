@@ -189,6 +189,23 @@ void mapAngledVictim(int tile, int direction, char code) {
 	else if (*p != "0") *p += { code };
 }
 
+void mapCurvedWall(int tile, int subTile, int curveDirection) {
+	switch (subTile) {
+		case 0:
+			
+			break;
+		case 1:
+			
+			break;
+		case 2:
+			
+			break;
+		case 3:
+			
+			break;
+	}
+}
+
 // Get tile data(set bits of walls)
 void getTile(int tile) {
 	if (bot.getDirection() < 0) return;
@@ -209,7 +226,7 @@ void getTile(int tile) {
 	for (int i = 0; i < 4; i++) {
 		field[directions[i]].N = field[directions[i]].E = field[directions[i]].S = field[directions[i]].W = 0;
 		for (int j = 0; j < 4; j++) {
-			field[directions[i]].corner = -1;
+			//field[directions[i]].corner = -1;
 		}
 	}
 
@@ -285,6 +302,8 @@ void getTile(int tile) {
 	}
 	//}
 
+	editMapTile(tile);
+
 	if (bot.curRoom == 3) {
 		int realTile = 0;
 		int realDir = 0;
@@ -295,6 +314,7 @@ void getTile(int tile) {
 
 		std::vector<float> v;
 		double average[4] = { 0 };
+
 		for (int start = 0; start < 385; start += 128) {
 			for (int i = 0; i < 4; i++) {
 				for (int j = i * 32 + start; j < i * 32 + 32 + start; j++) {
@@ -305,34 +325,50 @@ void getTile(int tile) {
 				printf("avg%d: %f\n", i, average[i]);
 				v.clear();
 			}
-		
+
 			if (average[1] < 7 && fabs(average[1] - average[0]) < 0.6 && fabs(average[3] - average[2]) < 0.6) {
-				printf("%d concave\n", start);
+				printf("%d concave\n", start / 128);
+				
+				// Find what sub-tile the curve is in
+				int curvetile = start / 128 + 1;
+				if (curvetile > 3) curvetile -= 4;
+
+				// fix direction
+				curvetile += bot.getDirection();
+				if (curvetile >= 4) curvetile -= 4;
+
+				printf("thingy %d\n", curvetile);
+
+				mapCurvedWall(tile, curvetile, curvetile);
+	
+
 			}
-			else if (average[2] < 8 && fabs(average[2] - average[3]) < 0.8) {
+
+			/*else if (average[2] < 8 && fabs(average[2] - average[3]) < 0.8) {
 				printf("%d side bottom\n", start);
 			}
 			else if (average[3] < 9 && fabs(average[2] - average[3]) > 2.0) {
 				printf("%d side top\n", start);
-			}
-			else if (average[0] < 9) {
+			}*/
+			/*else if (average[0] < 9) {
 				if (fabs(average[0] - average[1]) < 1.0) {
 					printf("%d front left\n", start);
 				}
 				else if (average[1] / average[0] > 1.0) {
 					printf("%d front right\n", start);
 				}
-			}
+			}*/
 		}
+
 
 		/*printf("%f %f %f %f\n", bot.getLidar(3, 446), bot.getLidar(3, 65), bot.getLidar(3, 190), bot.getLidar(3, 321));
 		printf("%f %f %f\n", bot.getLidar(3, 0), bot.getLidar(3, 255), bot.getLidar(3, 383));*/
-		//if ((lidarValue = bot.getLidar(3, 446)) < convexThreshold) {
+		//if ((lidarValue = bot.getLidarPoint(3, 446)) < convexThreshold) {
 		//	// convex
-		//	if (bot.getLidar(3, 383) > lidarValue && bot.getLidar(3, 383) < 12) {
+		//	if (bot.getLidarPoint(3, 383) > lidarValue && bot.getLidarPoint(3, 383) < 12) {
 		//		printf("CONVEX 446west\n");
 		//	}
-		//	else if (lidarValue > bot.getLidar(3, 480) && lidarValue - bot.getLidar(3, 480) < 1.5) {
+		//	else if (lidarValue > bot.getLidarPoint(3, 480) && lidarValue - bot.getLidarPoint(3, 480) < 1.5) {
 		//		printf("CONVEX 446north\n");
 		//	}
 		//	// concave
@@ -343,11 +379,11 @@ void getTile(int tile) {
 		//		printf("%d %d\n", realTile, realDir);
 		//	}
 		//}
-		//if ((lidarValue = bot.getLidar(3, 65)) < convexThreshold) {
-		//	if (bot.getLidar(3, 127) > lidarValue && bot.getLidar(3, 127) < 12) {
+		//if ((lidarValue = bot.getLidarPoint(3, 65)) < convexThreshold) {
+		//	if (bot.getLidarPoint(3, 127) > lidarValue && bot.getLidarPoint(3, 127) < 12) {
 		//		printf("CONVEX 65east\n");
 		//	}
-		//	else if (lidarValue > bot.getLidar(3, 32) && lidarValue - bot.getLidar(3, 32) < 1.5) {
+		//	else if (lidarValue > bot.getLidarPoint(3, 32) && lidarValue - bot.getLidarPoint(3, 32) < 1.5) {
 		//		printf("CONVEX 65north\n");
 		//	}
 		//	else if (lidarValue < concaveThreshold) {
@@ -357,11 +393,11 @@ void getTile(int tile) {
 		//		printf("%d %d\n", realTile, realDir);
 		//	}
 		//}
-		//if ((lidarValue = bot.getLidar(3, 190)) < convexThreshold) {
-		//	if (bot.getLidar(3, 127) > lidarValue && bot.getLidar(3, 127) < 12) {
+		//if ((lidarValue = bot.getLidarPoint(3, 190)) < convexThreshold) {
+		//	if (bot.getLidarPoint(3, 127) > lidarValue && bot.getLidarPoint(3, 127) < 12) {
 		//		printf("CONVEX 190east\n");
 		//	}
-		//	else if (bot.getLidar(3, 255) > lidarValue && bot.getLidar(3, 255) < 12) {
+		//	else if (bot.getLidarPoint(3, 255) > lidarValue && bot.getLidarPoint(3, 255) < 12) {
 		//		printf("CONVEX 190south\n");
 		//	}
 		//	else if (lidarValue < concaveThreshold) {
@@ -371,11 +407,11 @@ void getTile(int tile) {
 		//		printf("%d %d\n", realTile, realDir);
 		//	}
 		//}
-		//if ((lidarValue = bot.getLidar(3, 321)) < convexThreshold) {
-		//	if (bot.getLidar(3, 383) > lidarValue && bot.getLidar(3, 383) < 12) {
+		//if ((lidarValue = bot.getLidarPoint(3, 321)) < convexThreshold) {
+		//	if (bot.getLidarPoint(3, 383) > lidarValue && bot.getLidarPoint(3, 383) < 12) {
 		//		printf("CONVEX 321west\n");
 		//	}
-		//	else if (bot.getLidar(3, 255) > lidarValue && bot.getLidar(3, 255) < 12) {
+		//	else if (bot.getLidarPoint(3, 255) > lidarValue && bot.getLidarPoint(3, 255) < 12) {
 		//		printf("CONVEX 321south\n");
 		//	}
 		//	else if (lidarValue < concaveThreshold) {
@@ -414,8 +450,6 @@ void getTile(int tile) {
 		printf("%d\n", field[directions[i]].bits);
 
 	field[directions[0]].visited = 1;
-
-	editMapTile(tile);
 
 	if (bot.room4done && (tile == bot.redTile || tile == bot.greenTile)) {
 		switch (bot.getDirection()) {

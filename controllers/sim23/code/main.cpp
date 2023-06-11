@@ -17,10 +17,14 @@ int main() {
 	}
 	field[bot.startTile].color = Start;
 	
+	//bot.curRoom = 3;
+
 	// SIMULATION LOOP
 	while (bot.update()) {
-		printf("room %d\n", bot.curRoom);
-		printf("bluetile %d\n", bot.blueTile);
+		// testing stuff
+		/*getTile(bot.curTile);
+		field[bot.curTile].visited = 0;*/
+
 		if (bot.checkLOPemitter()) {
 			bot.curTile = bot.checkpointTile;
 			bot.curRoom = bot.checkpointRoom;

@@ -19,7 +19,6 @@ struct Tile {
 		};
 		ubyte bits;
 	};
-	int corner;
 	bool visited; // has robot visited tile already
 	bool victimChecked; // victim seen
 	char color; // Tile color
