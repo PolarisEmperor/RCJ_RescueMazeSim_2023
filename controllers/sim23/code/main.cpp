@@ -17,7 +17,7 @@ int main() {
 	}
 	field[bot.startTile].color = Start;
 	
-	//bot.curRoom = 3;
+	bot.curRoom = 3;
 
 	// SIMULATION LOOP
 	while (bot.update()) {
@@ -25,6 +25,9 @@ int main() {
 		/*getTile(bot.curTile);
 		field[bot.curTile].visited = 0;*/
 
+		/*mapBonus();
+		break;*/
+		
 		if (bot.checkLOPemitter()) {
 			bot.curTile = bot.checkpointTile;
 			bot.curRoom = bot.checkpointRoom;
@@ -155,6 +158,7 @@ int main() {
 			}
 			break;
 		}
+		
 	}
 	
 	return 0;
