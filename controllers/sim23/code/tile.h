@@ -36,3 +36,4 @@ void mapBonus();
 void mapVictim(int tile, int direction, char code);
 void mapAngledVictim(int tile, int direction, char code);
 void editMapTile(int tile);
+bool obstacle(int target);

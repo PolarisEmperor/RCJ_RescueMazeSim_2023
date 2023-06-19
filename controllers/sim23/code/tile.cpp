@@ -258,6 +258,96 @@ void mapCurvedWall(int tile, int subTile, int curveDirection) {
 	}
 }
 
+bool obstacle(int tile) {
+	float dist = 5;
+	bool leftSide = false, rightSide = 0;
+	bool wall[8] = { 0 };
+
+	for (int i = 412; i < 512; i++) {
+		//printf("%f\n", bot.getLidarPoint(3, i));
+		if (bot.getLidarPoint(3, i) < dist) {
+			leftSide = true;
+			if (bot.getDirection() * 2 > 7) {
+				wall[bot.getDirection() * 2 - 8] = true;
+			}
+			else {
+				wall[bot.getDirection() * 2] = true;
+			}
+			break;
+		}
+	}
+	for (int i = 0; i < 100; i++) {
+		//printf("%f\n", bot.getLidarPoint(3, i));
+		if (bot.getLidarPoint(3, i) < dist) {
+			rightSide = true;
+			if (1 + bot.getDirection() * 2 > 7) {
+				wall[1 + bot.getDirection() * 2 - 8] = true;
+			}
+			else {
+				wall[1 + bot.getDirection() * 2] = true;
+			}
+			break;
+		}
+	}
+	if (!leftSide && !rightSide) return false;
+
+	for (int i = 0; i < 8; i++) {
+		if (wall[i]) {
+			switch (i) {
+				case 0:
+					setWalls(tile, 1, 0, 0, 0);
+					break;
+				case 1:
+					setWalls(tile + 1, 1, 0, 0, 0);
+					break;
+				case 2:
+					setWalls(tile + 1, 0, 1, 0, 0);
+					break;
+				case 3:
+					setWalls(tile + COLS + 1, 0, 1, 0, 0);
+					break;
+				case 4:
+					setWalls(tile + COLS + 1, 0, 0, 1, 0);
+					break;
+				case 5:
+					setWalls(tile + COLS, 0, 0, 1, 0);
+					break;
+				case 6:
+					setWalls(tile + COLS, 0, 0, 0, 1);
+					break;
+				case 7:
+					setWalls(tile, 0, 0, 0, 1);
+					break;
+			}
+		}
+	}
+	editMapTile(tile);
+	field[tile].visited = 1;
+	field[tile + 1].visited = 1;
+	field[tile + COLS].visited = 1;
+	field[tile + COLS + 1].visited = 1;
+	//switch (bot.getDirection()) {
+	//	case North:
+	//		if (leftSide) field[tile - 1].visited = 1; field[tile + COLS - 1].visited = 1;
+	//		if (rightSide) field[tile + 1].visited = 1; field[tile + COLS + 1].visited = 1;
+	//		break;
+	//	case East:
+	//		if (leftSide) field[tile + 1].visited = 1;
+	//		if (rightSide) field[tile + COLS + 1].visited = 1;
+	//		break;
+	//	case South:
+	//		if (leftSide) field[tile + COLS + 1].visited = 1;
+	//		if (rightSide) field[tile + COLS - 1].visited = 1;
+	//		break;
+	//	case West:
+	//		if (leftSide) field[tile + COLS].visited = 1;
+	//		//if (rightSide) field[tile + 1].visited = 1;
+	//		break;
+	//}
+
+	return true;
+}
+
 // Get tile data(set bits of walls)
 void getTile(int tile) {
 	if (bot.getDirection() < 0) return;
@@ -378,6 +468,7 @@ void getTile(int tile) {
 				v.clear();
 			}
 
+			// concave
 			if (average[1] < 7 && fabs(average[1] - average[0]) < 0.6 && fabs(average[3] - average[2]) < 0.6) {
 				printf("%d concave\n", start / 128);
 				
@@ -392,8 +483,14 @@ void getTile(int tile) {
 				printf("thingy %d\n", curvetile);
 
 				mapCurvedWall(tile, curvetile, curvetile);
-	
+			}
 
+			// convex
+			printf("%f %f %f %f\n", average[0], average[1], average[2], average[3]);
+			
+			// concave
+			if (average[0] > 30 && average[1] > 30 && average[2] < 8 && average[3] < 8) {
+				printf("CONCAVE %d\n", start / 128 + 1);
 			}
 
 			/*else if (average[2] < 8 && fabs(average[2] - average[3]) < 0.8) {

@@ -24,9 +24,6 @@ int main() {
 		// testing stuff
 		/*getTile(bot.curTile);
 		field[bot.curTile].visited = 0;*/
-
-		/*mapBonus();
-		break;*/
 		
 		if (bot.checkLOPemitter()) {
 			bot.curTile = bot.checkpointTile;

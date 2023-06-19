@@ -12,6 +12,7 @@ int findNeighbor(unsigned int tile, int dir) {
 	switch (dir) {
 		case North:
 			if (field[neighbors[North]].color != Hole && field[neighbors[North] + 1].color != Hole && (field[tile].bits & (1 << North)) == 0 && (field[neighbors[East]].bits & (1 << North)) == 0 && (field[neighbors[North]].bits & (1 << East)) == 0) {
+				printf("NORTH %d\n", field[tile].bits);
 				if (field[neighbors[North]].color >= Red && bot.room4done) break;
 				return neighbors[dir];
 			}
@@ -107,8 +108,6 @@ int move2Tile(int cur, int target) {
 			if (neighbor == target) break;
 		}
 	}
-	//printf("target = %d cur = %d\n", target, cur);
-	//printf("current direction %d turn to %d\n", bot.getDirection(), i);
 
 	// Turn to the right direction
 	if (bot.getDirection() != i) bot.turn(i);
@@ -117,25 +116,21 @@ int move2Tile(int cur, int target) {
 	switch (bot.getDirection()) {
 		case North:
 			targetPos = bot.getTargetPos(diffX, diffY -= 1).y;
-			//targetPos = bot.getPrevPos().y - 6.0 / 100;
 			break;
 		case East:
 			targetPos = bot.getTargetPos(diffX += 1, diffY).x;
-			//targetPos = bot.getPrevPos().x + 6.0 / 100;
 			break;
 		case South:
 			targetPos = bot.getTargetPos(diffX, diffY += 1).y;
-			//targetPos = bot.getPrevPos().y + 6.0 / 100;
 			break;
 		case West:
 			targetPos = bot.getTargetPos(diffX -= 1, diffY).x;
-			//targetPos = bot.getPrevPos().x - 6.0 / 100;
 			break;
 	}
-	//printf("targetPos: %f\n", targetPos);
 	bot.stop();
 	
 	while (bot.update()) {
+		// Check for victims
 		if (bot.getLidarPoint(3, 127) < 7 && !field[cur].victimChecked) {
 			char victim = checkVisualVictim(bot.camR);
 			if (victim > 0) {
@@ -158,7 +153,6 @@ int move2Tile(int cur, int target) {
 		tileColor = bot.getTileColor(bot.camB->getWidth() / 2, 0);
 		int left = bot.getTileColor(bot.camB->getWidth() / 4, 0);
 		int right = bot.getTileColor(bot.camB->getWidth() * 3 / 4, 0);
-		//printf("tile color %d %d\n", left, right);
 		
 		if (left == Hole || right == Hole) { // bottom cam sees black
 			bot.stop();
@@ -258,7 +252,25 @@ int move2Tile(int cur, int target) {
 			editMapTile(blackHole[0]);
 			return cur;
 		}
+		if (obstacle(target)) {
+			bot.stop();
+			bot.delay(1000);
+			// back up to prev pos
+			bot.speed(-6, -6);
+			printf("OBSTACLE!!!\n");
 
+			if (bot.getDirection() == North || bot.getDirection() == South)
+				if (bot.getPos().y < bot.getPrevPos().y) while (bot.update() && bot.getPos().y < bot.getPrevPos().y);
+				else while (bot.update() && bot.getPos().y > bot.getPrevPos().y);
+			else
+				if (bot.getPos().x < bot.getPrevPos().x) while (bot.update() && bot.getPos().x < bot.getPrevPos().x);
+				else while (bot.update() && bot.getPos().x > bot.getPrevPos().x);
+
+			bot.stop();
+			return target;
+		}
+
+		// reached target pos
 		if (bot.getDirection() == North && bot.getPos().y < targetPos) break;
 		if (bot.getDirection() == South && bot.getPos().y > targetPos) break;
 		if (bot.getDirection() == East && bot.getPos().x > targetPos) break;
