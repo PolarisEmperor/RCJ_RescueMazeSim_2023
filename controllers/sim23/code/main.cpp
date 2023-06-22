@@ -31,14 +31,20 @@ int main() {
 			printf("lack of progress called\n");
 		}
 
+		// Room 4
 		if (bot.curRoom == 4 && !bot.room4done) {
+			double x = bot.getPos().x;
+			double y = bot.getPos().y;
+			int startDir = bot.getDirection();
 			int color = bot.getTileColor(0, 0);
 			int wallTraceColor;
 			bool LOProom4 = false;
 
+			printf("start dir %d\n", startDir);
 			printf("color %d\n", color);
 			bot.delay(1000);
-
+			
+			// get off tile
 			while (bot.update() && color == room4_wallTrace()) {
 				if (bot.checkLOPemitter()) {
 					bot.curTile = bot.checkpointTile;
@@ -48,6 +54,7 @@ int main() {
 				}
 			}
 
+			// trace
 			while (bot.update() && !LOProom4) {
 				if (bot.checkLOPemitter()) {
 					bot.curTile = bot.checkpointTile;
@@ -61,6 +68,7 @@ int main() {
 				if (color == Red && wallTraceColor == Green) break;
 			}
 
+			// not at entrance tile
 			if (wallTraceColor != color && !LOProom4) {
 				bot.turn(North);
 
@@ -73,7 +81,8 @@ int main() {
 					}
 				}
 			}
-			switch (bot.roundAngle()) {
+
+			/*switch (bot.roundAngle()) {
 				case 0: case 1:
 					bot.turn(North);
 					break;
@@ -89,7 +98,28 @@ int main() {
 			}
 			while (bot.update() && bot.getTileColor(0, 0) == color) {
 				bot.speed(5.0, 5.0);
+			}*/
+
+			bot.turn(East);
+			printf("%f %f %f %f\n", bot.getPos().x, bot.getPos().y, x, y);
+			while (bot.update() && bot.getPos().x < x) {
+				bot.speed(5, 5);
 			}
+			bot.stop();
+			while (bot.update() && bot.getPos().x > x) {
+				bot.speed(-5, -5);
+			}
+			bot.stop();
+			bot.turn(North);
+			while (bot.update() && bot.getPos().y < y) {
+				bot.speed(-5, -5);
+			}
+			bot.stop();
+			while (bot.update() && bot.getPos().y > y) {
+				bot.speed(5, 5);
+			}
+			bot.stop();
+
 			bot.stop();
 			bot.room4done = true;
 
@@ -101,24 +131,22 @@ int main() {
 				bot.curRoom = 3;
 				bot.curTile = bot.redTile;
 			}
-			switch (bot.getDirection()) {
+			switch (startDir) {
 				case North:
-					setWalls(bot.curTile + COLS +1, 0, 0, 1, 0);
-					setWalls(bot.curTile + COLS, 0, 0, 1, 0);
-					break;
-				case East:
-					setWalls(bot.curTile, 0, 0, 0, 1);
-					setWalls(bot.curTile + COLS, 0, 0, 0, 1);
-					break;
-				case South:
-					
 					setWalls(bot.curTile, 1, 0, 0, 0);
 					setWalls(bot.curTile + 1, 1, 0, 0, 0);
 					break;
-				case West:
+				case East:
 					setWalls(bot.curTile + 1, 0, 1, 0, 0);
 					setWalls(bot.curTile + COLS + 1, 0, 1, 0, 0);
-					
+					break;
+				case South:
+					setWalls(bot.curTile + COLS, 0, 0, 1, 0);
+					setWalls(bot.curTile + COLS + 1, 0, 0, 1, 0);
+					break;
+				case West:
+					setWalls(bot.curTile, 0, 0, 0, 1);
+					setWalls(bot.curTile + COLS, 0, 0, 0, 1);
 					break;
 			}
 			field[bot.curTile].visited = 1;
