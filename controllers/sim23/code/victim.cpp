@@ -75,7 +75,8 @@ char HSU(Mat roi) {
 	int slicedContours = 0;
 	double area = 0;
 	int topCropVal = 0;
-	int botCropVal = roi.rows / 4;
+	int botCropVal = 0;
+	int botHeight = roi.rows / 4;
 	double widthMult = 1;
 
 	threshold(roi, roi, thresh, max_thresh, THRESH_BINARY_INV); // create thresholded image
@@ -88,15 +89,16 @@ char HSU(Mat roi) {
 	if (allContours.size() == 3) {
 		topCropVal = findMinMax(allContours[2], true); //find max
 		botCropVal = findMinMax(allContours[0], false); //find min
-		botCropVal = roi.rows - botCropVal;
-		widthMult = 0.9;
+		botHeight = roi.rows - botCropVal;
+		widthMult = 0.85;
 	}
 	printf("\nWidth: %d, Height: %d", roi.cols, roi.rows);
-	printf("\ntopCropVal: %d, botCropVal: %d\n", topCropVal, botCropVal);
+	printf("\ntopCropVal: %d, botCropVal: %d, botHeight: %d\n", topCropVal, botCropVal, botHeight);
 
 	Mat cropTop(roi, Rect(0, topCropVal, roi.cols * widthMult, roi.rows / 4));
-	Mat cropMid(roi, Rect(0, roi.rows / 3, roi.cols * widthMult, roi.rows / 4));
-	Mat cropBot(roi, Rect(0, roi.rows * 3 / 4, roi.cols * widthMult, botCropVal));
+	//Mat cropMid(roi, Rect(0, roi.rows / 3, roi.cols * widthMult, roi.rows / 4));
+	Mat cropMid(roi, Rect(0, roi.rows * 3 / 8, roi.cols * widthMult, roi.rows / 4));
+	Mat cropBot(roi, Rect(0, roi.rows * 3 / 4, roi.cols * widthMult, botHeight));
 
 	imshow("top_crop", cropTop);
 	imshow("mid_crop", cropMid);
