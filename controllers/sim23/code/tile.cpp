@@ -189,6 +189,165 @@ void mapAngledVictim(int tile, int direction, char code) {
 	else if (*p != "0") *p += { code };
 }
 
+void mapCurvedWall(int tile, int subTile, int curveDirection) {
+	switch (subTile) {
+		case 0:
+			switch (curveDirection) {
+				case tl:
+					bigmap[mapY - 2][mapX - 2] = '0';
+					break;
+				case tr:
+					bigmap[mapY - 2][mapX] = '0';
+					break;
+				case br:
+					//bigmap[mapY][mapX] = '0';
+					break;
+				case bl:
+					bigmap[mapY][mapX - 2] = '0';
+					break;
+			}
+			break;
+		case 1:
+			switch (curveDirection) {
+				case tl:
+					//bigmap[mapY - 2][mapX - 2] = '0';
+					break;
+				case tr:
+					bigmap[mapY - 2][mapX + 2] = '0';
+					break;
+				case br:
+					//bigmap[mapY + 2][mapX + 2] = '0';
+					break;
+				case bl:
+					//bigmap[mapY + 2][mapX - 2] = '0';
+					break;
+			}
+			break;
+		case 2:
+			switch (curveDirection) {
+				case tl:
+					//bigmap[mapY - 2][mapX - 2] = '0';
+					break;
+				case tr:
+					//bigmap[mapY - 2][mapX + 2] = '0';
+					break;
+				case br:
+					bigmap[mapY + 2][mapX + 2] = '0';
+					break;
+				case bl:
+					//bigmap[mapY + 2][mapX - 2] = '0';
+					break;
+			}
+			break;
+		case 3:
+			switch (curveDirection) {
+				case tl:
+					//bigmap[mapY - 2][mapX - 2] = '0';
+					break;
+				case tr:
+					//bigmap[mapY - 2][mapX + 2] = '0';
+					break;
+				case br:
+					//bigmap[mapY + 2][mapX + 2] = '0';
+					break;
+				case bl:
+					bigmap[mapY + 2][mapX - 2] = '0';
+					break;
+			}
+			break;
+	}
+}
+
+bool obstacle(int tile) {
+	float dist = 5;
+	bool leftSide = false, rightSide = 0;
+	bool wall[8] = { 0 };
+
+	for (int i = 412; i < 512; i++) {
+		//printf("%f\n", bot.getLidarPoint(3, i));
+		if (bot.getLidarPoint(3, i) < dist) {
+			leftSide = true;
+			if (bot.getDirection() * 2 > 7) {
+				wall[bot.getDirection() * 2 - 8] = true;
+			}
+			else {
+				wall[bot.getDirection() * 2] = true;
+			}
+			break;
+		}
+	}
+	for (int i = 0; i < 100; i++) {
+		//printf("%f\n", bot.getLidarPoint(3, i));
+		if (bot.getLidarPoint(3, i) < dist) {
+			rightSide = true;
+			if (1 + bot.getDirection() * 2 > 7) {
+				wall[1 + bot.getDirection() * 2 - 8] = true;
+			}
+			else {
+				wall[1 + bot.getDirection() * 2] = true;
+			}
+			break;
+		}
+	}
+	if (!leftSide && !rightSide) return false;
+
+	for (int i = 0; i < 8; i++) {
+		if (wall[i]) {
+			switch (i) {
+				case 0:
+					setWalls(tile, 1, 0, 0, 0);
+					break;
+				case 1:
+					setWalls(tile + 1, 1, 0, 0, 0);
+					break;
+				case 2:
+					setWalls(tile + 1, 0, 1, 0, 0);
+					break;
+				case 3:
+					setWalls(tile + COLS + 1, 0, 1, 0, 0);
+					break;
+				case 4:
+					setWalls(tile + COLS + 1, 0, 0, 1, 0);
+					break;
+				case 5:
+					setWalls(tile + COLS, 0, 0, 1, 0);
+					break;
+				case 6:
+					setWalls(tile + COLS, 0, 0, 0, 1);
+					break;
+				case 7:
+					setWalls(tile, 0, 0, 0, 1);
+					break;
+			}
+		}
+	}
+	editMapTile(tile);
+	field[tile].visited = 1;
+	field[tile + 1].visited = 1;
+	field[tile + COLS].visited = 1;
+	field[tile + COLS + 1].visited = 1;
+	//switch (bot.getDirection()) {
+	//	case North:
+	//		if (leftSide) field[tile - 1].visited = 1; field[tile + COLS - 1].visited = 1;
+	//		if (rightSide) field[tile + 1].visited = 1; field[tile + COLS + 1].visited = 1;
+	//		break;
+	//	case East:
+	//		if (leftSide) field[tile + 1].visited = 1;
+	//		if (rightSide) field[tile + COLS + 1].visited = 1;
+	//		break;
+	//	case South:
+	//		if (leftSide) field[tile + COLS + 1].visited = 1;
+	//		if (rightSide) field[tile + COLS - 1].visited = 1;
+	//		break;
+	//	case West:
+	//		if (leftSide) field[tile + COLS].visited = 1;
+	//		//if (rightSide) field[tile + 1].visited = 1;
+	//		break;
+	//}
+
+	return true;
+}
+
 // Get tile data(set bits of walls)
 void getTile(int tile) {
 	if (bot.getDirection() < 0) return;
@@ -209,7 +368,7 @@ void getTile(int tile) {
 	for (int i = 0; i < 4; i++) {
 		field[directions[i]].N = field[directions[i]].E = field[directions[i]].S = field[directions[i]].W = 0;
 		for (int j = 0; j < 4; j++) {
-			field[directions[i]].corner = -1;
+			//field[directions[i]].corner = -1;
 		}
 	}
 
@@ -285,6 +444,8 @@ void getTile(int tile) {
 	}
 	//}
 
+	editMapTile(tile);
+
 	if (bot.curRoom == 3) {
 		int realTile = 0;
 		int realDir = 0;
@@ -295,6 +456,7 @@ void getTile(int tile) {
 
 		std::vector<float> v;
 		double average[4] = { 0 };
+
 		for (int start = 0; start < 385; start += 128) {
 			for (int i = 0; i < 4; i++) {
 				for (int j = i * 32 + start; j < i * 32 + 32 + start; j++) {
@@ -305,34 +467,57 @@ void getTile(int tile) {
 				printf("avg%d: %f\n", i, average[i]);
 				v.clear();
 			}
-		
+
+			// concave
 			if (average[1] < 7 && fabs(average[1] - average[0]) < 0.6 && fabs(average[3] - average[2]) < 0.6) {
-				printf("%d concave\n", start);
+				printf("%d concave\n", start / 128);
+				
+				// Find what sub-tile the curve is in
+				int curvetile = start / 128 + 1;
+				if (curvetile > 3) curvetile -= 4;
+
+				// fix direction
+				curvetile += bot.getDirection();
+				if (curvetile >= 4) curvetile -= 4;
+
+				printf("thingy %d\n", curvetile);
+
+				mapCurvedWall(tile, curvetile, curvetile);
 			}
-			else if (average[2] < 8 && fabs(average[2] - average[3]) < 0.8) {
+
+			// convex
+			printf("%f %f %f %f\n", average[0], average[1], average[2], average[3]);
+			
+			// concave
+			if (average[0] > 30 && average[1] > 30 && average[2] < 8 && average[3] < 8) {
+				printf("CONCAVE %d\n", start / 128 + 1);
+			}
+
+			/*else if (average[2] < 8 && fabs(average[2] - average[3]) < 0.8) {
 				printf("%d side bottom\n", start);
 			}
 			else if (average[3] < 9 && fabs(average[2] - average[3]) > 2.0) {
 				printf("%d side top\n", start);
-			}
-			else if (average[0] < 9) {
+			}*/
+			/*else if (average[0] < 9) {
 				if (fabs(average[0] - average[1]) < 1.0) {
 					printf("%d front left\n", start);
 				}
 				else if (average[1] / average[0] > 1.0) {
 					printf("%d front right\n", start);
 				}
-			}
+			}*/
 		}
+
 
 		/*printf("%f %f %f %f\n", bot.getLidar(3, 446), bot.getLidar(3, 65), bot.getLidar(3, 190), bot.getLidar(3, 321));
 		printf("%f %f %f\n", bot.getLidar(3, 0), bot.getLidar(3, 255), bot.getLidar(3, 383));*/
-		//if ((lidarValue = bot.getLidar(3, 446)) < convexThreshold) {
+		//if ((lidarValue = bot.getLidarPoint(3, 446)) < convexThreshold) {
 		//	// convex
-		//	if (bot.getLidar(3, 383) > lidarValue && bot.getLidar(3, 383) < 12) {
+		//	if (bot.getLidarPoint(3, 383) > lidarValue && bot.getLidarPoint(3, 383) < 12) {
 		//		printf("CONVEX 446west\n");
 		//	}
-		//	else if (lidarValue > bot.getLidar(3, 480) && lidarValue - bot.getLidar(3, 480) < 1.5) {
+		//	else if (lidarValue > bot.getLidarPoint(3, 480) && lidarValue - bot.getLidarPoint(3, 480) < 1.5) {
 		//		printf("CONVEX 446north\n");
 		//	}
 		//	// concave
@@ -343,11 +528,11 @@ void getTile(int tile) {
 		//		printf("%d %d\n", realTile, realDir);
 		//	}
 		//}
-		//if ((lidarValue = bot.getLidar(3, 65)) < convexThreshold) {
-		//	if (bot.getLidar(3, 127) > lidarValue && bot.getLidar(3, 127) < 12) {
+		//if ((lidarValue = bot.getLidarPoint(3, 65)) < convexThreshold) {
+		//	if (bot.getLidarPoint(3, 127) > lidarValue && bot.getLidarPoint(3, 127) < 12) {
 		//		printf("CONVEX 65east\n");
 		//	}
-		//	else if (lidarValue > bot.getLidar(3, 32) && lidarValue - bot.getLidar(3, 32) < 1.5) {
+		//	else if (lidarValue > bot.getLidarPoint(3, 32) && lidarValue - bot.getLidarPoint(3, 32) < 1.5) {
 		//		printf("CONVEX 65north\n");
 		//	}
 		//	else if (lidarValue < concaveThreshold) {
@@ -357,11 +542,11 @@ void getTile(int tile) {
 		//		printf("%d %d\n", realTile, realDir);
 		//	}
 		//}
-		//if ((lidarValue = bot.getLidar(3, 190)) < convexThreshold) {
-		//	if (bot.getLidar(3, 127) > lidarValue && bot.getLidar(3, 127) < 12) {
+		//if ((lidarValue = bot.getLidarPoint(3, 190)) < convexThreshold) {
+		//	if (bot.getLidarPoint(3, 127) > lidarValue && bot.getLidarPoint(3, 127) < 12) {
 		//		printf("CONVEX 190east\n");
 		//	}
-		//	else if (bot.getLidar(3, 255) > lidarValue && bot.getLidar(3, 255) < 12) {
+		//	else if (bot.getLidarPoint(3, 255) > lidarValue && bot.getLidarPoint(3, 255) < 12) {
 		//		printf("CONVEX 190south\n");
 		//	}
 		//	else if (lidarValue < concaveThreshold) {
@@ -371,11 +556,11 @@ void getTile(int tile) {
 		//		printf("%d %d\n", realTile, realDir);
 		//	}
 		//}
-		//if ((lidarValue = bot.getLidar(3, 321)) < convexThreshold) {
-		//	if (bot.getLidar(3, 383) > lidarValue && bot.getLidar(3, 383) < 12) {
+		//if ((lidarValue = bot.getLidarPoint(3, 321)) < convexThreshold) {
+		//	if (bot.getLidarPoint(3, 383) > lidarValue && bot.getLidarPoint(3, 383) < 12) {
 		//		printf("CONVEX 321west\n");
 		//	}
-		//	else if (bot.getLidar(3, 255) > lidarValue && bot.getLidar(3, 255) < 12) {
+		//	else if (bot.getLidarPoint(3, 255) > lidarValue && bot.getLidarPoint(3, 255) < 12) {
 		//		printf("CONVEX 321south\n");
 		//	}
 		//	else if (lidarValue < concaveThreshold) {
@@ -414,8 +599,6 @@ void getTile(int tile) {
 		printf("%d\n", field[directions[i]].bits);
 
 	field[directions[0]].visited = 1;
-
-	editMapTile(tile);
 
 	if (bot.room4done && (tile == bot.redTile || tile == bot.greenTile)) {
 		switch (bot.getDirection()) {
@@ -605,10 +788,65 @@ void mapBonus() {
 
 	char *message = (char *)malloc(8 + flattened.size());
 	// The first 2 integers in the message array are width, height
-	memcpy(message, &width, sizeof(width));
-	memcpy(&message[4], &height, sizeof(height));
+	memcpy(message, &height, sizeof(height));
+	memcpy(&message[4], &width, sizeof(width));
 	memcpy(&message[8], flattened.c_str(), flattened.size()); // Copy in the flattened map afterwards
 	bot.emitter->send(message, 8 + flattened.size()); // Send map data
 	char msg = 'M'; // Send map evaluate request
 	bot.emitter->send(&msg, sizeof(msg));
+
+	//const int width = 29, height = 33;
+	//string map[height][width] = {
+	//	{"1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1"},
+	//	{"1", "5", "0", "5", "0", "6", "0", "6", "0", "7", "0", "7", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "5", "0", "5", "0", "6", "0", "6", "0", "7", "0", "7", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "0", "0", "0", "0", "0", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "0", "1", "1", "1", "1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "1", "1", "1", "0", "1", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "1", "1", "1", "1", "1", "0", "0", "0", "1", "1", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "0", "1", "1", "1", "1", "0", "0", "0", "1", "1", "1", "1", "1", "1", "1", "0", "1", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "0", "0", "0", "0", "0", "1", "1", "1", "0", "0", "0", "0", "1", "1", "1", "1", "1", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1"}
+	//};
+	//
+	//string flattened = "";
+	//for (int i = 0; i < height; i++) {
+	//	for (int j = 0; j < width; j++) {
+	//		flattened += map[i][j] + ","; // Flatten the array with comma separators
+	//	}
+	//}
+
+	//flattened.pop_back(); // Remove the last unnecessary comma
+
+	//char *message = (char *)malloc(8 + flattened.size());
+	//// The first 2 integers in the message array are width, height
+	//memcpy(message, &height, sizeof(height));
+	//memcpy(&message[4], &width, sizeof(width));
+	//memcpy(&message[8], flattened.c_str(), flattened.size()); // Copy in the flattened map afterwards
+	//bot.emitter->send(message, 8 + flattened.size()); // Send map data
+	//char msg = 'M'; // Send map evaluate request
+	//bot.emitter->send(&msg, sizeof(msg));
 }

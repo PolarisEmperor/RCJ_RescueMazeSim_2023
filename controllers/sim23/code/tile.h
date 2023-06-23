@@ -19,7 +19,6 @@ struct Tile {
 		};
 		ubyte bits;
 	};
-	int corner;
 	bool visited; // has robot visited tile already
 	bool victimChecked; // victim seen
 	char color; // Tile color
@@ -37,3 +36,4 @@ void mapBonus();
 void mapVictim(int tile, int direction, char code);
 void mapAngledVictim(int tile, int direction, char code);
 void editMapTile(int tile);
+bool obstacle(int target);
