@@ -66,6 +66,7 @@ public:
 	void updatePrevPos();
 	bool checkLOPemitter();
 	int roundAngle();
+	int getGameTime();
 };
 
 extern class Bot bot;

@@ -263,7 +263,7 @@ bool obstacle(int tile) {
 	bool leftSide = false, rightSide = 0;
 	bool wall[8] = { 0 };
 
-	for (int i = 412; i < 512; i++) {
+	for (int i = 422; i < 512; i++) {
 		//printf("%f\n", bot.getLidarPoint(3, i));
 		if (bot.getLidarPoint(3, i) < dist) {
 			leftSide = true;
@@ -276,7 +276,7 @@ bool obstacle(int tile) {
 			break;
 		}
 	}
-	for (int i = 0; i < 100; i++) {
+	for (int i = 0; i < 80; i++) {
 		//printf("%f\n", bot.getLidarPoint(3, i));
 		if (bot.getLidarPoint(3, i) < dist) {
 			rightSide = true;
@@ -357,7 +357,7 @@ void getTile(int tile) {
 	const int directions[4] = { tile, tile + 1, tile + COLS + 1, tile + COLS }; // sub-tiles
 	const int n = 30; // lidar range
 	const int check[] = { 511 - n, 0 + n, 127 - n, 127 + n, 255 - n, 255 + n, 383 - n, 383 + n }; // lidar values to check
-	const int distFromWall = 8;
+	const int distFromWall = 9;
 	int dir = bot.getDirection();
 	int bit = 1;
 
@@ -374,17 +374,24 @@ void getTile(int tile) {
 
 	// Scan for walls with Lidar
 	for (int i = 0; i < sizeof(check) / sizeof(check[0]); i++) {
-		if (bot.getLidarPoint(3, check[i]) < distFromWall) {
-			// robot facing west
-			if (i + bot.getDirection() * 2 > 7) {
-				wall[i + bot.getDirection() * 2 - 8] = true;
+		// look at range
+		for (int j = check[i] - n / 2; j < check[i] + n / 2; j++) {
+			if (bot.getLidarPoint(3, j) == INFINITY) continue;
+			if (bot.getLidarPoint(3, j) < distFromWall) {
+				// robot facing west
+				if (i + bot.getDirection() * 2 > 7) {
+					wall[i + bot.getDirection() * 2 - 8] = true;
+				}
+				else {
+					wall[i + bot.getDirection() * 2] = true;
+				}
+				//printf("wall dir %d bot dir %d real dir %d\n", i, bot.getDirection(), (i + bot.getDirection() * 2 > 7) ? (i + bot.getDirection() * 2) - 8 : i + bot.getDirection() * 2);
+				//field[directions[dir]].bits += bit; // set wall bit
 			}
-			else {
-				wall[i + bot.getDirection() * 2] = true;
-			}
-			//printf("wall dir %d bot dir %d real dir %d\n", i, bot.getDirection(), (i + bot.getDirection() * 2 > 7) ? (i + bot.getDirection() * 2) - 8 : i + bot.getDirection() * 2);
-			//field[directions[dir]].bits += bit; // set wall bit
 		}
+
+
+		
 		// odd:        next wall  next tile
 		(i % 2 != 0) ? bit *= 2 : (dir == West) ? dir = North : dir++;
 	}

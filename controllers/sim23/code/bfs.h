@@ -6,3 +6,4 @@
 
 int bfs(int tile);
 int move2Tile(int cur, int target);
+int gohome(int tile);

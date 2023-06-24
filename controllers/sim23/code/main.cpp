@@ -16,15 +16,18 @@ int main() {
 		}
 	}
 	field[bot.startTile].color = Start;
-	
-	bot.curRoom = 3;
 
 	// SIMULATION LOOP
 	while (bot.update()) {
+		if (bot.getGameTime() < 20) {
+			mapBonus();
+			break;
+		}
+
 		// testing stuff
 		/*getTile(bot.curTile);
 		field[bot.curTile].visited = 0;*/
-		
+
 		if (bot.checkLOPemitter()) {
 			bot.curTile = bot.checkpointTile;
 			bot.curRoom = bot.checkpointRoom;
@@ -42,7 +45,7 @@ int main() {
 
 			printf("start dir %d\n", startDir);
 			printf("color %d\n", color);
-			bot.delay(1000);
+			//bot.delay(1000);
 			
 			// get off tile
 			while (bot.update() && color == room4_wallTrace()) {
@@ -63,6 +66,7 @@ int main() {
 					break;
 				}
 				wallTraceColor = room4_wallTrace();
+				printf("color = %d\n", wallTraceColor);
 				if (color == wallTraceColor) break;
 				if (color == Green && wallTraceColor == Red) break;
 				if (color == Red && wallTraceColor == Green) break;
@@ -70,7 +74,14 @@ int main() {
 
 			// not at entrance tile
 			if (wallTraceColor != color && !LOProom4) {
-				bot.turn(North);
+				printf("turn around!\n");
+				switch (bot.roundAngle()) {
+					case 0: case 1: bot.turn(South); break;
+					case 2: case 3: bot.turn(West); break;
+					case 4: case 5: bot.turn(North); break;
+					case 6: case 7: bot.turn(East); break;
+				}
+				
 
 				while (bot.update() && color != room4_wallTrace()) {
 					if (bot.checkLOPemitter()) {
@@ -164,26 +175,28 @@ int main() {
 		}
 		else {
 			printf("current room = %d\n", bot.curRoom);
+			gohome(bot.curTile);
 			switch (bot.curRoom) {
 				case 4:
 				case 3:
 					printf("i need to go home! room 3 = %d\n", bot.purpleTile);
 					bot.curTile = move2Tile(bot.curTile, bot.purpleTile);
 					bot.curRoom = 2;
-					bfs(bot.curTile);
+					//bfs(bot.curTile);
+					gohome(bot.curTile);
 				case 2:
 					printf("i need to go home! room 2 = %d\n", bot.blueTile);
 					bot.curTile = move2Tile(bot.curTile, bot.blueTile);
 					bot.curRoom = 1;
-					bfs(bot.curTile);
+					//bfs(bot.curTile);
+					gohome(bot.curTile);
 				case 1:
-					printf("i need to go home! start tile = %d\n", bot.startTile);
+					printf("i need to go home! start tile = %d cur tile = %d\n", bot.startTile, bot.curTile);
 					move2Tile(bot.curTile, bot.startTile);
 					mapBonus();
 			}
 			break;
-		}
-		
+		}	
 	}
 	
 	return 0;
