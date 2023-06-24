@@ -50,27 +50,77 @@ bool comp(vector<Point> first, vector<Point> second) {
 	return (contourArea(first) < contourArea(second));
 }
 
+int findMinMax(vector<Point> points, bool findMax) {
+	printf("\nPoints.size: %zu, ", points.size());
+	int max = points[0].y;
+	int min = points[0].y;
+	for (int i = 0; i < points.size(); i++) {
+		printf("%d, ", points[i].y);
+		if (points[i].y > max) {
+			max = points[i].y;
+		}
+		if (points[i].y < min) {
+			min = points[i].y;
+		}
+	}
+	if (findMax) return max + 1;
+	else if (!findMax) return min - 1;
+	printf("\n");
+}
+
 // HSU victim detection
 char HSU(Mat roi) {
 	vector<vector<Point>> contours;
+	vector<vector<Point>> allContours;
 	int slicedContours = 0;
 	double area = 0;
+	int topCropVal = 0;
+	int botCropVal = 0;
+	int botHeight = roi.rows / 4;
+	double widthMult = 1;
 
 	threshold(roi, roi, thresh, max_thresh, THRESH_BINARY_INV); // create thresholded image
+	imshow("roi", roi);
+	//findContours in whole ROI
+	findContours(roi, allContours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
+	printf("\nContour Count: %zu\n", allContours.size());
+	//printf("\nContour Areas: ");
 
-	Mat top(roi, Rect(0, 0, roi.cols, roi.rows / 4));
-	Mat mid(roi, Rect(0, roi.rows / 3, roi.cols, roi.rows / 4));
-	Mat bot(roi, Rect(0, roi.rows * 3 / 4, roi.cols, roi.rows / 4));
+	if (allContours.size() == 3) {
+		topCropVal = findMinMax(allContours[2], true); //find max
+		botCropVal = findMinMax(allContours[0], false); //find min
+		botHeight = roi.rows - botCropVal;
+		widthMult = 0.85;
+	}
+	printf("\nWidth: %d, Height: %d", roi.cols, roi.rows);
+	printf("\ntopCropVal: %d, botCropVal: %d, botHeight: %d\n", topCropVal, botCropVal, botHeight);
+
+	Mat cropTop(roi, Rect(0, topCropVal, roi.cols * widthMult, roi.rows / 4));
+	//Mat cropMid(roi, Rect(0, roi.rows / 3, roi.cols * widthMult, roi.rows / 4));
+	Mat cropMid(roi, Rect(0, roi.rows * 3 / 8, roi.cols * widthMult, roi.rows / 4));
+	Mat cropBot(roi, Rect(0, roi.rows * 3 / 4, roi.cols * widthMult, botHeight));
+
+	imshow("top_crop", cropTop);
+	imshow("mid_crop", cropMid);
+	imshow("bot_crop", cropBot);
+
+	//Mat top(roi, Rect(0, 0, roi.cols, roi.rows / 4));
+	//Mat mid(roi, Rect(0, roi.rows / 3, roi.cols, roi.rows / 4));
+	//Mat bot(roi, Rect(0, roi.rows * 3 / 4, roi.cols, roi.rows / 4));
+
+	//imshow("top_norm", top);
+	//imshow("mid_norm", mid);
+	//imshow("bot_norm", bot);
 
 	// findContours on each third
-	findContours(top, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE); // find contours
+	findContours(cropTop, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE); // find contours
 	for (int i = 0; i < contours.size(); i++) {
 		area += contourArea(contours[i]);
 	}
 	//printf("top contour: %f, ", area);
 	//if (area < double(top.rows * top.cols * 0.05) || area > double(top.rows * top.cols * 0.3)) return 0;
 	slicedContours = contours.size() * 100;
-	findContours(mid, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE); // find contours
+	findContours(cropMid, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE); // find contours
 	area = 0;
 	for (int i = 0; i < contours.size(); i++) {
 		area += contourArea(contours[i]);
@@ -82,7 +132,7 @@ char HSU(Mat roi) {
 	//	return true;
 	//}
 	slicedContours += contours.size() * 10;
-	findContours(bot, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE); // find contours
+	findContours(cropBot, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE); // find contours
 	area = 0;
 	for (int i = 0; i < contours.size(); i++) {
 		area += contourArea(contours[i]);
@@ -114,11 +164,12 @@ char checkVisualVictim(Camera* cam) {
 
 	Mat frame_HSV, frame_red, frame_yellow;
 	Mat frame(cam->getHeight(), cam->getWidth(), CV_8UC4, (void*)cam->getImage());
-	//imshow("camView", frame);
+	imshow("frame", frame);
 	if (frame.empty()) {
 		cout << "Could not open or find the image!\n" << endl;
 		return 0;
 	}
+	//printf("\nframe_HSV rows: %d, frame_HSV cols: %d\n", frame_HSV.rows, frame_HSV.cols);
 
 	Mat clone = frame.clone();
 	Mat drawing = frame.clone();
@@ -127,6 +178,9 @@ char checkVisualVictim(Camera* cam) {
 	// Detect the object based on HSV Range Values
 	inRange(frame_HSV, Scalar(low_H, low_S, low_V), Scalar(high_H, high_S, high_V), frame_red);
 	inRange(frame_HSV, Scalar(low_Hy, low_S, low_V), Scalar(high_Hy, high_S, high_V), frame_yellow);
+
+	//inRange(frame_HSV, Scalar(150, 60, 60), Scalar(180, 255, 255), frame_red);
+	//inRange(frame_HSV, Scalar(0, 60, 60), Scalar(40, 255, 255), frame_yellow);
 
 	Mat mask;
 	vector<vector<Point>> contours;
@@ -146,10 +200,13 @@ char checkVisualVictim(Camera* cam) {
 		if (maskcontours.size() > 0) {
 			vector<Point> largest = *max_element(maskcontours.begin(), maskcontours.end(), comp);
 			Rect boundRect = boundingRect(largest);
+			//printf("TopLeft X: %d, Y: %d\n", boundRect.x, boundRect.y);
 			Mat roi(frame, boundRect);
+			imshow("roi", roi);
 			Mat thresholded;
 			cvtColor(roi, roi, COLOR_BGR2GRAY);
 			threshold(roi, roi, 120, 255, THRESH_BINARY);
+
 			if (maskcontours.size() == 1) {
 				findContours(roi, maskcontours, RETR_TREE, CHAIN_APPROX_SIMPLE);
 			}
@@ -267,14 +324,14 @@ char checkVisualVictim(Camera* cam) {
 
 				findContours(frame_yellow, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
 				if (contours.size() == 0) { //if no yellow
-					printf("flammable\n");
+					printf("FLAMMABLE\n");
 					sendVictimSignal('F');
 					//changeMessage(PosX, PosZ, 'F');
 					//boardLoc(loc).victimChecked = true;
 					return 'F';
 				}
 				else {
-					printf("organic peroxide\n");
+					printf("ORGANIC PEROXIDE\n");
 					sendVictimSignal('O');
 					//changeMessage(PosX, PosZ, 'O');
 					//boardLoc(loc).victimChecked = true;
