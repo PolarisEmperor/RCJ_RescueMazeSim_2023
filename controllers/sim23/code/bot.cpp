@@ -44,6 +44,7 @@ Bot::~Bot() {
 	char message = 'E';
 	emitter->send(&message, 1);
 
+	while (robot->step(timeStep) != 1);
 	delete robot;
 }
 
