@@ -96,7 +96,6 @@ char HSU(Mat roi) {
 	printf("\ntopCropVal: %d, botCropVal: %d, botHeight: %d\n", topCropVal, botCropVal, botHeight);
 
 	Mat cropTop(roi, Rect(0, topCropVal, roi.cols * widthMult, roi.rows / 4));
-	//Mat cropMid(roi, Rect(0, roi.rows / 3, roi.cols * widthMult, roi.rows / 4));
 	Mat cropMid(roi, Rect(0, roi.rows * 3 / 8, roi.cols * widthMult, roi.rows / 4));
 	Mat cropBot(roi, Rect(0, roi.rows * 3 / 4, roi.cols * widthMult, botHeight));
 
@@ -164,17 +163,17 @@ char checkVisualVictim(Camera* cam) {
 
 	Mat frame_HSV, frame_red, frame_yellow;
 	Mat frame(cam->getHeight(), cam->getWidth(), CV_8UC4, (void*)cam->getImage());
-	imshow("frame", frame);
+	//imshow("frame", frame);
 	if (frame.empty()) {
 		cout << "Could not open or find the image!\n" << endl;
 		return 0;
 	}
-	//printf("\nframe_HSV rows: %d, frame_HSV cols: %d\n", frame_HSV.rows, frame_HSV.cols);
 
 	Mat clone = frame.clone();
 	Mat drawing = frame.clone();
 	// Convert from BGR to HSV colorspace
 	cvtColor(frame, frame_HSV, COLOR_BGR2HSV);
+
 	// Detect the object based on HSV Range Values
 	inRange(frame_HSV, Scalar(low_H, low_S, low_V), Scalar(high_H, high_S, high_V), frame_red);
 	inRange(frame_HSV, Scalar(low_Hy, low_S, low_V), Scalar(high_Hy, high_S, high_V), frame_yellow);
@@ -186,9 +185,10 @@ char checkVisualVictim(Camera* cam) {
 	vector<vector<Point>> contours;
 	vector<vector<Point>> maskcontours;
 
-	findContours(frame_red, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
+	bool seeRed = false;
+	bool seeYellow = false;
 
-	//int angle = (int)getAngle();
+	findContours(frame_red, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
 
 	if (contours.size() == 0) { // if see no red
 		// remove blue background
@@ -214,7 +214,7 @@ char checkVisualVictim(Camera* cam) {
 				findContours(roi, maskcontours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
 			}
 
-			//printf("# of Contours: %d", maskcontours.size());
+			//printf("\n# of Contours: %d\n", maskcontours.size());
 			if (maskcontours.size() > 0) {
 				largest = *max_element(maskcontours.begin(), maskcontours.end(), comp);
 				RotatedRect rotateRect = minAreaRect(largest);
@@ -248,18 +248,20 @@ char checkVisualVictim(Camera* cam) {
 					//PosX = gps->getValues()[0] * 100;
 					//PosZ = gps->getValues()[2] * 100;
 
-					printf("blackarea %f, area %f, largest %f\n", blackarea, area, contourArea(largest));
+					//printf("blackarea %f, area %f, largest %f\n", blackarea, area, contourArea(largest));
 					printf("black/area: %f\n", blackarea / area);
 
 					if ((blackarea / area > 0.32 && blackarea / area < 0.44 && maskcontours.size() >= 2)
-						|| (maskcontours.size() >= 2 && blackarea / area > 0.8 && blackarea / area < 0.9)) {
+						|| (maskcontours.size() >= 8 && maskcontours.size() <= 12 && 
+							blackarea / area > 0.68 && blackarea / area < 0.92)) {
 						printf("CORROSIVE\n");
 						sendVictimSignal('C');
 						//changeMessage(PosX, PosZ, 'C');
 						//boardLoc(loc).victimChecked = true;
 						return 'C';
 					}
-					else if (maskcontours.size() >= 4 && blackarea / area > 0.62 && blackarea / area < 0.76) {
+					else if (maskcontours.size() >= 5 && maskcontours.size() <= 15 &&
+						blackarea / area > 0.51 && blackarea / area < 0.76){
 						printf("POISON\n");
 						sendVictimSignal('P');
 						//changeMessage(PosX, PosZ, 'P');
@@ -316,12 +318,14 @@ char checkVisualVictim(Camera* cam) {
 
 			double width = (double)roi.width;
 			double height = (double)roi.height;
+			
+			printf("width % f height %f, ", width, height);
+			printf("width/height: %f\n", width / height);
 
-			//printf("width %f height %f\n", width, height);
+			//if (( width / height > 0.4 && width / height < 2.1 && height > 30 && width > 30) ||
+			//	(width > 30 && width < 100 && height > 15 && height < 100 && (width / height > 0.9 && width / height < 2.1))) {
 
-			if ((/*roundAngle(angle) == -1 && */ width / height > 0.4 && width / height < 2.1 && height > 30 && width > 30) ||
-				(width > 30 && width < 100 && height > 15 && height < 100 && (width / height > 0.9 && width / height < 2.1))) {
-
+			if(width/height > 0.4 && width/height < 2.1 && width > 7 && height > 10){
 				findContours(frame_yellow, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
 				if (contours.size() == 0) { //if no yellow
 					printf("FLAMMABLE\n");
