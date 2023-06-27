@@ -185,9 +185,6 @@ char checkVisualVictim(Camera* cam) {
 	vector<vector<Point>> contours;
 	vector<vector<Point>> maskcontours;
 
-	bool seeRed = false;
-	bool seeYellow = false;
-
 	findContours(frame_red, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
 
 	if (contours.size() == 0) { // if see no red
@@ -221,14 +218,15 @@ char checkVisualVictim(Camera* cam) {
 				boundRect = boundingRect(largest);
 				double area = roi.rows * roi.cols;
 
+				double rat = (float)roi.cols / roi.rows;
 				//printf("\nCountour Area: %f\n", contourArea(largest));
-				//printf("angle %f rows %d cols %d\n", rotateRect.angle, roi.rows, roi.cols);
+				printf("angle %f, rows %d, cols %d, ratio %f, framerows %d\n", rotateRect.angle, roi.rows, roi.cols, rat, frame.rows);
 
 				//imshow("roi", roi);
 				//waitKey(1);
 
 				// poison or corrosive hazard signs
-				if (rotateRect.angle < 52 && rotateRect.angle > 38 && (float)roi.cols / (float)roi.rows > 0.6 && (float)roi.cols / (float)roi.rows < 1.2 && roi.rows > frame.rows / 2) {
+				if (rotateRect.angle < 52 && rotateRect.angle > 38 && (float)roi.cols / (float)roi.rows > 0.7 && (float)roi.cols / (float)roi.rows < 1.2 && roi.rows > frame.rows / 2) {
 					//printf("largest %f %f\n", contourArea(largest), contourArea(largest) / area);
 					Mat black;
 					double blackarea = 0;
@@ -287,11 +285,11 @@ char checkVisualVictim(Camera* cam) {
 					return false;
 				}
 
-				if (rotateRect.angle > 85 &&
-					rotateRect.angle < 95 &&
-					roi.rows > frame.rows / 2 &&
-					(((float)roi.cols / (float)roi.rows > 1.0 && (float)roi.cols / (float)roi.rows < 1.5) ||
-						(/*roundAngle(angle) == -1 && */ (float)roi.cols / (float)roi.rows > 0.7 && (float)roi.cols / (float)roi.rows < 1.5))) 
+				bool temp1 = (float)roi.cols / roi.rows > 1.0 && (float)roi.cols / roi.rows < 1.5;
+				bool temp2 = (float)roi.cols / roi.rows >= 0.5 && (float)roi.cols /roi.rows < 1.5;
+				bool temp3 = roi.rows > 20 && roi.cols < 10 && (float)roi.cols / roi.rows >= 0.1 && (float)roi.cols / roi.rows < 0.35;
+
+				if (rotateRect.angle > 85 && rotateRect.angle < 95 && roi.rows > frame.rows / 2 && ((temp1 || temp2  )) ) 
 				{
 					char hsu = HSU(roi);
 					if (hsu) {
@@ -325,7 +323,7 @@ char checkVisualVictim(Camera* cam) {
 			//if (( width / height > 0.4 && width / height < 2.1 && height > 30 && width > 30) ||
 			//	(width > 30 && width < 100 && height > 15 && height < 100 && (width / height > 0.9 && width / height < 2.1))) {
 
-			if(width/height > 0.4 && width/height < 2.1 && width > 7 && height > 10){
+			if(width/height > 0.4 && width/height < 2.1 && width > 7 && height > 8){
 				findContours(frame_yellow, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
 				if (contours.size() == 0) { //if no yellow
 					printf("FLAMMABLE\n");
