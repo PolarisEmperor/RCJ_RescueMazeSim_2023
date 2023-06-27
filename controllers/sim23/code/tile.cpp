@@ -224,67 +224,27 @@ void mapAngledVictim(int tile, int direction, char code) {
 void mapCurvedWall(int tile, int subTile, int curveDirection) {
 	switch (subTile) {
 		case 0:
-			switch (curveDirection) {
-				case tl:
-					bigmap[mapY - 2][mapX - 2] = '0';
-					break;
-				case tr:
-					bigmap[mapY - 2][mapX] = '0';
-					break;
-				case br:
-					//bigmap[mapY][mapX] = '0';
-					break;
-				case bl:
-					bigmap[mapY][mapX - 2] = '0';
-					break;
+			if (curveDirection == tl) {
+				if (bigmap[mapY - 3][mapX - 2] != "0" && bigmap[mapY - 2][mapX - 3] != "0") 
+					bigmap[mapY - 2][mapX - 2] = "0";
 			}
 			break;
 		case 1:
-			switch (curveDirection) {
-				case tl:
-					//bigmap[mapY - 2][mapX - 2] = '0';
-					break;
-				case tr:
-					bigmap[mapY - 2][mapX + 2] = '0';
-					break;
-				case br:
-					//bigmap[mapY + 2][mapX + 2] = '0';
-					break;
-				case bl:
-					//bigmap[mapY + 2][mapX - 2] = '0';
-					break;
+			if (curveDirection == tr) {
+				if (bigmap[mapY - 3][mapX + 2] != "0" && bigmap[mapY - 2][mapX + 3] != "0")
+					bigmap[mapY - 2][mapX + 2] = "0";
 			}
 			break;
 		case 2:
-			switch (curveDirection) {
-				case tl:
-					//bigmap[mapY - 2][mapX - 2] = '0';
-					break;
-				case tr:
-					//bigmap[mapY - 2][mapX + 2] = '0';
-					break;
-				case br:
-					bigmap[mapY + 2][mapX + 2] = '0';
-					break;
-				case bl:
-					//bigmap[mapY + 2][mapX - 2] = '0';
-					break;
+			if (curveDirection == br) {
+				if (bigmap[mapY + 3][mapX + 2] != "0" && bigmap[mapY + 2][mapX + 3] != "0")
+					bigmap[mapY + 2][mapX + 2] = "0";
 			}
 			break;
 		case 3:
-			switch (curveDirection) {
-				case tl:
-					//bigmap[mapY - 2][mapX - 2] = '0';
-					break;
-				case tr:
-					//bigmap[mapY - 2][mapX + 2] = '0';
-					break;
-				case br:
-					//bigmap[mapY + 2][mapX + 2] = '0';
-					break;
-				case bl:
-					bigmap[mapY + 2][mapX - 2] = '0';
-					break;
+			if (curveDirection == bl) {
+				if (bigmap[mapY + 3][mapX - 2] != "0" && bigmap[mapY + 2][mapX - 3] != "0")
+					bigmap[mapY + 2][mapX - 2] = "0";
 			}
 			break;
 	}
