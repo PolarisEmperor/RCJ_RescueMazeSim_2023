@@ -80,7 +80,7 @@ char HSU(Mat roi) {
 	double widthMult = 1;
 
 	threshold(roi, roi, thresh, max_thresh, THRESH_BINARY_INV); // create thresholded image
-	imshow("roi", roi);
+	//imshow("roi", roi);
 	//findContours in whole ROI
 	findContours(roi, allContours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
 	printf("\nContour Count: %zu\n", allContours.size());
@@ -99,9 +99,9 @@ char HSU(Mat roi) {
 	Mat cropMid(roi, Rect(0, roi.rows * 3 / 8, roi.cols * widthMult, roi.rows / 4));
 	Mat cropBot(roi, Rect(0, roi.rows * 3 / 4, roi.cols * widthMult, botHeight));
 
-	imshow("top_crop", cropTop);
-	imshow("mid_crop", cropMid);
-	imshow("bot_crop", cropBot);
+	//imshow("top_crop", cropTop);
+	//imshow("mid_crop", cropMid);
+	//imshow("bot_crop", cropBot);
 
 	//Mat top(roi, Rect(0, 0, roi.cols, roi.rows / 4));
 	//Mat mid(roi, Rect(0, roi.rows / 3, roi.cols, roi.rows / 4));
@@ -202,7 +202,7 @@ char checkVisualVictim(Camera* cam) {
 			Rect boundRect = boundingRect(largest);
 			//printf("TopLeft X: %d, Y: %d\n", boundRect.x, boundRect.y);
 			Mat roi(frame, boundRect);
-			imshow("roi", roi);
+			//imshow("roi", roi);
 			Mat thresholded;
 			cvtColor(roi, roi, COLOR_BGR2GRAY);
 			threshold(roi, roi, 120, 255, THRESH_BINARY);

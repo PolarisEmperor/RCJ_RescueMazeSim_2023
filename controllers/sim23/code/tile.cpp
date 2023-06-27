@@ -132,6 +132,38 @@ void editMapTile(int tile) {
 	}
 }
 
+void readMapTile(int tile) {
+	updateMapCoords(tile);
+	// North
+	if (bigmap[mapY - 2][mapX - 1] == "1") {
+		field[tile].N = 1;
+	}
+	if (bigmap[mapY - 2][mapX + 1] == "1") {
+		field[tile + 1].N = 1;
+	}
+	// East
+	if (bigmap[mapY - 1][mapX + 2] == "1") {
+		field[tile + 1].E = 1;
+	}
+	if (bigmap[mapY + 1][mapX + 2] == "1") {
+		field[tile + COLS + 1].E = 1;
+	}
+	// South
+	if (bigmap[mapY + 2][mapX - 1] == "1") {
+		field[tile + COLS].S = 1;
+	}
+	if (bigmap[mapY + 2][mapX + 1] == "1") {
+		field[tile + COLS + 1].S = 1;
+	}
+	// West
+	if (bigmap[mapY - 1][mapX - 2] == "1") {
+		field[tile].W = 1;
+	}
+	if (bigmap[mapY + 1][mapX - 2] == "1") {
+		field[tile + COLS].W = 1;
+	}
+}
+
 // Map victim
 void mapVictim(int tile, int direction, char code) {
 	string *p = 0;
@@ -260,92 +292,78 @@ void mapCurvedWall(int tile, int subTile, int curveDirection) {
 
 bool obstacle(int tile) {
 	float dist = 5;
-	bool leftSide = false, rightSide = 0;
+	bool left = 0, right = 0;
 	bool wall[8] = { 0 };
 
-	for (int i = 422; i < 512; i++) {
-		//printf("%f\n", bot.getLidarPoint(3, i));
+	for (int i = 432; i < 512; i++) {
 		if (bot.getLidarPoint(3, i) < dist) {
-			leftSide = true;
-			if (bot.getDirection() * 2 > 7) {
-				wall[bot.getDirection() * 2 - 8] = true;
-			}
-			else {
-				wall[bot.getDirection() * 2] = true;
-			}
+			printf("left\n");
+			left = 1;
 			break;
 		}
 	}
+
 	for (int i = 0; i < 80; i++) {
-		//printf("%f\n", bot.getLidarPoint(3, i));
 		if (bot.getLidarPoint(3, i) < dist) {
-			rightSide = true;
-			if (1 + bot.getDirection() * 2 > 7) {
-				wall[1 + bot.getDirection() * 2 - 8] = true;
-			}
-			else {
-				wall[1 + bot.getDirection() * 2] = true;
-			}
+			printf("right\n");
+			right = 1;
 			break;
 		}
 	}
-	if (!leftSide && !rightSide) return false;
 
-	for (int i = 0; i < 8; i++) {
-		if (wall[i]) {
-			switch (i) {
-				case 0:
-					setWalls(tile, 1, 0, 0, 0);
-					break;
-				case 1:
-					setWalls(tile + 1, 1, 0, 0, 0);
-					break;
-				case 2:
-					setWalls(tile + 1, 0, 1, 0, 0);
-					break;
-				case 3:
-					setWalls(tile + COLS + 1, 0, 1, 0, 0);
-					break;
-				case 4:
-					setWalls(tile + COLS + 1, 0, 0, 1, 0);
-					break;
-				case 5:
-					setWalls(tile + COLS, 0, 0, 1, 0);
-					break;
-				case 6:
-					setWalls(tile + COLS, 0, 0, 0, 1);
-					break;
-				case 7:
-					setWalls(tile, 0, 0, 0, 1);
-					break;
+	switch (bot.getDirection()) {
+		case North:
+			if (left) {
+				field[tile].E = 1;
+				field[tile].N = 1;
+				field[tile - COLS].visited = 1;
 			}
-		}
+			if (right) {
+				field[tile + 1].N = 1;
+				field[tile + 1].E = 1;
+				field[tile - COLS + 1].visited = 1;
+			}
+			break;
+		case East:
+			if (left) {
+				field[tile + 1].N = 1;
+				field[tile + 1].E = 1;
+				field[tile + 2].visited = 1;
+			}
+			if (right) {
+				field[tile + COLS + 1].E = 1;
+				field[tile + COLS + 1].S = 1;
+				field[tile + COLS + 2].visited = 1;
+			}
+			break;
+		case South:
+			if (left) {
+				field[tile + COLS + 1].S = 1;
+				field[tile + COLS + 1].E = 1;
+				field[tile + COLS * 2 + 1].visited = 1;
+			}
+			if (right) {
+				field[tile + COLS].S = 1;
+				field[tile + COLS].W = 1;
+				field[tile + COLS * 2].visited = 1;
+			}
+			break;
+		case West:
+			if (left) {
+				field[tile + COLS].S = 1;
+				field[tile + COLS].W = 1;
+				field[tile + COLS - 1].visited = 1;
+			}
+			if (right) {
+				field[tile].N = 1;
+				field[tile].W = 1;
+				field[tile - 1].visited = 1;
+			}
+			break;
 	}
-	editMapTile(tile);
-	field[tile].visited = 1;
-	field[tile + 1].visited = 1;
-	field[tile + COLS].visited = 1;
-	field[tile + COLS + 1].visited = 1;
-	//switch (bot.getDirection()) {
-	//	case North:
-	//		if (leftSide) field[tile - 1].visited = 1; field[tile + COLS - 1].visited = 1;
-	//		if (rightSide) field[tile + 1].visited = 1; field[tile + COLS + 1].visited = 1;
-	//		break;
-	//	case East:
-	//		if (leftSide) field[tile + 1].visited = 1;
-	//		if (rightSide) field[tile + COLS + 1].visited = 1;
-	//		break;
-	//	case South:
-	//		if (leftSide) field[tile + COLS + 1].visited = 1;
-	//		if (rightSide) field[tile + COLS - 1].visited = 1;
-	//		break;
-	//	case West:
-	//		if (leftSide) field[tile + COLS].visited = 1;
-	//		//if (rightSide) field[tile + 1].visited = 1;
-	//		break;
-	//}
 
-	return true;
+	if (left || right) return true;
+	return false;
 }
 
 // Get tile data(set bits of walls)
@@ -360,6 +378,10 @@ void getTile(int tile) {
 	const int distFromWall = 9;
 	int dir = bot.getDirection();
 	int bit = 1;
+	int big = 0;
+	int small = 9999;
+	double prevValue = 0;
+	double diff = 0;
 
 	bool wall[8] = { 0 };
 
@@ -372,30 +394,86 @@ void getTile(int tile) {
 		}
 	}
 
+	//readMapTile(tile);
 	// Scan for walls with Lidar
 	for (int i = 0; i < sizeof(check) / sizeof(check[0]); i++) {
-		// look at range
-		for (int j = check[i] - n / 2; j < check[i] + n / 2; j++) {
-			if (bot.getLidarPoint(3, j) == INFINITY) continue;
-			if (bot.getLidarPoint(3, j) < distFromWall) {
-				// robot facing west
-				if (i + bot.getDirection() * 2 > 7) {
-					wall[i + bot.getDirection() * 2 - 8] = true;
-				}
-				else {
-					wall[i + bot.getDirection() * 2] = true;
-				}
-				//printf("wall dir %d bot dir %d real dir %d\n", i, bot.getDirection(), (i + bot.getDirection() * 2 > 7) ? (i + bot.getDirection() * 2) - 8 : i + bot.getDirection() * 2);
-				//field[directions[dir]].bits += bit; // set wall bit
+		if (bot.getLidarPoint(3, check[i]) < distFromWall) {
+			// robot facing west
+			if (i + bot.getDirection() * 2 > 7) {
+				wall[i + bot.getDirection() * 2 - 8] = true;
 			}
+			else {
+				wall[i + bot.getDirection() * 2] = true;
+			}
+			//printf("wall dir %d bot dir %d real dir %d\n", i, bot.getDirection(), (i + bot.getDirection() * 2 > 7) ? (i + bot.getDirection() * 2) - 8 : i + bot.getDirection() * 2);
+			//field[directions[dir]].bits += bit; // set wall bit
 		}
-
-
-		
 		// odd:        next wall  next tile
 		(i % 2 != 0) ? bit *= 2 : (dir == West) ? dir = North : dir++;
 	}
+	
+	// Scan for walls with Lidar
+	//for (int i = 0; i < sizeof(check) / sizeof(check[0]); i++) {
+	//	//std::vector<float> v;
+	//	//float average = 0;
+	//	//big = 0;
+	//	//small = 9999;
+	//	int start = check[i];
+	//	//printf("STUFF i %d start %d check %I64u\n", i, start, sizeof(check) / sizeof(check[0]));
+	//	// look at range
+	//	for (int j = start - n / 2; j < start + n / 2; j++) {
+	//		if (bot.getLidarPoint(3, j) == INFINITY) continue; // sometimes it gets inf for some reason... :(
 
+
+	//		/*if (prevValue != 0) {
+	//			diff = bot.getLidarPoint(3, j) - prevValue;
+	//			printf("DIFF %d %f\n", i, diff);
+	//		}
+
+	//		prevValue = bot.getLidarPoint(3, j);*/
+
+
+	//		// get furthest and closest lidar values in range
+	//		/*if (bot.getLidarPoint(3, j) > big) {
+	//			big = bot.getLidarPoint(3, j);
+	//		}
+	//		if (bot.getLidarPoint(3, j) < small) {
+	//			small = bot.getLidarPoint(3, j);
+	//		}*/
+	//		//v.push_back(bot.getLidarPoint(3, j));
+	//		//printf("%d %f\n", j, bot.getLidarPoint(3, j));
+
+	//	//average = std::accumulate(v.begin(), v.end(), 0.0) / v.size();
+	//	//v.clear();
+	//	//printf("i = %d, diff = %d big %d small %d\n", i, big - small, big, small);
+	//	//// theres an obstacle (skewed)
+	//	//if (big - small > 18 && small < 11) {
+	//	//	// figure out which tile the obstacle is in
+	//	//	int dir = i / 2 + bot.getDirection();
+	//	//	if (dir >= 4) dir -= 4;
+
+	//	//	field[directions[dir]].obstacle = 1;
+
+	//	//	printf("OBSTACLE %d %d %d\n", i, bot.getDirection(), dir);
+	//	//	bot.delay(1000);
+	//	//}
+	//		if (bot.getLidarPoint(3, j) < distFromWall) {
+	//			// robot facing west
+	//			if (i + bot.getDirection() * 2 > 7) {
+	//				wall[i + bot.getDirection() * 2 - 8] = true;
+	//			}
+	//			else {
+	//				wall[i + bot.getDirection() * 2] = true;
+	//			}
+	//			//printf("wall dir %d bot dir %d real dir %d\n", i, bot.getDirection(), (i + bot.getDirection() * 2 > 7) ? (i + bot.getDirection() * 2) - 8 : i + bot.getDirection() * 2);
+	//			//field[directions[dir]].bits += bit; // set wall bit
+	//		}
+	//		
+	//	}
+	//	// odd:        next wall  next tile
+	//		(i % 2 != 0) ? bit *= 2 : (dir == West) ? dir = North : dir++;
+	//}
+	
 	for (int i = 0; i < 8; i++) {
 		if (wall[i]) {
 			switch (i) {
@@ -458,8 +536,8 @@ void getTile(int tile) {
 		int realDir = 0;
 		float lidarValue = 0;
 
-		printf("CURVED CHECK\n");
-		printf("%f %f %f %f %f\n", bot.getLidarPoint(3, 0), bot.getLidarPoint(3, 18), bot.getLidarPoint(3, 32), bot.getLidarPoint(3, 65), bot.getLidarPoint(3, 96));
+		//printf("CURVED CHECK\n");
+		//printf("%f %f %f %f %f\n", bot.getLidarPoint(3, 0), bot.getLidarPoint(3, 18), bot.getLidarPoint(3, 32), bot.getLidarPoint(3, 65), bot.getLidarPoint(3, 96));
 
 		std::vector<float> v;
 		double average[4] = { 0 };
@@ -471,13 +549,13 @@ void getTile(int tile) {
 					v.push_back(bot.getLidarPoint(3, j));
 				}
 				average[i] = std::accumulate(v.begin(), v.end(), 0.0) / v.size();
-				printf("avg%d: %f\n", i, average[i]);
+				//printf("avg%d: %f\n", i, average[i]);
 				v.clear();
 			}
 
 			// concave
 			if (average[1] < 7 && fabs(average[1] - average[0]) < 0.6 && fabs(average[3] - average[2]) < 0.6) {
-				printf("%d concave\n", start / 128);
+				//printf("%d concave\n", start / 128);
 				
 				// Find what sub-tile the curve is in
 				int curvetile = start / 128 + 1;
@@ -487,17 +565,17 @@ void getTile(int tile) {
 				curvetile += bot.getDirection();
 				if (curvetile >= 4) curvetile -= 4;
 
-				printf("thingy %d\n", curvetile);
+				//printf("thingy %d\n", curvetile);
 
 				mapCurvedWall(tile, curvetile, curvetile);
 			}
 
 			// convex
-			printf("%f %f %f %f\n", average[0], average[1], average[2], average[3]);
+			//printf("%f %f %f %f\n", average[0], average[1], average[2], average[3]);
 			
 			// concave
 			if (average[0] > 30 && average[1] > 30 && average[2] < 8 && average[3] < 8) {
-				printf("CONCAVE %d\n", start / 128 + 1);
+				//printf("CONCAVE %d\n", start / 128 + 1);
 			}
 
 			/*else if (average[2] < 8 && fabs(average[2] - average[3]) < 0.8) {
@@ -801,59 +879,4 @@ void mapBonus() {
 	bot.emitter->send(message, 8 + flattened.size()); // Send map data
 	char msg = 'M'; // Send map evaluate request
 	bot.emitter->send(&msg, sizeof(msg));
-
-	//const int width = 29, height = 33;
-	//string map[height][width] = {
-	//	{"1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1"},
-	//	{"1", "5", "0", "5", "0", "6", "0", "6", "0", "7", "0", "7", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "5", "0", "5", "0", "6", "0", "6", "0", "7", "0", "7", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "0", "0", "0", "0", "0", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "0", "1", "1", "1", "1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "1", "1", "1", "0", "1", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "1", "1", "1", "1", "1", "0", "0", "0", "1", "1", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "0", "1", "1", "1", "1", "0", "0", "0", "1", "1", "1", "1", "1", "1", "1", "0", "1", "0", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "0", "0", "0", "0", "0", "1", "1", "1", "0", "0", "0", "0", "1", "1", "1", "1", "1", "0", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
-	//	{"1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1"}
-	//};
-	//
-	//string flattened = "";
-	//for (int i = 0; i < height; i++) {
-	//	for (int j = 0; j < width; j++) {
-	//		flattened += map[i][j] + ","; // Flatten the array with comma separators
-	//	}
-	//}
-
-	//flattened.pop_back(); // Remove the last unnecessary comma
-
-	//char *message = (char *)malloc(8 + flattened.size());
-	//// The first 2 integers in the message array are width, height
-	//memcpy(message, &height, sizeof(height));
-	//memcpy(&message[4], &width, sizeof(width));
-	//memcpy(&message[8], flattened.c_str(), flattened.size()); // Copy in the flattened map afterwards
-	//bot.emitter->send(message, 8 + flattened.size()); // Send map data
-	//char msg = 'M'; // Send map evaluate request
-	//bot.emitter->send(&msg, sizeof(msg));
 }
