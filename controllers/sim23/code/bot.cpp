@@ -142,7 +142,7 @@ void Bot::speed(double lSpd, double rSpd) {
 // Stop motors
 void Bot::stop() {
 	speed(0, 0);
-	delay(1);
+	//delay(1);
 }
 
 // Move # cm
@@ -182,7 +182,7 @@ void Bot::move(double cm, double spd) {
 			speed(-spd, -spd);
 		}
 
-	stop();
+	//stop();
 	updatePrevPos();
 }
 
@@ -220,9 +220,9 @@ void Bot::turn(int dir, double spd) {
 		if (bot.getLidarPoint(3, 127) < 7 && !field[bot.curTile].victimChecked) {
 			char victim = checkVisualVictim(bot.camR);
 			if (victim > 0) {
-				printf("direction %d\n", bot.getDirection());
+				//printf("direction %d\n", bot.getDirection());
 				int wall = bot.roundAngle() + 2;
-				printf("%d\n", wall);
+				//printf("%d\n", wall);
 				if (wall >= 8) wall -= 8;
 				mapAngledVictim(bot.curTile, wall, victim);
 			}
@@ -230,9 +230,9 @@ void Bot::turn(int dir, double spd) {
 		if (bot.getLidarPoint(3, 383) < 7 && !field[bot.curTile].victimChecked) {
 			char victim = checkVisualVictim(bot.camL);
 			if (victim > 0) {
-				printf("direction %d\n", bot.getDirection());
+				//printf("direction %d\n", bot.getDirection());
 				int wall = bot.roundAngle() - 2;
-				printf("%d\n", wall);
+				//printf("%d\n", wall);
 				if (wall < 0) wall += 8;
 				mapAngledVictim(bot.curTile, wall, victim);
 			}
@@ -249,7 +249,7 @@ void Bot::turn(int dir, double spd) {
 		else if (prevDir > dir)
 			(abs(dir - prevDir) == 3) ? speed(spd, -spd) : speed(-spd, spd);
 	}
-	stop();
+	//stop();
 
 	updatePrevPos();
 }

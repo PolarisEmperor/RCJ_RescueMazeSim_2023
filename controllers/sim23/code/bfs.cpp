@@ -186,7 +186,7 @@ int move2Tile(int cur, int target) {
 			targetPos = bot.getTargetPos(diffX -= 1, diffY).x;
 			break;
 	}
-	bot.stop();
+	//bot.stop();
 
 	while (bot.update()) {
 		// Check for victims
@@ -217,7 +217,7 @@ int move2Tile(int cur, int target) {
 			bot.stop();
 
 			// get the walls of the black hole tile
-			bot.delay(100);
+			//bot.delay(100);
 			if (left == Hole && right == Hole) getBlackHole(cur);
 
 			// back up to prev pos

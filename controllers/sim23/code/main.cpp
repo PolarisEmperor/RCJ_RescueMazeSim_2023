@@ -25,7 +25,8 @@ int main() {
 		}
 
 		// testing stuff
-		/*getTile(bot.curTile);
+		/*bot.curRoom = 3;
+		getTile(bot.curTile);
 		field[bot.curTile].visited = 0;*/
 
 		if (bot.checkLOPemitter()) {

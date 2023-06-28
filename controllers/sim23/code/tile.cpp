@@ -123,7 +123,7 @@ void editMapTile(int tile) {
 	}
 	
 	char color = field[tile].color + '0';
-	printf("%c\n", color);
+	//printf("%c\n", color);
 	if (color != '0') {
 		bigmap[mapY - 1][mapX - 1] = { color };
 		bigmap[mapY - 1][mapX + 1] = { color };
@@ -509,13 +509,13 @@ void getTile(int tile) {
 					v.push_back(bot.getLidarPoint(3, j));
 				}
 				average[i] = std::accumulate(v.begin(), v.end(), 0.0) / v.size();
-				//printf("avg%d: %f\n", i, average[i]);
+				printf("%d avg%d: %f\n", start, i, average[i]);
 				v.clear();
 			}
 
 			// concave
 			if (average[1] < 7 && fabs(average[1] - average[0]) < 0.6 && fabs(average[3] - average[2]) < 0.6) {
-				//printf("%d concave\n", start / 128);
+				printf("%d concave\n", start / 128);
 				
 				// Find what sub-tile the curve is in
 				int curvetile = start / 128 + 1;
@@ -530,28 +530,12 @@ void getTile(int tile) {
 				mapCurvedWall(tile, curvetile, curvetile);
 			}
 
-			// convex
-			//printf("%f %f %f %f\n", average[0], average[1], average[2], average[3]);
-			
-			// concave
-			if (average[0] > 30 && average[1] > 30 && average[2] < 8 && average[3] < 8) {
-				//printf("CONCAVE %d\n", start / 128 + 1);
+			// front convex
+			if (average[3] < 8 && average[2] < average[3]) {
+				printf("CONVEX FRONT\n");
 			}
 
-			/*else if (average[2] < 8 && fabs(average[2] - average[3]) < 0.8) {
-				printf("%d side bottom\n", start);
-			}
-			else if (average[3] < 9 && fabs(average[2] - average[3]) > 2.0) {
-				printf("%d side top\n", start);
-			}*/
-			/*else if (average[0] < 9) {
-				if (fabs(average[0] - average[1]) < 1.0) {
-					printf("%d front left\n", start);
-				}
-				else if (average[1] / average[0] > 1.0) {
-					printf("%d front right\n", start);
-				}
-			}*/
+			// side convex
 		}
 
 

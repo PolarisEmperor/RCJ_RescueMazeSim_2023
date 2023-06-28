@@ -1152,7 +1152,7 @@
             xScale 0.4
             yScale 0.4
             zScale 0.4
-            tileColor 0.30196078431372547 0.10196078431372549 0.6 
+            tileColor 0.9058823529411765 0.10196078431372549 0.10196078431372549 
             room 3
           }
         
@@ -1223,7 +1223,7 @@
             zPos 5
             floor TRUE
             topWall 0
-            rightWall 0
+            rightWall 2
             bottomWall 0
             leftWall 0
             tile1Walls [ 0, 1, 0, 0 ]
@@ -1254,11 +1254,11 @@
             zPos 6
             floor TRUE
             topWall 0
-            rightWall 0
-            bottomWall 1
+            rightWall 3
+            bottomWall 3
             leftWall 0
             tile1Walls [ 0, 0, 1, 0 ]
-            tile2Walls [ 0, 1, 0, 0 ]
+            tile2Walls [ 0, 0, 0, 0 ]
             tile3Walls [ 0, 0, 0, 0 ]
             tile4Walls [ 0, 0, 0, 0 ]
             tile1External [ FALSE, FALSE, FALSE, FALSE ]
@@ -1410,7 +1410,7 @@
             floor TRUE
             topWall 0
             rightWall 0
-            bottomWall 0
+            bottomWall 5
             leftWall 0
             tile1Walls [ 0, 0, 0, 0 ]
             tile2Walls [ 0, 0, 0, 0 ]
@@ -1435,7 +1435,7 @@
             room 3
           }
         
-        DEF TILE halfTile {
+        DEF TILE worldTile {
             xPos 6
             zPos 5
             floor TRUE
@@ -1443,19 +1443,14 @@
             rightWall 0
             bottomWall 0
             leftWall 0
-            tile1Walls [ 0, 0, 0, 0 ]
-            tile2Walls [ 0, 0, 0, 0 ]
-            tile3Walls [ 0, 0, 0, 0 ]
-            tile4Walls [ 0, 0, 0, 0 ]
-            tile1External [ FALSE, FALSE, FALSE, FALSE ]
-            tile2External [ FALSE, FALSE, FALSE, FALSE ]
-            tile3External [ FALSE, FALSE, FALSE, FALSE ]
-            tile4External [ FALSE, FALSE, FALSE, FALSE ]
-            curve [0,0,0,0]
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
             start FALSE
             trap FALSE
             checkpoint FALSE
-            swamp TRUE
+            swamp FALSE
             width 11
             height 7
             id "47"
@@ -1463,26 +1458,21 @@
             yScale 0.4
             zScale 0.4
             tileColor 0.635 0.635 0.635
-            room 3
+            room 4
           }
         
-        DEF TILE halfTile {
+        DEF TILE worldTile {
             xPos 6
             zPos 6
             floor TRUE
             topWall 0
             rightWall 0
-            bottomWall 1
+            bottomWall 2
             leftWall 0
-            tile1Walls [ 0, 0, 0, 0 ]
-            tile2Walls [ 0, 0, 0, 0 ]
-            tile3Walls [ 0, 0, 0, 0 ]
-            tile4Walls [ 0, 0, 0, 0 ]
-            tile1External [ FALSE, FALSE, FALSE, FALSE ]
-            tile2External [ FALSE, FALSE, FALSE, FALSE ]
-            tile3External [ FALSE, FALSE, TRUE, FALSE ]
-            tile4External [ FALSE, FALSE, TRUE, FALSE ]
-            curve [0,0,0,0]
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal TRUE
+            leftExternal FALSE
             start FALSE
             trap FALSE
             checkpoint FALSE
@@ -1494,7 +1484,7 @@
             yScale 0.4
             zScale 0.4
             tileColor 0.635 0.635 0.635
-            room 3
+            room 4
           }
         
         DEF TILE halfTile {
@@ -1627,7 +1617,7 @@
             floor TRUE
             topWall 0
             rightWall 0
-            bottomWall 0
+            bottomWall 1
             leftWall 0
             tile1Walls [ 0, 0, 19683, 0 ]
             tile2Walls [ 0, 0, 0, 0 ]
@@ -1652,7 +1642,7 @@
             room 3
           }
         
-        DEF TILE halfTile {
+        DEF TILE worldTile {
             xPos 7
             zPos 5
             floor TRUE
@@ -1660,15 +1650,10 @@
             rightWall 0
             bottomWall 0
             leftWall 0
-            tile1Walls [ 0, 0, 0, 0 ]
-            tile2Walls [ 0, 0, 0, 0 ]
-            tile3Walls [ 0, 0, 0, 0 ]
-            tile4Walls [ 0, 0, 0, 0 ]
-            tile1External [ FALSE, FALSE, FALSE, FALSE ]
-            tile2External [ FALSE, FALSE, FALSE, FALSE ]
-            tile3External [ FALSE, FALSE, FALSE, FALSE ]
-            tile4External [ FALSE, FALSE, FALSE, FALSE ]
-            curve [4,1,3,2]
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
             start FALSE
             trap FALSE
             checkpoint FALSE
@@ -1680,10 +1665,10 @@
             yScale 0.4
             zScale 0.4
             tileColor 0.635 0.635 0.635
-            room 3
+            room 4
           }
         
-        DEF TILE halfTile {
+        DEF TILE worldTile {
             xPos 7
             zPos 6
             floor TRUE
@@ -1691,15 +1676,10 @@
             rightWall 0
             bottomWall 1
             leftWall 0
-            tile1Walls [ 0, 0, 0, 0 ]
-            tile2Walls [ 0, 0, 0, 0 ]
-            tile3Walls [ 0, 0, 0, 0 ]
-            tile4Walls [ 0, 0, 0, 0 ]
-            tile1External [ FALSE, FALSE, FALSE, FALSE ]
-            tile2External [ FALSE, FALSE, FALSE, FALSE ]
-            tile3External [ FALSE, FALSE, TRUE, FALSE ]
-            tile4External [ FALSE, FALSE, TRUE, FALSE ]
-            curve [0,0,0,0]
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal TRUE
+            leftExternal FALSE
             start FALSE
             trap FALSE
             checkpoint FALSE
@@ -1711,7 +1691,7 @@
             yScale 0.4
             zScale 0.4
             tileColor 0.635 0.635 0.635
-            room 3
+            room 4
           }
         
         DEF TILE halfTile {
@@ -1844,7 +1824,7 @@
             floor TRUE
             topWall 0
             rightWall 0
-            bottomWall 0
+            bottomWall 1
             leftWall 0
             tile1Walls [ 0, 0, 0, 0 ]
             tile2Walls [ 0, 0, 0, 0 ]
@@ -1869,7 +1849,7 @@
             room 3
           }
         
-        DEF TILE halfTile {
+        DEF TILE worldTile {
             xPos 8
             zPos 5
             floor TRUE
@@ -1877,15 +1857,10 @@
             rightWall 0
             bottomWall 0
             leftWall 0
-            tile1Walls [ 0, 0, 1, 0 ]
-            tile2Walls [ 0, 1, 0, 0 ]
-            tile3Walls [ 0, 0, 0, 0 ]
-            tile4Walls [ 0, 0, 0, 0 ]
-            tile1External [ FALSE, FALSE, FALSE, FALSE ]
-            tile2External [ FALSE, FALSE, FALSE, FALSE ]
-            tile3External [ FALSE, FALSE, FALSE, FALSE ]
-            tile4External [ FALSE, FALSE, FALSE, FALSE ]
-            curve [0,0,0,0]
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal FALSE
+            leftExternal FALSE
             start FALSE
             trap FALSE
             checkpoint FALSE
@@ -1897,10 +1872,10 @@
             yScale 0.4
             zScale 0.4
             tileColor 0.635 0.635 0.635
-            room 3
+            room 4
           }
         
-        DEF TILE halfTile {
+        DEF TILE worldTile {
             xPos 8
             zPos 6
             floor TRUE
@@ -1908,15 +1883,10 @@
             rightWall 0
             bottomWall 1
             leftWall 0
-            tile1Walls [ 0, 0, 0, 0 ]
-            tile2Walls [ 0, 0, 0, 0 ]
-            tile3Walls [ 0, 0, 0, 0 ]
-            tile4Walls [ 0, 0, 0, 0 ]
-            tile1External [ FALSE, FALSE, FALSE, FALSE ]
-            tile2External [ FALSE, FALSE, FALSE, FALSE ]
-            tile3External [ FALSE, FALSE, TRUE, FALSE ]
-            tile4External [ FALSE, FALSE, TRUE, FALSE ]
-            curve [0,0,0,0]
+            topExternal FALSE
+            rightExternal FALSE
+            bottomExternal TRUE
+            leftExternal FALSE
             start FALSE
             trap FALSE
             checkpoint FALSE
@@ -1928,7 +1898,7 @@
             yScale 0.4
             zScale 0.4
             tileColor 0.635 0.635 0.635
-            room 3
+            room 4
           }
         
         DEF TILE halfTile {
@@ -2105,7 +2075,7 @@
             curve [0,0,0,0]
             start FALSE
             trap FALSE
-            checkpoint TRUE
+            checkpoint FALSE
             swamp FALSE
             width 11
             height 7
@@ -2113,11 +2083,11 @@
             xScale 0.4
             yScale 0.4
             zScale 0.4
-            tileColor 0.635 0.635 0.635
+            tileColor 0.9058823529411765 0.10196078431372549 0.10196078431372549 
             room 3
           }
         
-        DEF TILE halfTile {
+        DEF TILE worldTile {
             xPos 9
             zPos 6
             floor TRUE
@@ -2125,15 +2095,10 @@
             rightWall 6
             bottomWall 3
             leftWall 0
-            tile1Walls [ 0, 0, 0, 0 ]
-            tile2Walls [ 0, 0, 0, 0 ]
-            tile3Walls [ 0, 0, 0, 0 ]
-            tile4Walls [ 0, 0, 0, 0 ]
-            tile1External [ FALSE, FALSE, FALSE, FALSE ]
-            tile2External [ FALSE, TRUE, FALSE, FALSE ]
-            tile3External [ FALSE, FALSE, TRUE, FALSE ]
-            tile4External [ FALSE, TRUE, TRUE, FALSE ]
-            curve [0,0,0,0]
+            topExternal FALSE
+            rightExternal TRUE
+            bottomExternal TRUE
+            leftExternal FALSE
             start FALSE
             trap FALSE
             checkpoint FALSE
@@ -2145,7 +2110,7 @@
             yScale 0.4
             zScale 0.4
             tileColor 0.635 0.635 0.635
-            room 3
+            room 4
           }
         
         DEF TILE halfTile {
@@ -2359,7 +2324,52 @@
             tileColor 0.635 0.635 0.635
             room 1
           }
-        
+        Solid {
+
+                translation 0 -0.03 0.1150000000000001
+
+                rotation 0 1 0 0
+
+                name "Area4"
+
+                children [
+
+            DEF CURVED Shape { 
+appearance Appearance { 
+material Material { 
+diffuseColor 0.2 0.47 0.52 
+} 
+}
+geometry IndexedFaceSet { 
+coord Coordinate { 
+point [
+0.17440 0 0.18880,0.17440 0.06 0.18880,0.17200 0 0.19120,0.17200 0.06 0.19120,0.17120 0 0.19360,0.17120 0.06 0.19360,0.17120 0 0.20640,0.17120 0.06 0.20640,0.17120 0 0.20880,0.17120 0.06 0.20880,0.17840 0 0.20800,0.17840 0.06 0.20800,0.18080 0 0.20880,0.18080 0.06 0.20880,0.18320 0 0.21040,0.18320 0.06 0.21040,0.20480 0 0.21120,0.20480 0.06 0.21120,0.20960 0 0.21040,0.20960 0.06 0.21040,0.24000 0 0.20960,0.24000 0.06 0.20960,0.25440 0 0.20880,0.25440 0.06 0.20880,0.25520 0 0.19920,0.25520 0.06 0.19920,0.25440 0 0.19360,0.25440 0.06 0.19360,0.25360 0 0.19040,0.25360 0.06 0.19040,0.25120 0 0.19040,0.25120 0.06 0.19040,0.24880 0 0.19120,0.24880 0.06 0.19120,0.24560 0 0.19120,0.24560 0.06 0.19120,0.21680 0 0.19200,0.21680 0.06 0.19200,0.20640 0 0.19120,0.20640 0.06 0.19120,0.20400 0 0.18960,0.20400 0.06 0.18960,0.19440 0 0.18960,0.19440 0.06 0.18960,
+]
+}
+coordIndex [
+0,2,3,1,-1,2,4,5,3,-1,4,6,7,5,-1,6,8,9,7,-1,8,10,11,9,-1,10,12,13,11,-1,12,14,15,13,-1,14,16,17,15,-1,16,18,19,17,-1,18,20,21,19,-1,20,22,23,21,-1,22,24,25,23,-1,24,26,27,25,-1,26,28,29,27,-1,28,30,31,29,-1,30,32,33,31,-1,32,34,35,33,-1,34,36,37,35,-1,36,38,39,37,-1,38,40,41,39,-1,40,42,43,41,-1,42,0,1,43,-1,1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,-1,
+]
+}
+}DEF CURVED Shape { 
+appearance Appearance { 
+material Material { 
+diffuseColor 0.2 0.47 0.52 
+} 
+}
+geometry IndexedFaceSet { 
+coord Coordinate { 
+point [
+0.07360 0 0.04880,0.07360 0.06 0.04880,0.06960 0 0.05200,0.06960 0.06 0.05200,0.06800 0 0.05360,0.06800 0.06 0.05360,0.06400 0 0.05600,0.06400 0.06 0.05600,0.05760 0 0.05680,0.05760 0.06 0.05680,0.05600 0 0.05840,0.05600 0.06 0.05840,0.05360 0 0.05840,0.05360 0.06 0.05840,0.05200 0 0.06000,0.05200 0.06 0.06000,0.05040 0 0.06160,0.05040 0.06 0.06160,0.05120 0 0.10960,0.05120 0.06 0.10960,0.05200 0 0.11600,0.05200 0.06 0.11600,0.05280 0 0.12160,0.05280 0.06 0.12160,0.05440 0 0.12400,0.05440 0.06 0.12400,0.05440 0 0.12720,0.05440 0.06 0.12720,0.05600 0 0.12960,0.05600 0.06 0.12960,0.05600 0 0.13360,0.05600 0.06 0.13360,0.05680 0 0.13600,0.05680 0.06 0.13600,0.05840 0 0.13760,0.05840 0.06 0.13760,0.06160 0 0.14160,0.06160 0.06 0.14160,0.06320 0 0.14320,0.06320 0.06 0.14320,0.06560 0 0.14480,0.06560 0.06 0.14480,0.06880 0 0.14800,0.06880 0.06 0.14800,0.07120 0 0.14880,0.07120 0.06 0.14880,0.07360 0 0.14960,0.07360 0.06 0.14960,0.07600 0 0.15040,0.07600 0.06 0.15040,0.08080 0 0.15120,0.08080 0.06 0.15120,0.09680 0 0.15200,0.09680 0.06 0.15200,0.09840 0 0.15040,0.09840 0.06 0.15040,0.10320 0 0.14720,0.10320 0.06 0.14720,0.10880 0 0.14320,0.10880 0.06 0.14320,0.10960 0 0.14080,0.10960 0.06 0.14080,0.11120 0 0.13840,0.11120 0.06 0.13840,0.11360 0 0.13520,0.11360 0.06 0.13520,0.11440 0 0.10480,0.11440 0.06 0.10480,0.11360 0 0.10240,0.11360 0.06 0.10240,0.11280 0 0.09520,0.11280 0.06 0.09520,0.11120 0 0.09280,0.11120 0.06 0.09280,0.11120 0 0.08640,0.11120 0.06 0.08640,0.11040 0 0.08400,0.11040 0.06 0.08400,0.10960 0 0.08080,0.10960 0.06 0.08080,0.10800 0 0.07920,0.10800 0.06 0.07920,0.10800 0 0.07600,0.10800 0.06 0.07600,0.10640 0 0.07360,0.10640 0.06 0.07360,0.10640 0 0.07120,0.10640 0.06 0.07120,0.10320 0 0.06720,0.10320 0.06 0.06720,0.10240 0 0.06480,0.10240 0.06 0.06480,0.10080 0 0.06240,0.10080 0.06 0.06240,0.10000 0 0.06000,0.10000 0.06 0.06000,0.09840 0 0.05760,0.09840 0.06 0.05760,0.09600 0 0.05440,0.09600 0.06 0.05440,0.09360 0 0.05280,0.09360 0.06 0.05280,0.09280 0 0.05040,0.09280 0.06 0.05040,0.09040 0 0.04960,0.09040 0.06 0.04960,0.08640 0 0.04960,0.08640 0.06 0.04960,
+]
+}
+coordIndex [
+0,2,3,1,-1,2,4,5,3,-1,4,6,7,5,-1,6,8,9,7,-1,8,10,11,9,-1,10,12,13,11,-1,12,14,15,13,-1,14,16,17,15,-1,16,18,19,17,-1,18,20,21,19,-1,20,22,23,21,-1,22,24,25,23,-1,24,26,27,25,-1,26,28,29,27,-1,28,30,31,29,-1,30,32,33,31,-1,32,34,35,33,-1,34,36,37,35,-1,36,38,39,37,-1,38,40,41,39,-1,40,42,43,41,-1,42,44,45,43,-1,44,46,47,45,-1,46,48,49,47,-1,48,50,51,49,-1,50,52,53,51,-1,52,54,55,53,-1,54,56,57,55,-1,56,58,59,57,-1,58,60,61,59,-1,60,62,63,61,-1,62,64,65,63,-1,64,66,67,65,-1,66,68,69,67,-1,68,70,71,69,-1,70,72,73,71,-1,72,74,75,73,-1,74,76,77,75,-1,76,78,79,77,-1,78,80,81,79,-1,80,82,83,81,-1,82,84,85,83,-1,84,86,87,85,-1,86,88,89,87,-1,88,90,91,89,-1,90,92,93,91,-1,92,94,95,93,-1,94,96,97,95,-1,96,98,99,97,-1,98,100,101,99,-1,100,102,103,101,-1,102,104,105,103,-1,104,106,107,105,-1,106,0,1,107,-1,1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69,71,73,75,77,79,81,83,85,87,89,91,93,95,97,99,101,103,105,107,-1,
+]
+}
+}
+]
+}
+
             ]
         }
         
@@ -2406,17 +2416,6 @@
               }
               DEF checkpoint3max Transform {
                     translation 0.36000000000000004 -0.03 -0.12
-              }
-            ]
-          }
-        
-        DEF boundary Group {
-            children [
-              DEF checkpoint4min Transform {
-                    translation 0.35999999999999993 -0.03 0.1200000000000001
-              }
-              DEF checkpoint4max Transform {
-                    translation 0.4799999999999999 -0.03 0.2400000000000001
               }
             ]
           }
@@ -2486,20 +2485,9 @@
         DEF boundary Group {
             children [
               DEF swamp1min Transform {
-                    translation 5.551115123125783e-17 -0.03 0.1200000000000001
-              }
-              DEF swamp1max Transform {
-                    translation 0.12000000000000005 -0.03 0.2400000000000001
-              }
-            ]
-          }
-        
-        DEF boundary Group {
-            children [
-              DEF swamp2min Transform {
                     translation 0.24000000000000005 -0.03 -0.12
               }
-              DEF swamp2max Transform {
+              DEF swamp1max Transform {
                     translation 0.36000000000000004 -0.03 0
               }
             ]
@@ -2534,7 +2522,7 @@
         }
         
         Victim {
-            translation -0.29999999999999993 0 0.2350000000000001
+            translation -0.32399999999999995 0 0.2350000000000001
             rotation 0 1 0 0
             name "Victim2"
             type "harmed"
@@ -2549,6 +2537,22 @@
             scoreWorth 5
         }
         
+                    Victim {
+                        translation 0.226 0 0.30620000000000014
+                        rotation 0 1 0 0
+                        name "Victim4"
+                        type "stable"
+                        scoreWorth 15
+                    }
+                    
+                    Victim {
+                        translation 0.1096 0 0.19580000000000009
+                        rotation 0 1 0 -1.1071487177940904
+                        name "Victim5"
+                        type "unharmed"
+                        scoreWorth 15
+                    }
+                    
             ]
         }
         
@@ -2592,7 +2596,7 @@
             rotation 0 1 0 0
             name "Hazard4"
             type "P"
-            scoreWorth 30
+            scoreWorth 10
         }
         
         HazardMap {
@@ -2604,17 +2608,9 @@
         }
         
         HazardMap {
-            translation 0.27 0 0.1856000000000001
-            rotation 0 1 0 3.14
-            name "Hazard6"
-            type "C"
-            scoreWorth 30
-        }
-        
-        HazardMap {
             translation 0.47439999999999993 0 0.03
             rotation 0 1 0 1.57
-            name "Hazard7"
+            name "Hazard6"
             type "C"
             scoreWorth 10
         }
@@ -2622,11 +2618,19 @@
         HazardMap {
             translation 0.5944000000000003 0 -0.39
             rotation 0 1 0 1.57
-            name "Hazard8"
+            name "Hazard7"
             type "O"
             scoreWorth 10
         }
         
+                    HazardMap {
+                        translation 0.204 0 0.3046000000000001
+                        rotation 0 1 0 -0.13255153229667402
+                        name "Hazard8"
+                        type "P"
+                        scoreWorth 30
+                    }
+                    
             ]
         }
         
