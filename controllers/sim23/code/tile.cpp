@@ -59,11 +59,11 @@ void editMapTile(int tile) {
 	// North
 	if (field[tile].N) {
 		if (bigmap[mapY - 2][mapX - 1] == "0") bigmap[mapY - 2][mapX - 1] = "1";
-		bigmap[mapY - 2][mapX] = "1";
+		if (bigmap[mapY - 2][mapX] != "!") bigmap[mapY - 2][mapX] = "1";
 	}
 	if (field[tile + 1].N) {
 		if (bigmap[mapY - 2][mapX + 1] == "0") bigmap[mapY - 2][mapX + 1] = "1";
-		bigmap[mapY - 2][mapX] = "1";
+		if (bigmap[mapY - 2][mapX] != "!") bigmap[mapY - 2][mapX] = "1";
 	}
 	if (!field[tile].N && !field[tile + 1].N && field[tile - COLS].E) {
 		bigmap[mapY - 2][mapX] = "1";
@@ -72,11 +72,11 @@ void editMapTile(int tile) {
 	// East
 	if (field[tile + 1].E) {
 		if (bigmap[mapY - 1][mapX + 2] == "0") bigmap[mapY - 1][mapX + 2] = "1";
-		bigmap[mapY][mapX + 2] = "1";
+		if (bigmap[mapY][mapX + 2] != "!") bigmap[mapY][mapX + 2] = "1";
 	}
 	if (field[tile + COLS + 1].E) {
 		if (bigmap[mapY + 1][mapX + 2] == "0") bigmap[mapY + 1][mapX + 2] = "1";
-		bigmap[mapY][mapX + 2] = "1";
+		if (bigmap[mapY][mapX + 2] != "!") bigmap[mapY][mapX + 2] = "1";
 	}
 	if (!field[tile + 1].E && !field[tile + COLS + 1].E && field[tile + 2].S) {
 		bigmap[mapY][mapX + 2] = "1";
@@ -85,11 +85,11 @@ void editMapTile(int tile) {
 	// South
 	if (field[tile + COLS].S) {
 		if (bigmap[mapY + 2][mapX - 1] == "0") bigmap[mapY + 2][mapX - 1] = "1";
-		bigmap[mapY + 2][mapX] = "1";
+		if (bigmap[mapY + 2][mapX] != "!") bigmap[mapY + 2][mapX] = "1";
 	}
 	if (field[tile + COLS + 1].S) {
 		if (bigmap[mapY + 2][mapX + 1] == "0") bigmap[mapY + 2][mapX + 1] = "1";
-		bigmap[mapY + 2][mapX] = "1";
+		if (bigmap[mapY + 2][mapX] != "!") bigmap[mapY + 2][mapX] = "1";
 	}
 	if (!field[tile + COLS].S && !field[tile + COLS + 1].S && field[tile + COLS * 2].E) {
 		bigmap[mapY + 2][mapX] = "1";
@@ -98,27 +98,27 @@ void editMapTile(int tile) {
 	// West
 	if (field[tile].W) {
 		if (bigmap[mapY - 1][mapX - 2] == "0") bigmap[mapY - 1][mapX - 2] = "1";
-		bigmap[mapY][mapX - 2] = "1";
+		if (bigmap[mapY][mapX - 2] != "!") bigmap[mapY][mapX - 2] = "1";
 	}
 	if (field[tile + COLS].W) {
 		if (bigmap[mapY + 1][mapX - 2] == "0") bigmap[mapY + 1][mapX - 2] = "1";
-		bigmap[mapY][mapX - 2] = "1";
+		if (bigmap[mapY][mapX - 2] != "!") bigmap[mapY][mapX - 2] = "1";
 	}
 	if (!field[tile].W && !field[tile + COLS].W && field[tile - 1].S) {
 		bigmap[mapY][mapX - 2] = "1";
 		bigmap[mapY][mapX - 3] = "1";
 	}
 	// Corners
-	if ((field[tile].N && field[tile].W) || (bigmap[mapY - 2][mapX - 1] == "1" && bigmap[mapY - 2][mapX - 3] == "1") || (bigmap[mapY - 1][mapX - 2] == "1" && bigmap[mapY - 3][mapX - 2] == "1")) {
+	if (bigmap[mapY - 2][mapX - 2] != "!" && ((field[tile].N && field[tile].W) || (bigmap[mapY - 2][mapX - 1] == "1" && bigmap[mapY - 2][mapX - 3] == "1") || (bigmap[mapY - 1][mapX - 2] == "1" && bigmap[mapY - 3][mapX - 2] == "1"))) {
 		bigmap[mapY - 2][mapX - 2] = "1";
 	}
-	if ((field[tile + 1].N && field[tile + 1].E) || (bigmap[mapY - 2][mapX + 1] == "1" && bigmap[mapY - 2][mapX + 3] == "1") || (bigmap[mapY - 1][mapX + 2] == "1" && bigmap[mapY - 3][mapX + 2] == "1")) {
+	if (bigmap[mapY - 2][mapX + 2] != "!" && ((field[tile + 1].N && field[tile + 1].E) || (bigmap[mapY - 2][mapX + 1] == "1" && bigmap[mapY - 2][mapX + 3] == "1") || (bigmap[mapY - 1][mapX + 2] == "1" && bigmap[mapY - 3][mapX + 2] == "1"))) {
 		bigmap[mapY - 2][mapX + 2] = "1";
 	}
-	if ((field[tile + COLS].S && field[tile + COLS].W) || (bigmap[mapY + 2][mapX - 1] == "1" && bigmap[mapY + 2][mapX - 3] == "1") || (bigmap[mapY + 1][mapX - 2] == "1" && bigmap[mapY + 3][mapX - 2] == "1")) {
+	if (bigmap[mapY + 2][mapX - 2] != "!" && ((field[tile + COLS].S && field[tile + COLS].W) || (bigmap[mapY + 2][mapX - 1] == "1" && bigmap[mapY + 2][mapX - 3] == "1") || (bigmap[mapY + 1][mapX - 2] == "1" && bigmap[mapY + 3][mapX - 2] == "1"))) {
 		bigmap[mapY + 2][mapX - 2] = "1";
 	}
-	if ((field[tile + COLS + 1].S && field[tile + COLS + 1].E) || (bigmap[mapY + 2][mapX + 1] == "1" && bigmap[mapY + 2][mapX + 3] == "1") || (bigmap[mapY + 1][mapX + 2] == "1" && bigmap[mapY + 3][mapX + 2] == "1")) {
+	if (bigmap[mapY + 2][mapX + 2] != "!" && ((field[tile + COLS + 1].S && field[tile + COLS + 1].E) || (bigmap[mapY + 2][mapX + 1] == "1" && bigmap[mapY + 2][mapX + 3] == "1") || (bigmap[mapY + 1][mapX + 2] == "1" && bigmap[mapY + 3][mapX + 2] == "1"))) {
 		bigmap[mapY + 2][mapX + 2] = "1";
 	}
 	
@@ -225,26 +225,30 @@ void mapCurvedWall(int tile, int subTile, int curveDirection) {
 	switch (subTile) {
 		case 0:
 			if (curveDirection == tl) {
-				if (bigmap[mapY - 3][mapX - 2] != "0" && bigmap[mapY - 2][mapX - 3] != "0") 
-					bigmap[mapY - 2][mapX - 2] = "0";
+				if (bigmap[mapY - 3][mapX - 2] == "1" || bigmap[mapY - 2][mapX - 3] == "1")
+					break;
+				bigmap[mapY - 2][mapX - 2] = "!";
 			}
 			break;
 		case 1:
 			if (curveDirection == tr) {
-				if (bigmap[mapY - 3][mapX + 2] != "0" && bigmap[mapY - 2][mapX + 3] != "0")
-					bigmap[mapY - 2][mapX + 2] = "0";
+				if (bigmap[mapY - 3][mapX + 2] == "1" || bigmap[mapY - 2][mapX + 3] == "1")
+					break;
+				bigmap[mapY - 2][mapX + 2] = "!";
 			}
 			break;
 		case 2:
 			if (curveDirection == br) {
-				if (bigmap[mapY + 3][mapX + 2] != "0" && bigmap[mapY + 2][mapX + 3] != "0")
-					bigmap[mapY + 2][mapX + 2] = "0";
+				if (bigmap[mapY + 3][mapX + 2] == "1" || bigmap[mapY + 2][mapX + 3] == "1")
+					break;
+				bigmap[mapY + 2][mapX + 2] = "!";
 			}
 			break;
 		case 3:
 			if (curveDirection == bl) {
-				if (bigmap[mapY + 3][mapX - 2] != "0" && bigmap[mapY + 2][mapX - 3] != "0")
-					bigmap[mapY + 2][mapX - 2] = "0";
+				if (bigmap[mapY + 3][mapX - 2] == "1" || bigmap[mapY + 2][mapX - 3] == "1")
+					break;
+				bigmap[mapY + 2][mapX - 2] = "!";
 			}
 			break;
 	}
@@ -531,9 +535,9 @@ void getTile(int tile) {
 			}
 
 			// front convex
-			if (average[3] < 8 && average[2] < average[3]) {
+			/*if (average[3] < 8 && average[2] < average[3]) {
 				printf("CONVEX FRONT\n");
-			}
+			}*/
 
 			// side convex
 		}
@@ -798,6 +802,7 @@ void mapBonus() {
 	while (bot.update()) {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
+				if (bigmap[startY * 2 + i][startX * 2 + j] == "!") bigmap[startY * 2 + i][startX * 2 + j] = "0";
 				realmap[i][j] = bigmap[startY * 2 + i][startX * 2 + j];
 				cout << realmap[i][j] << " ";
 			}
