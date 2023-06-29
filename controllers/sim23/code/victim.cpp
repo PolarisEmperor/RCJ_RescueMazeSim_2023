@@ -4,6 +4,8 @@ using namespace webots;
 using namespace std;
 using namespace cv;
 
+//#define DEBUG_MODE
+
 // constants
 const int max_value_H = 360 / 2;
 const int max_value = 255;
@@ -51,11 +53,15 @@ bool comp(vector<Point> first, vector<Point> second) {
 }
 
 int findMinMax(vector<Point> points, bool findMax) {
+#ifdef DEBUG_MODE
 	printf("\nPoints.size: %zu, ", points.size());
+#endif
 	int max = points[0].y;
 	int min = points[0].y;
 	for (int i = 0; i < points.size(); i++) {
+#ifdef DEBUG_MODE
 		printf("%d, ", points[i].y);
+#endif
 		if (points[i].y > max) {
 			max = points[i].y;
 		}
@@ -80,10 +86,12 @@ char HSU(Mat roi) {
 	double widthMult = 1;
 
 	threshold(roi, roi, thresh, max_thresh, THRESH_BINARY_INV); // create thresholded image
-	//imshow("roi", roi);
 	//findContours in whole ROI
 	findContours(roi, allContours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
-	printf("\nContour Count: %zu\n", allContours.size());
+#ifdef DEBUG_MODE
+	imshow("roi", roi);
+	printf("\nROI Contour Count: %zu\n", allContours.size());
+#endif
 	//printf("\nContour Areas: ");
 
 	if (allContours.size() == 3) {
@@ -92,68 +100,75 @@ char HSU(Mat roi) {
 		botHeight = roi.rows - botCropVal;
 		widthMult = 0.85;
 	}
+#ifdef DEBUG_MODE
 	printf("\nWidth: %d, Height: %d", roi.cols, roi.rows);
 	printf("\ntopCropVal: %d, botCropVal: %d, botHeight: %d\n", topCropVal, botCropVal, botHeight);
+#endif
 
-	Mat cropTop(roi, Rect(0, topCropVal, roi.cols * widthMult, roi.rows / 4));
-	Mat cropMid(roi, Rect(0, roi.rows * 3 / 8, roi.cols * widthMult, roi.rows / 4));
-	Mat cropBot(roi, Rect(0, roi.rows * 3 / 4, roi.cols * widthMult, botHeight));
+	try {
+		Mat cropTop(roi, Rect(0, topCropVal, roi.cols * widthMult, roi.rows / 4));
+		Mat cropMid(roi, Rect(0, roi.rows * 3 / 8, roi.cols * widthMult, roi.rows / 4));
+		Mat cropBot(roi, Rect(0, roi.rows * 3 / 4, roi.cols * widthMult, botHeight));
 
-	//imshow("top_crop", cropTop);
-	//imshow("mid_crop", cropMid);
-	//imshow("bot_crop", cropBot);
+#ifdef DEBUG_MODE
+		imshow("top_crop", cropTop);
+		imshow("mid_crop", cropMid);
+		imshow("bot_crop", cropBot);
+#endif
 
-	//Mat top(roi, Rect(0, 0, roi.cols, roi.rows / 4));
-	//Mat mid(roi, Rect(0, roi.rows / 3, roi.cols, roi.rows / 4));
-	//Mat bot(roi, Rect(0, roi.rows * 3 / 4, roi.cols, roi.rows / 4));
+		//Mat top(roi, Rect(0, 0, roi.cols, roi.rows / 4));
+		//Mat mid(roi, Rect(0, roi.rows / 3, roi.cols, roi.rows / 4));
+		//Mat bot(roi, Rect(0, roi.rows * 3 / 4, roi.cols, roi.rows / 4));
 
-	//imshow("top_norm", top);
-	//imshow("mid_norm", mid);
-	//imshow("bot_norm", bot);
+		//imshow("top_norm", top);
+		//imshow("mid_norm", mid);
+		//imshow("bot_norm", bot);
 
-	// findContours on each third
-	findContours(cropTop, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE); // find contours
-	for (int i = 0; i < contours.size(); i++) {
-		area += contourArea(contours[i]);
-	}
-	//printf("top contour: %f, ", area);
-	//if (area < double(top.rows * top.cols * 0.05) || area > double(top.rows * top.cols * 0.3)) return 0;
-	slicedContours = contours.size() * 100;
-	findContours(cropMid, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE); // find contours
-	area = 0;
-	for (int i = 0; i < contours.size(); i++) {
-		area += contourArea(contours[i]);
-	}
-	//printf("mid contour: %f, ", area);
-	//printf("mid.rows: %d, ", mid.rows);
-	//printf("mid.cols: %d", mid.cols);
-	//if (area < double(mid.rows * mid.cols * 0.05) || area > double(mid.rows * mid.cols * 0.5)) {
-	//	return true;
-	//}
-	slicedContours += contours.size() * 10;
-	findContours(cropBot, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE); // find contours
-	area = 0;
-	for (int i = 0; i < contours.size(); i++) {
-		area += contourArea(contours[i]);
-	}
-	//printf("bot contour: %f, ", area);
-	//printf("bot.rows: %d, ", bot.rows);
-	//printf("bot.cols: %d, \n", bot.cols);
-	//if (area < double(bot.rows * bot.cols * 0.05) || area > double(bot.rows * bot.cols * 0.3)) return 0;
-	slicedContours += contours.size();
+		// findContours on each third
+		findContours(cropTop, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE); // find contours
+		for (int i = 0; i < contours.size(); i++) {
+			area += contourArea(contours[i]);
+		}
+		//printf("top contour: %f, ", area);
+		//if (area < double(top.rows * top.cols * 0.05) || area > double(top.rows * top.cols * 0.3)) return 0;
+		slicedContours = contours.size() * 100;
+		findContours(cropMid, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE); // find contours
+		area = 0;
+		for (int i = 0; i < contours.size(); i++) {
+			area += contourArea(contours[i]);
+		}
+		//printf("mid contour: %f, ", area);
+		//printf("mid.rows: %d, ", mid.rows);
+		//printf("mid.cols: %d", mid.cols);
+		//if (area < double(mid.rows * mid.cols * 0.05) || area > double(mid.rows * mid.cols * 0.5)) {
+		//	return true;
+		//}
+		slicedContours += contours.size() * 10;
+		findContours(cropBot, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE); // find contours
+		area = 0;
+		for (int i = 0; i < contours.size(); i++) {
+			area += contourArea(contours[i]);
+		}
+		//printf("bot contour: %f, ", area);
+		//printf("bot.rows: %d, ", bot.rows);
+		//printf("bot.cols: %d, \n", bot.cols);
+		//if (area < double(bot.rows * bot.cols * 0.05) || area > double(bot.rows * bot.cols * 0.3)) return 0;
+		slicedContours += contours.size();
 
-	//imshow("letter", roi);
-	//imshow("top", top);
-	//imshow("mid", mid);
-	//imshow("bot", bot);
-	waitKey(1);
+		waitKey(1);
 
-	printf("SlicedContour: %d--------------------------\n", slicedContours);
-	switch (slicedContours) {
+#ifdef DEBUG_MODE
+		printf("SlicedContour: %d--------------------------\n", slicedContours);
+#endif
+		switch (slicedContours) {
 		case 212: sendVictimSignal('H'); return 'H';
 		case 111: sendVictimSignal('S'); return 'S';
 		case 221: sendVictimSignal('U'); return 'U';
-	default: return 0;
+		default: return 0;
+		}
+	}
+	catch (...) {
+		printf("MATRIX ERROR!!!\n");
 	}
 }
 
@@ -219,8 +234,9 @@ char checkVisualVictim(Camera* cam) {
 				double area = roi.rows * roi.cols;
 
 				double rat = (float)roi.cols / roi.rows;
-				//printf("\nCountour Area: %f\n", contourArea(largest));
+#ifdef DEBUG_MODE
 				printf("angle %f, rows %d, cols %d, ratio %f, framerows %d\n", rotateRect.angle, roi.rows, roi.cols, rat, frame.rows);
+#endif
 
 				//imshow("roi", roi);
 				//waitKey(1);
@@ -236,7 +252,9 @@ char checkVisualVictim(Camera* cam) {
 					//imshow("black", black);
 					//waitKey(1);
 					//findContours(black, contours, RETR_LIST, CHAIN_APPROX_SIMPLE);
+#ifdef DEBUG_MODE
 					printf("contour count %I64u\n", maskcontours.size());
+#endif
 					//printf("area %f\n", area);
 					for (int i = 0; i < maskcontours.size(); i++) {
 						blackarea += contourArea(maskcontours[i]);
@@ -246,8 +264,10 @@ char checkVisualVictim(Camera* cam) {
 					//PosX = gps->getValues()[0] * 100;
 					//PosZ = gps->getValues()[2] * 100;
 
-					//printf("blackarea %f, area %f, largest %f\n", blackarea, area, contourArea(largest));
+#ifdef DEBUG_MODE
+					printf("blackarea %f, area %f, largest %f\n", blackarea, area, contourArea(largest));
 					printf("black/area: %f\n", blackarea / area);
+#endif
 
 					if ((blackarea / area > 0.32 && blackarea / area < 0.44 && maskcontours.size() >= 2)
 						|| (maskcontours.size() >= 8 && maskcontours.size() <= 12 && 
@@ -317,8 +337,10 @@ char checkVisualVictim(Camera* cam) {
 			double width = (double)roi.width;
 			double height = (double)roi.height;
 			
+#ifdef DEBUG_MODE
 			printf("width % f height %f, ", width, height);
 			printf("width/height: %f\n", width / height);
+#endif
 
 			//if (( width / height > 0.4 && width / height < 2.1 && height > 30 && width > 30) ||
 			//	(width > 30 && width < 100 && height > 15 && height < 100 && (width / height > 0.9 && width / height < 2.1))) {
