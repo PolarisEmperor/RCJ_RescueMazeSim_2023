@@ -61,9 +61,15 @@ void editMapTile(int tile) {
 		if (bigmap[mapY - 2][mapX - 1] == "0") bigmap[mapY - 2][mapX - 1] = "1";
 		if (bigmap[mapY - 2][mapX] != "!") bigmap[mapY - 2][mapX] = "1";
 	}
+	else {
+		bigmap[mapY - 2][mapX - 1] = "0";
+	}
 	if (field[tile + 1].N) {
 		if (bigmap[mapY - 2][mapX + 1] == "0") bigmap[mapY - 2][mapX + 1] = "1";
 		if (bigmap[mapY - 2][mapX] != "!") bigmap[mapY - 2][mapX] = "1";
+	}
+	else {
+		bigmap[mapY - 2][mapX + 1] = "0";
 	}
 	if (!field[tile].N && !field[tile + 1].N && field[tile - COLS].E) {
 		bigmap[mapY - 2][mapX] = "1";
@@ -74,9 +80,15 @@ void editMapTile(int tile) {
 		if (bigmap[mapY - 1][mapX + 2] == "0") bigmap[mapY - 1][mapX + 2] = "1";
 		if (bigmap[mapY][mapX + 2] != "!") bigmap[mapY][mapX + 2] = "1";
 	}
+	else {
+		bigmap[mapY - 1][mapX + 2] = "0";
+	}
 	if (field[tile + COLS + 1].E) {
 		if (bigmap[mapY + 1][mapX + 2] == "0") bigmap[mapY + 1][mapX + 2] = "1";
 		if (bigmap[mapY][mapX + 2] != "!") bigmap[mapY][mapX + 2] = "1";
+	}
+	else {
+		bigmap[mapY + 1][mapX + 2] = "0";
 	}
 	if (!field[tile + 1].E && !field[tile + COLS + 1].E && field[tile + 2].S) {
 		bigmap[mapY][mapX + 2] = "1";
@@ -87,9 +99,15 @@ void editMapTile(int tile) {
 		if (bigmap[mapY + 2][mapX - 1] == "0") bigmap[mapY + 2][mapX - 1] = "1";
 		if (bigmap[mapY + 2][mapX] != "!") bigmap[mapY + 2][mapX] = "1";
 	}
+	else {
+		bigmap[mapY + 2][mapX - 1] = "0";
+	}
 	if (field[tile + COLS + 1].S) {
 		if (bigmap[mapY + 2][mapX + 1] == "0") bigmap[mapY + 2][mapX + 1] = "1";
 		if (bigmap[mapY + 2][mapX] != "!") bigmap[mapY + 2][mapX] = "1";
+	}
+	else {
+		bigmap[mapY + 2][mapX + 1] = "0";
 	}
 	if (!field[tile + COLS].S && !field[tile + COLS + 1].S && field[tile + COLS * 2].E) {
 		bigmap[mapY + 2][mapX] = "1";
@@ -100,9 +118,15 @@ void editMapTile(int tile) {
 		if (bigmap[mapY - 1][mapX - 2] == "0") bigmap[mapY - 1][mapX - 2] = "1";
 		if (bigmap[mapY][mapX - 2] != "!") bigmap[mapY][mapX - 2] = "1";
 	}
+	else {
+		bigmap[mapY - 1][mapX - 2] = "0";
+	}
 	if (field[tile + COLS].W) {
 		if (bigmap[mapY + 1][mapX - 2] == "0") bigmap[mapY + 1][mapX - 2] = "1";
 		if (bigmap[mapY][mapX - 2] != "!") bigmap[mapY][mapX - 2] = "1";
+	}
+	else {
+		bigmap[mapY + 1][mapX - 2] = "0";
 	}
 	if (!field[tile].W && !field[tile + COLS].W && field[tile - 1].S) {
 		bigmap[mapY][mapX - 2] = "1";
@@ -259,7 +283,7 @@ bool obstacle(int tile) {
 	bool left = 0, right = 0;
 	bool frontleft = 0, frontright = 0;
 	bool wall[8] = { 0 };
-
+	
 	for (int i = 432; i < 442; i++) {
 		if (bot.getLidarPoint(3, i) < dist) {
 			printf("left\n");
@@ -296,7 +320,7 @@ bool obstacle(int tile) {
 				//field[tile - COLS].visited = 1;
 			}
 			if (frontleft) {
-				setWalls(tile, 1, 0, 0, 0);
+				setWalls(tile - COLS, 1, 0, 0, 0);
 				/*field[tile].E = 1;
 				field[tile].N = 1;*/
 				//field[tile - COLS].visited = 1;

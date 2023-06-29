@@ -130,7 +130,9 @@
     <ClCompile Include="code\wallTrace.cpp">
       <Filter>Code</Filter>
     </ClCompile>
-    <ClCompile Include="code\room4.cpp" />
+    <ClCompile Include="code\room4.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Code">
@@ -177,6 +179,8 @@
     <ClInclude Include="code\wallTrace.h">
       <Filter>Code</Filter>
     </ClInclude>
-    <ClInclude Include="code\room4.h" />
+    <ClInclude Include="code\room4.h">
+      <Filter>Code</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

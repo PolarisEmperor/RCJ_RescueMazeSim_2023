@@ -40,11 +40,6 @@ Bot::Bot() {
 
 // Robot destructor
 Bot::~Bot() {
-	// Send the letter 'E' to signify exit
-	char message = 'E';
-	emitter->send(&message, 1);
-
-	while (robot->step(timeStep) != 1);
 	delete robot;
 }
 

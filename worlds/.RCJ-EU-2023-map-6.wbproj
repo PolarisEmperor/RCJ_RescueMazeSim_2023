@@ -7,6 +7,3 @@ centralWidgetVisible: 1
 orthographicViewHeight: 1
 textFiles: -1
 consoles: Console:All:All
-renderingDevicePerspectives: Erebus_Bot:bCam;1;1;0;0
-renderingDevicePerspectives: Erebus_Bot:lCam;1;1;0;0
-renderingDevicePerspectives: Erebus_Bot:rCam;1;1;0;0

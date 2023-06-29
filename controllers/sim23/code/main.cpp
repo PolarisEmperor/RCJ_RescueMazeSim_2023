@@ -22,9 +22,13 @@ int main() {
 	while (bot.update()) {
 		if (bot.getGameTime() < 20) {
 			mapBonus();
+			// Send the letter 'E' to signify exit
+			char message = 'E';
+			bot.emitter->send(&message, 1);
+
+			while (bot.robot->step(bot.robot->getBasicTimeStep()) != -1);
 			break;
 		}
-
 		// testing stuff
 		/*bot.curRoom = 3;
 		getTile(bot.curTile);
@@ -69,6 +73,11 @@ int main() {
 					printf("i need to go home! start tile = %d cur tile = %d\n", bot.startTile, bot.curTile);
 					move2Tile(bot.curTile, bot.startTile);
 					mapBonus();
+					// Send the letter 'E' to signify exit
+					char message = 'E';
+					bot.emitter->send(&message, 1);
+
+					while (bot.robot->step(bot.robot->getBasicTimeStep()) != -1);
 			}
 			break;
 		}	

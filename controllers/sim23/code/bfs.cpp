@@ -9,6 +9,13 @@ int findNeighbor(unsigned int tile, int dir) {
 	// tiles to the north, east, south, west
 	unsigned int neighbors[] = { tile - COLS, tile + 1, tile + COLS, tile - 1 };
 
+	// out of bounds checking
+	if (tile > fieldSize - 1 || tile < 0) return -2;
+	for (int i = 0; i < 4; i++) {
+		if (neighbors[i] < 0 || neighbors[i] > fieldSize - 1)
+			return -2;
+	}
+
 	switch (dir) {
 		case North:
 			if (field[neighbors[North]].color != Hole && field[neighbors[North] + 1].color != Hole && (field[tile].bits & (1 << North)) == 0 && (field[neighbors[East]].bits & (1 << North)) == 0 && (field[neighbors[North]].bits & (1 << East)) == 0) {
@@ -74,11 +81,21 @@ int bfs(int tile) {
 					return target;
 				}
 			}
+			else if (neighbor == -2) {
+				printf("BFS FAILED\n");
+				return -2;
+			}
+
 		}
 		cur++; // advance worker
 
 		if (target != -1) return target; // if it found a target tile, return it
 	}
+	mapBonus();
+	char message = 'E';
+	bot.emitter->send(&message, 1);
+
+	while (bot.robot->step(bot.robot->getBasicTimeStep()) != 1);
 	return -1; // could not find any unvisited tile
 }
 
@@ -109,7 +126,14 @@ int gohome(int tile) {
 					parent[neighbor] = *cur; // neighbor came from cur
 					*next++ = neighbor; // add neighbor to worker array
 				}
+				if (neighbor == -2) {
+					printf("BFS FAILED\n");
+					char message = 'E';
+					bot.emitter->send(&message, 1);
 
+					while (bot.robot->step(bot.robot->getBasicTimeStep()) != 1);
+					return -2;
+				}
 				// if neighbor is unvisited, return it
 				/*if (!field[neighbor].visited && target == -1) {
 					target = neighbor;
@@ -122,6 +146,11 @@ int gohome(int tile) {
 
 		if (target != -1) return target; // if it found a target tile, return it
 	}
+	mapBonus();
+	char message = 'E';
+	bot.emitter->send(&message, 1);
+
+	while (bot.robot->step(bot.robot->getBasicTimeStep()) != 1);
 	return -1; // could not find any unvisited tile
 }
 
