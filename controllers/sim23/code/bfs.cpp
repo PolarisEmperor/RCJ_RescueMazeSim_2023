@@ -12,27 +12,27 @@ int findNeighbor(unsigned int tile, int dir) {
 	switch (dir) {
 		case North:
 			if (field[neighbors[North]].color != Hole && field[neighbors[North] + 1].color != Hole && (field[tile].bits & (1 << North)) == 0 && (field[neighbors[East]].bits & (1 << North)) == 0 && (field[neighbors[North]].bits & (1 << East)) == 0) {
-				if (field[neighbors[North]].color >= Red && bot.room4done) break;
+				//if (field[neighbors[North]].color >= Red && bot.room4done) break;
 				return neighbors[dir];
 			}
 			break;
 		case East:
 			if (field[neighbors[East] + 1].color != Hole && field[neighbors[East] + 1 + COLS].color != Hole && (field[neighbors[East]].bits & (1 << East)) == 0 && (field[neighbors[South] + 1].bits & (1 << East)) == 0 && (field[neighbors[East] + 1].bits & (1 << South)) == 0) {
-				if (field[neighbors[East]].color >= Red && bot.room4done) break;
+				//if (field[neighbors[East]].color >= Red && bot.room4done) break;
 				return neighbors[dir];
 			}
 				
 			break;
 		case South:
 			if (field[neighbors[South] + COLS].color != Hole && field[neighbors[South] + COLS + 1].color != Hole && (field[neighbors[South]].bits & (1 << South)) == 0 && (field[neighbors[South] + 1].bits & (1 << South)) == 0 && (field[neighbors[South] + COLS].bits & (1 << East)) == 0) {
-				if (field[neighbors[South]].color >= Red && bot.room4done) break;
+				//if (field[neighbors[South]].color >= Red && bot.room4done) break;
 				return neighbors[dir];
 			}
 				
 			break;
 		case West:
 			if (field[neighbors[West]].color != Hole && field[neighbors[West] + COLS].color != Hole && (field[tile].bits & (1 << West)) == 0 && (field[neighbors[South]].bits & (1 << West)) == 0 && (field[neighbors[West]].bits & (1 << South)) == 0) {
-				if (field[neighbors[West]].color >= Red && bot.room4done) break;
+				//if (field[neighbors[West]].color >= Red && bot.room4done) break;
 				return neighbors[dir];
 			}
 				
@@ -83,6 +83,7 @@ int bfs(int tile) {
 }
 
 int gohome(int tile) {
+	printf("go home\n");
 	int *cur = &worker[0];
 	int *next = cur + 1;
 	int neighbor = -1;
@@ -101,9 +102,10 @@ int gohome(int tile) {
 		// check all directions
 		for (int i = North; i <= West; i++) {
 			neighbor = findNeighbor(*cur, i); // find neighbor
+			printf("cur %d neighbor %d\n", *cur, neighbor);
 			if (neighbor >= 0) { // valid neighbor
 				if (parent[neighbor] < 0) {
-					printf("cur %d neighbor %d\n", *cur, neighbor);
+					
 					parent[neighbor] = *cur; // neighbor came from cur
 					*next++ = neighbor; // add neighbor to worker array
 				}

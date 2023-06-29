@@ -182,7 +182,7 @@ void Bot::move(double cm, double spd) {
 			speed(-spd, -spd);
 		}
 
-	//stop();
+	stop();
 	updatePrevPos();
 }
 
@@ -214,6 +214,9 @@ int Bot::roundAngle() {
 void Bot::turn(int dir, double spd) {
 	double angles[] = { 0, -1.57, 3.14, 1.57 };
 	double err = 0.015;
+
+	if (dir < 0) dir += 4;
+	else if (dir > 3) dir -= 4;
 
 	int prevDir = getDirection();
 	while (update()) {

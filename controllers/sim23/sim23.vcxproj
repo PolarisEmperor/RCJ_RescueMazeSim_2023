@@ -164,6 +164,7 @@
     <ClCompile Include="code\main.cpp" />
     <ClCompile Include="code\map_tile.cpp" />
     <ClCompile Include="code\point.cpp" />
+    <ClCompile Include="code\room4.cpp" />
     <ClCompile Include="code\snapshot.cpp" />
     <ClCompile Include="code\tile.cpp" />
     <ClCompile Include="code\victim.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="code\lib.h" />
     <ClInclude Include="code\map_tile.h" />
     <ClInclude Include="code\point.h" />
+    <ClInclude Include="code\room4.h" />
     <ClInclude Include="code\snapshot.h" />
     <ClInclude Include="code\tile.h" />
     <ClInclude Include="code\victim.h" />

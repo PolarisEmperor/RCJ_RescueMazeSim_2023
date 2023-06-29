@@ -828,4 +828,39 @@ void mapBonus() {
 	bot.emitter->send(message, 8 + flattened.size()); // Send map data
 	char msg = 'M'; // Send map evaluate request
 	bot.emitter->send(&msg, sizeof(msg));
+
+	//const int width = 13, height = 13;
+	//string map[height][width] = {
+	//	{"1", "1", "1", "1", "1", "1", "1", "H", "1", "1", "1", "S", "1"},
+	//	{"1", "5", "0", "5", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "5", "0", "5", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"H", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "S"},
+	//	{"1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1"},
+	//	{"1", "1", "1", "U", "1", "H", "1", "1", "1", "S", "1", "1", "1"}
+	//};
+	//
+	//string flattened = "";
+	//for (int i = 0; i < height; i++) {
+	//	for (int j = 0; j < width; j++) {
+	//		flattened += map[i][j] + ","; // Flatten the array with comma separators
+	//	}
+	//}
+
+	//flattened.pop_back(); // Remove the last unnecessary comma
+
+	//char *message = (char *)malloc(8 + flattened.size());
+	//// The first 2 integers in the message array are width, height
+	//memcpy(message, &height, sizeof(height));
+	//memcpy(&message[4], &width, sizeof(width));
+	//memcpy(&message[8], flattened.c_str(), flattened.size()); // Copy in the flattened map afterwards
+	//bot.emitter->send(message, 8 + flattened.size()); // Send map data
+	//char msg = 'M'; // Send map evaluate request
+	//bot.emitter->send(&msg, sizeof(msg));
 }
