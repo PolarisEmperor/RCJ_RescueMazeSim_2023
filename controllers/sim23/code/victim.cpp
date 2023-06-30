@@ -4,7 +4,7 @@ using namespace webots;
 using namespace std;
 using namespace cv;
 
-#define DEBUG_MODE
+//#define DEBUG_MODE
 
 // constants
 const int max_value_H = 360 / 2;
