@@ -4,7 +4,7 @@ using namespace webots;
 using namespace std;
 using namespace cv;
 
-//#define DEBUG_MODE
+#define DEBUG_MODE
 
 // constants
 const int max_value_H = 360 / 2;
@@ -279,7 +279,7 @@ char checkVisualVictim(Camera* cam) {
 						return 'C';
 					}
 					else if (maskcontours.size() >= 5 && maskcontours.size() <= 15 &&
-						blackarea / area > 0.51 && blackarea / area < 0.76){
+						blackarea / area > 0.51 && blackarea / area < 0.77){
 						printf("POISON\n");
 						sendVictimSignal('P');
 						//changeMessage(PosX, PosZ, 'P');
@@ -305,11 +305,10 @@ char checkVisualVictim(Camera* cam) {
 					return false;
 				}
 
-				bool temp1 = (float)roi.cols / roi.rows > 1.0 && (float)roi.cols / roi.rows < 1.5;
-				bool temp2 = (float)roi.cols / roi.rows >= 0.5 && (float)roi.cols /roi.rows < 1.5;
-				bool temp3 = roi.rows > 20 && roi.cols < 10 && (float)roi.cols / roi.rows >= 0.1 && (float)roi.cols / roi.rows < 0.35;
+				bool temp1 = (float)roi.cols / roi.rows >= 0.5 && (float)roi.cols /roi.rows < 1.5;
+				bool temp2 = roi.rows > 20 && roi.cols < 10 && (float)roi.cols / roi.rows >= 0.1 && (float)roi.cols / roi.rows < 0.35;
 
-				if (rotateRect.angle > 85 && rotateRect.angle < 95 && roi.rows > frame.rows / 2 && ((temp1 || temp2  )) ) 
+				if (rotateRect.angle > 85 && rotateRect.angle < 95 && roi.rows > frame.rows / 2 && (temp1) ) 
 				{
 					char hsu = HSU(roi);
 					if (hsu) {
@@ -344,9 +343,13 @@ char checkVisualVictim(Camera* cam) {
 
 			//if (( width / height > 0.4 && width / height < 2.1 && height > 30 && width > 30) ||
 			//	(width > 30 && width < 100 && height > 15 && height < 100 && (width / height > 0.9 && width / height < 2.1))) {
-
-			if(width/height > 0.4 && width/height < 2.1 && width > 7 && height > 8){
+						//flammable
+			bool cond1 = width / height > 0.4 && width / height < 0.65 && width > 10 && height > 17;
+			//organic peroxide
+			bool cond2 = width / height > 0.8 && width / height < 2.1 && width > 10 && height > 7 && height < 17;
+			if(cond1 || cond2){
 				findContours(frame_yellow, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
+				printf("seeYellow: %d\n", contours.size() != 0);
 				if (contours.size() == 0) { //if no yellow
 					printf("FLAMMABLE\n");
 					sendVictimSignal('F');
@@ -354,7 +357,7 @@ char checkVisualVictim(Camera* cam) {
 					//boardLoc(loc).victimChecked = true;
 					return 'F';
 				}
-				else {
+				else if(contours.size() != 0){
 					printf("ORGANIC PEROXIDE\n");
 					sendVictimSignal('O');
 					//changeMessage(PosX, PosZ, 'O');

@@ -24,16 +24,16 @@ int room4_wallTrace() {
 
     if (isnormal(rangeImage[512 / 4 - 20]) && rangeImage[512 / 4 - 20] < 0.1) {
         cout << "front trace" << endl;
-        err = 0.05 - rangeImage[512 / 4 - 20];
+        err = 0.0675 - rangeImage[512 / 4 - 20];
         kp += 50;
     }
     else if (isnormal(rangeImage[512 / 4 + 2]) && rangeImage[512 / 4 + 2] < 0.15) {
         cout << "mid trace" << endl;
-        err = 0.0475 - rangeImage[512 / 4 + 2];
+        err = 0.0641 - rangeImage[512 / 4 + 2];
     }
     else if (isnormal(rangeImage[512 / 4 + 20]) && rangeImage[512 / 4 + 20] < 0.14) {
         cout << "back trace" << endl;
-        err = 0.035 - rangeImage[512 / 4 + 20];
+        err = 0.0472 - rangeImage[512 / 4 + 20];
         kp += 50;
     }
 
