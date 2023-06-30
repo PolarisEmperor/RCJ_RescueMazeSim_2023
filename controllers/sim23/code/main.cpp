@@ -42,6 +42,7 @@ int main() {
 
 		// Room 4
 		if (bot.curRoom == 4 && !bot.room4done) {
+			// do room 4 yay
 			doRoom4();
 		}
 
@@ -72,16 +73,16 @@ int main() {
 				case 1:
 					printf("i need to go home! start tile = %d cur tile = %d\n", bot.startTile, bot.curTile);
 					move2Tile(bot.curTile, bot.startTile);
-					mapBonus();
-					// Send the letter 'E' to signify exit
-					char message = 'E';
-					bot.emitter->send(&message, 1);
-
-					while (bot.robot->step(bot.robot->getBasicTimeStep()) != -1);
 			}
 			break;
 		}	
 	}
-	
+	mapBonus();
+	// Send the letter 'E' to signify exit
+	char message = 'E';
+	bot.emitter->send(&message, 1);
+
+	while (bot.robot->step(bot.robot->getBasicTimeStep()) != -1);
+
 	return 0;
 }

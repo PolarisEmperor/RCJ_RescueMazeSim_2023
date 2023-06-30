@@ -213,6 +213,8 @@ void Bot::turn(int dir, double spd) {
 	if (dir < 0) dir += 4;
 	else if (dir > 3) dir -= 4;
 
+	printf("DIRECTION %d\n", dir);
+
 	int prevDir = getDirection();
 	while (update()) {
 		if (bot.getLidarPoint(3, 127) < 7 && !field[bot.curTile].victimChecked) {
@@ -311,12 +313,15 @@ int Bot::getTileColor(int x, int y) {
 }
 
 bool Bot::checkLOPemitter() {
+	printf("checking lop\n");
 	if (receiver->getQueueLength() > 0) {
 		char* message = (char*)receiver->getData();
+		printf("%s\n", message);
 		if (message[0] == 'L') {
 			receiver->nextPacket();
 			return true;
 		}
+		receiver->nextPacket();
 	}
 	return false;
 }

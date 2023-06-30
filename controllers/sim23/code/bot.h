@@ -14,7 +14,7 @@ private:
 		double y = 0;
 	};
 	// Current position
-	Pos pos, prevPos, startPos;
+	Pos pos, prevPos;
 
 	// Angle in radians
 	double angle = 0;
@@ -35,6 +35,8 @@ public:
 	webots::Camera *camL = robot->getCamera("lCam");
 	webots::Camera *camB = robot->getCamera("bCam");
 	webots::Lidar *lidar = robot->getLidar("lidar");
+
+	Pos startPos;
 
 	int curRoom;		// Current room
 	int curTile;		// Current Tile

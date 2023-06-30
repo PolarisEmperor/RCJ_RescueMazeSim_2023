@@ -320,7 +320,7 @@ bool obstacle(int tile) {
 				//field[tile - COLS].visited = 1;
 			}
 			if (frontleft) {
-				setWalls(tile - COLS, 1, 0, 0, 0);
+				setWalls(tile, 1, 0, 0, 0);
 				/*field[tile].E = 1;
 				field[tile].N = 1;*/
 				//field[tile - COLS].visited = 1;
@@ -412,7 +412,7 @@ bool obstacle(int tile) {
 			break;
 	}
 
-	if (left || right) return true;
+	if (left || right || frontleft || frontright) return true;
 	return false;
 }
 

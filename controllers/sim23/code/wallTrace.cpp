@@ -64,5 +64,5 @@ int room4_wallTrace() {
         bot.speed(lms, rms);
     }
 
-    return bot.getTileColor(0, 0);
+    return bot.getTileColor(bot.camB->getWidth()/2, 0);
 }

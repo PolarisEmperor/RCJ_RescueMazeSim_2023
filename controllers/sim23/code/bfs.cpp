@@ -91,11 +91,6 @@ int bfs(int tile) {
 
 		if (target != -1) return target; // if it found a target tile, return it
 	}
-	mapBonus();
-	char message = 'E';
-	bot.emitter->send(&message, 1);
-
-	while (bot.robot->step(bot.robot->getBasicTimeStep()) != 1);
 	return -1; // could not find any unvisited tile
 }
 
@@ -146,11 +141,6 @@ int gohome(int tile) {
 
 		if (target != -1) return target; // if it found a target tile, return it
 	}
-	mapBonus();
-	char message = 'E';
-	bot.emitter->send(&message, 1);
-
-	while (bot.robot->step(bot.robot->getBasicTimeStep()) != 1);
 	return -1; // could not find any unvisited tile
 }
 
@@ -498,7 +488,14 @@ int move2Tile(int cur, int target) {
 			}
 			break;
 	}
+	if (bot.getGameTime() < 5) {
+		mapBonus();
+		// Send the letter 'E' to signify exit
+		char message = 'E';
+		bot.emitter->send(&message, 1);
 
+		while (bot.robot->step(bot.robot->getBasicTimeStep()) != -1);
+	}
 	bot.updatePrevPos();
 	return target;
 }
