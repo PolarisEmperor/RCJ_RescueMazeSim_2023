@@ -742,7 +742,7 @@
             leftExternal FALSE
             start FALSE
             trap FALSE
-            checkpoint TRUE
+            checkpoint FALSE
             swamp FALSE
             width 10
             height 10
@@ -1193,7 +1193,7 @@
             leftExternal FALSE
             start FALSE
             trap FALSE
-            checkpoint TRUE
+            checkpoint FALSE
             swamp FALSE
             width 10
             height 10
@@ -3046,28 +3046,6 @@ name "curved6"
         DEF CHECKPOINTBOUNDS Group {
             children [
               
-        DEF boundary Group {
-            children [
-              DEF checkpoint0min Transform {
-                    translation -0.42 -0.03 -0.05999999999999989
-              }
-              DEF checkpoint0max Transform {
-                    translation -0.3 -0.03 0.06000000000000011
-              }
-            ]
-          }
-        
-        DEF boundary Group {
-            children [
-              DEF checkpoint1min Transform {
-                    translation -0.18 -0.03 -0.54
-              }
-              DEF checkpoint1max Transform {
-                    translation -0.06 -0.03 -0.42
-              }
-            ]
-          }
-        
             ]
         }
         
@@ -3132,7 +3110,7 @@ name "curved6"
             children [
               
         Victim {
-            translation -0.054999999999999896 0 -0.211
+            translation -0.054999999999999896 0 -0.218
             rotation 0 1 0 -1.57
             name "Victim0"
             type "stable"
@@ -3170,7 +3148,7 @@ name "curved6"
             children [
               
         HazardMap {
-            translation 0.1856000000000001 0 -0.514
+            translation 0.1856000000000001 0 -0.45799999999999996
             rotation 0 1 0 -1.57
             name "Hazard0"
             type "C"

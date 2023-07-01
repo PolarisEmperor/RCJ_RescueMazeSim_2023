@@ -490,11 +490,6 @@ int move2Tile(int cur, int target) {
 	}
 	if (bot.getGameTime() < 5) {
 		mapBonus();
-		// Send the letter 'E' to signify exit
-		char message = 'E';
-		bot.emitter->send(&message, 1);
-
-		while (bot.robot->step(bot.robot->getBasicTimeStep()) != -1);
 	}
 	bot.updatePrevPos();
 	return target;

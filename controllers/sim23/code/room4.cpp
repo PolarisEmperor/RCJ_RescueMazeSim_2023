@@ -1,5 +1,11 @@
 #include "room4.h"
 
+void LOP() {
+	char message[1] = { 'L' }; // message = 'L' to activate lack of progress
+	bot.emitter->send(message, sizeof(message)); // Send out the message array. Note that the 2nd parameter must be the size of the message
+	bot.robot->step(bot.robot->getBasicTimeStep());
+}
+
 bool compareCoords(double x1, double y1, double x2, double y2) {
 	printf("X: %f Y: %f\n", fabs(x1) - fabs(x2), fabs(y1) - fabs(y2));
 	if (fabs(x1) - fabs(x2) > 0.05 || fabs(x1) - fabs(x2) < -0.05) {
@@ -166,10 +172,8 @@ void doRoom4() {
 
 	// valid room 4, proceed with navigation
 	if (proceed) {
-		
-
-		printf("on checkpoint\n");
 		bot.move(9);
+		printf("on checkpoint\n");
 		checkpointX = bot.getPos().x;
 		checkpointY = bot.getPos().y;
 		directionEntered = bot.getDirection();
@@ -180,15 +184,13 @@ void doRoom4() {
 			printf("first\n");
 			// lack of progress called
 			if (bot.checkLOPemitter()) {
-				bot.curTile = bot.checkpointTile;
-				bot.curRoom = bot.checkpointRoom;
 				LOProom4 = true;
 				break;
 			}
 			// wall trace
 			wallTraceColor = room4_wallTrace();
 			printf("color = %d\n", wallTraceColor);
-
+			
 			// if it sees a green or red tile, break
 			if (color == wallTraceColor) break;
 			if (color == Green && wallTraceColor == Red) break;
@@ -204,13 +206,14 @@ void doRoom4() {
 				case 4: case 5: bot.turn(North); break;
 				case 6: case 7: bot.turn(East); break;
 			}
-		
+
 			// wall trace until it's at the entrance
-			while (bot.update() && color != room4_wallTrace()) {
+			while (bot.update()) {
+				if (room4_wallTrace() == color) {
+					break;
+				}
 				printf("second\n");
 				if (bot.checkLOPemitter()) {
-					bot.curTile = bot.checkpointTile;
-					bot.curRoom = bot.checkpointRoom;
 					LOProom4 = true;
 					break;
 				}
@@ -295,7 +298,6 @@ void doRoom4() {
 			field[bot.curTile + COLS].visited = 1;
 			field[bot.curTile + COLS + 1].visited = 1;
 		}
-		
 	}
 	else {
 		printf("invalid room 4!\n");
@@ -332,7 +334,7 @@ void doRoom4() {
 		}
 	}
 	// lack of progress in room 4
-	if (LOProom4) {
+	while (bot.update() && LOProom4) {
 		printf("LACK OF PROGRESS IN ROOM 4!!!\n");
 		printf("%f %f %f %f\n", bot.getPos().x, bot.getPos().y, checkpointX, checkpointY);
 		// teleported to entrance checkpoint
@@ -342,8 +344,8 @@ void doRoom4() {
 			bot.room4done = true;
 			
 			bot.turn(directionEntered - 2);
-			
-			bot.move(6);
+			printf("driving forward\n");
+			bot.move(12);
 			bot.stop();
 			if (bot.getTileColor(0, 0) == Green) {
 				bot.curRoom = 1;
@@ -396,9 +398,129 @@ void doRoom4() {
 			field[bot.curTile + COLS + 1].visited = 1;
 		}
 		else {
+			int exitColor;
+			if (color == Red) exitColor = Green;
+			else exitColor = Red;
+
 			printf("at exit checkpint\n");
+			bot.stop();
+			printf("estimated tile %d\n", coordToTile(bot.getPos().x, bot.getPos().y));
+
+			int checkpoint = coordToTile(bot.getPos().x, bot.getPos().y);
+
+			// search for red/green tile
+			if (bot.getLidarPoint(3, 481) > 9 && bot.getLidarPoint(3, 30) > 9) {
+				printf("try north\n");
+				bot.move(3);
+				// if not checkpoint, backup and try another dir
+				if (bot.getTileColor(0, 0) == exitColor) {
+					proceed = true;
+				}
+				else {
+					bot.move(-3);
+				}
+			}
+			/*else {
+				switch (bot.getDirection()) {
+					case North:
+						setWalls(bot.curTile, 1, 0, 0, 0);
+						setWalls(bot.curTile + 1, 1, 0, 0, 0);
+						break;
+					case East:
+						setWalls(bot.curTile + 1 + COLS, 0, 1, 0, 0);
+						setWalls(bot.curTile + 1, 0, 1, 0, 0);
+						break;
+					case South:
+						setWalls(bot.curTile + COLS, 0, 0, 1, 0);
+						setWalls(bot.curTile + 1 + COLS, 0, 0, 1, 0);
+						break;
+					case West:
+						setWalls(bot.curTile, 0, 0, 0, 1);
+						setWalls(bot.curTile + COLS, 0, 0, 0, 1);
+						break;
+				}
+			}*/
+
+			// try right side
+			if (bot.getLidarPoint(3, 157) > 9 && bot.getLidarPoint(3, 225) > 9 && !proceed) {
+				printf("try right\n");
+				bot.turn(bot.getDirection() + 1); // turn
+				bot.move(3);
+				if (bot.getTileColor(0, 0) == exitColor) {
+					proceed = true;
+				}
+				else {
+					bot.move(-3);
+					bot.turn(bot.getDirection() - 1);
+				}
+			}
+			/*else {
+				switch (bot.getDirection()) {
+					case North:
+						setWalls(bot.curTile + 1 + COLS, 0, 1, 0, 0);
+						setWalls(bot.curTile + 1, 0, 1, 0, 0);
+						break;
+					case East:
+						setWalls(bot.curTile + COLS, 0, 0, 1, 0);
+						setWalls(bot.curTile + 1 + COLS, 0, 0, 1, 0);
+						break;
+					case South:
+						setWalls(bot.curTile, 0, 0, 0, 1);
+						setWalls(bot.curTile + COLS, 0, 0, 0, 1);
+						break;
+					case West:
+						setWalls(bot.curTile, 1, 0, 0, 0);
+						setWalls(bot.curTile + 1, 1, 0, 0, 0);
+						break;
+				}
+			}*/
+
+			// try left side
+			if (bot.getLidarPoint(3, 353) > 9 && bot.getLidarPoint(3, 413) > 9 && !proceed) {
+				printf("try left\n");
+				bot.turn(bot.getDirection() - 1); // turn
+				bot.move(3);
+				if (bot.getTileColor(0, 0) == exitColor) {
+					proceed = true;
+				}
+				else {
+					bot.move(-3);
+					bot.turn(bot.getDirection() + 1);
+				}
+			}
+			/*else {
+				switch (bot.getDirection()) {
+					case North:
+						setWalls(bot.curTile, 0, 0, 0, 1);
+						setWalls(bot.curTile + COLS, 0, 0, 0, 1);
+
+						break;
+					case East:
+						setWalls(bot.curTile, 1, 0, 0, 0);
+						setWalls(bot.curTile + 1, 1, 0, 0, 0);
+
+						break;
+					case South:
+						setWalls(bot.curTile + 1 + COLS, 0, 1, 0, 0);
+						setWalls(bot.curTile + 1, 0, 1, 0, 0);
+
+
+						break;
+					case West:
+						setWalls(bot.curTile + COLS, 0, 0, 1, 0);
+						setWalls(bot.curTile + 1 + COLS, 0, 0, 1, 0);
+						break;
+				}
+			}*/
+
+			if (proceed) {
+				printf("direction = %d\n", bot.getDirection());
+				bot.stop();
+				bot.delay(10000);
+			}
+
 		}
 		
-		
+		break;
 	}
 }

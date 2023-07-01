@@ -313,11 +313,11 @@ int Bot::getTileColor(int x, int y) {
 }
 
 bool Bot::checkLOPemitter() {
-	printf("checking lop\n");
 	if (receiver->getQueueLength() > 0) {
 		char* message = (char*)receiver->getData();
 		printf("%s\n", message);
 		if (message[0] == 'L') {
+			printf("lop\n");
 			receiver->nextPacket();
 			return true;
 		}

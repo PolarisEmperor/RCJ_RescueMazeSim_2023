@@ -26,8 +26,8 @@ int main() {
 			char message = 'E';
 			bot.emitter->send(&message, 1);
 
-			while (bot.robot->step(bot.robot->getBasicTimeStep()) != -1);
-			break;
+			bot.robot->step(bot.robot->getBasicTimeStep());
+			abort();
 		}
 		// testing stuff
 		/*bot.curRoom = 3;
@@ -47,6 +47,7 @@ int main() {
 		}
 
 		getTile(bot.curTile);
+
 		target = bfs(bot.curTile); // do bfs
 		printf("cur = %d target = %d\n", bot.curTile, target);
 		
@@ -78,11 +79,9 @@ int main() {
 		}	
 	}
 	mapBonus();
+	printf("done\n");
 	// Send the letter 'E' to signify exit
 	char message = 'E';
 	bot.emitter->send(&message, 1);
-
-	while (bot.robot->step(bot.robot->getBasicTimeStep()) != -1);
-
 	return 0;
 }
