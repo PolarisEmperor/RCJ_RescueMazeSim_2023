@@ -68,13 +68,13 @@ void doRoom4() {
 	// try north
 	if (bot.getLidarPoint(3, 481) > 9 && bot.getLidarPoint(3, 30) > 9) {
 		printf("try north\n");
-		bot.move(3);
+		bot.move(6);
 		// if not checkpoint, backup and try another dir
 		if (bot.getTileColor(0, 0) == Checkpoint) {
 			proceed = true;
 		}
 		else {
-			bot.move(-3);
+			bot.move(-6);
 		}
 	}
 	else {
@@ -102,12 +102,12 @@ void doRoom4() {
 	if (bot.getLidarPoint(3, 157) > 9 && bot.getLidarPoint(3, 225) > 9 && !proceed) {
 		printf("try right\n");
 		bot.turn(bot.getDirection() + 1); // turn
-		bot.move(3);
+		bot.move(6);
 		if (bot.getTileColor(0, 0) == Checkpoint) {
 			proceed = true;
 		}
 		else {
-			bot.move(-3);
+			bot.move(-6);
 			bot.turn(bot.getDirection() - 1);
 		}
 	}
@@ -136,12 +136,12 @@ void doRoom4() {
 	if (bot.getLidarPoint(3, 353) > 9 && bot.getLidarPoint(3, 413) > 9 && !proceed) {
 		printf("try left\n");
 		bot.turn(bot.getDirection() - 1); // turn
-		bot.move(3);
+		bot.move(6);
 		if (bot.getTileColor(0, 0) == Checkpoint) {
 			proceed = true;
 		}
 		else {
-			bot.move(-3);
+			bot.move(-6);
 			bot.turn(bot.getDirection() + 1);
 		}
 	}

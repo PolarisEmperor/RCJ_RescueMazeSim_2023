@@ -26,8 +26,8 @@ int main() {
 			char message = 'E';
 			bot.emitter->send(&message, 1);
 
-			bot.robot->step(bot.robot->getBasicTimeStep());
-			abort();
+			while (bot.robot->step(bot.robot->getBasicTimeStep()) != -1);
+			break;
 		}
 		// testing stuff
 		/*bot.curRoom = 3;
@@ -83,5 +83,6 @@ int main() {
 	// Send the letter 'E' to signify exit
 	char message = 'E';
 	bot.emitter->send(&message, 1);
+	while (bot.robot->step(bot.robot->getBasicTimeStep()) != -1);
 	return 0;
 }

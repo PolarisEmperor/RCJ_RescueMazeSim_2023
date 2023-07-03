@@ -50,6 +50,7 @@ int findNeighbor(unsigned int tile, int dir) {
 
 // Breadth First Search
 int bfs(int tile) {
+	int curIdx = 0;
 	int *cur = &worker[0];
 	int *next = cur + 1;
 	int neighbor = -1;
@@ -67,10 +68,12 @@ int bfs(int tile) {
 
 		// check all directions
 		for (int i = North; i <= West; i++) {
+			printf("in loop %d\n", i);
 			neighbor = findNeighbor(*cur, i); // find neighbor
 			if (neighbor >= 0) { // valid neighbor
 				if (parent[neighbor] < 0) {
-					printf("cur %d neighbor %d\n", *cur, neighbor);
+					printf("cur %d neighbor %d parent of neighbor %d\n", *cur, neighbor, parent[neighbor]);
+					
 					parent[neighbor] = *cur; // neighbor came from cur
 					*next++ = neighbor; // add neighbor to worker array
 				}
@@ -87,7 +90,11 @@ int bfs(int tile) {
 			}
 
 		}
-		cur++; // advance worker
+		for (int i = 0; worker[i] >= 0; i++) {
+			printf("%d %d\n", i, worker[i]);
+		}
+		cur = &worker[++curIdx]; // advance worker
+		printf("cur = %d\n", *cur);
 
 		if (target != -1) return target; // if it found a target tile, return it
 	}
@@ -114,10 +121,10 @@ int gohome(int tile) {
 		// check all directions
 		for (int i = North; i <= West; i++) {
 			neighbor = findNeighbor(*cur, i); // find neighbor
-			printf("cur %d neighbor %d\n", *cur, neighbor);
+			
 			if (neighbor >= 0) { // valid neighbor
 				if (parent[neighbor] < 0) {
-					
+					printf("cur %d neighbor %d\n", *cur, neighbor);
 					parent[neighbor] = *cur; // neighbor came from cur
 					*next++ = neighbor; // add neighbor to worker array
 				}

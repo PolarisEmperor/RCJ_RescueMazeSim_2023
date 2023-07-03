@@ -281,138 +281,116 @@ void mapCurvedWall(int tile, int subTile, int curveDirection) {
 bool obstacle(int tile) {
 	float dist = 5;
 	bool left = 0, right = 0;
-	bool frontleft = 0, frontright = 0;
 	bool wall[8] = { 0 };
 	
-	for (int i = 432; i < 442; i++) {
+	for (int i = 442; i < 512; i++) {
+		//printf("%d %f\n", i, bot.getLidarPoint(3, i));
 		if (bot.getLidarPoint(3, i) < dist) {
 			printf("left\n");
 			left = 1;
-			break;
-		}
-	}
-	for (int i = 442; i < 512; i++) {
-		if (bot.getLidarPoint(3, i) < dist) {
-			printf("front left\n");
-			frontleft = 1;
+			if (bot.getLidarPoint(3, 12) < 7) {
+				printf("right\n");
+				right = 1;
+			}
 			break;
 		}
 	}
 	for (int i = 0; i < 70; i++) {
 		if (bot.getLidarPoint(3, i) < dist) {
-			printf("front right\n");
-			frontright = 1;
-			break;
-		}
-	}
-	for (int i = 70; i < 80; i++) {
-		if (bot.getLidarPoint(3, i) < dist) {
 			printf("right\n");
 			right = 1;
+			if (bot.getLidarPoint(3, 500) < 7) {
+				printf("left\n");
+				left = 1;
+			}
 			break;
 		}
 	}
+	
+		switch (bot.getDirection()) {
+			case North:
+				if (left && right) {
+					setWalls(tile - COLS * 2, 1, 0, 0, 1);
+					setWalls(tile - COLS * 2 + 1, 1, 1, 0, 0);
+					setWalls(tile - COLS, 0, 0, 1, 1);
+					setWalls(tile - COLS + 1, 0, 1, 1, 0);
+				}
+				else if (left && !right) {
+					setWalls(tile - COLS * 2 - 1, 1, 0, 0, 1);
+					setWalls(tile - COLS * 2, 1, 1, 0, 0);
+					setWalls(tile - COLS - 1, 0, 0, 1, 1);
+					setWalls(tile - COLS, 0, 1, 1, 0);
+				}
+				else if (right && !left) {
+					setWalls(tile - COLS * 2 + 1, 1, 0, 0, 1);
+					setWalls(tile - COLS * 2 + 2, 1, 1, 0, 0);
+					setWalls(tile - COLS + 1, 0, 0, 1, 1);
+					setWalls(tile - COLS + 2, 0, 1, 1, 0);
+				}
+				break;
+			case East:
+				if (left && right) {
+					setWalls(tile + 2, 1, 0, 0, 1);
+					setWalls(tile + 3, 1, 1, 0, 0);
+					setWalls(tile + COLS + 2, 0, 0, 1, 1);
+					setWalls(tile + COLS + 3, 0, 1, 1, 0);
+				}
+				else if (left && !right) {
+					setWalls(tile - COLS + 2, 1, 0, 0, 1);
+					setWalls(tile - COLS + 3, 1, 1, 0, 0);
+					setWalls(tile + 2, 0, 0, 1, 1);
+					setWalls(tile + 3, 0, 1, 1, 0);
+				}
+				else if (right && !left) {
+					setWalls(tile + COLS + 2, 1, 0, 0, 1);
+					setWalls(tile + COLS + 3, 1, 1, 0, 0);
+					setWalls(tile + COLS * 2 + 2, 0, 0, 1, 1);
+					setWalls(tile + COLS * 2 + 3, 0, 1, 1, 0);
+				}
+				break;
+			case South: // fix this
+				if (left && right) {
+					setWalls(tile + COLS * 2, 1, 0, 0, 1);
+					setWalls(tile + COLS * 2 + 1, 1, 1, 0, 0);
+					setWalls(tile + COLS, 0, 0, 1, 1);
+					setWalls(tile + COLS + 1, 0, 1, 1, 0);
+				}
+				else if (left && !right) {
+					setWalls(tile + COLS * 2 + 1, 1, 0, 0, 1);
+					setWalls(tile + COLS * 2 + 2, 1, 1, 0, 0);
+					setWalls(tile + COLS + 1, 0, 0, 1, 1);
+					setWalls(tile + COLS + 2, 0, 1, 1, 0);
+				}
+				else if (right && !left) {
+					setWalls(tile + COLS * 2 - 1, 1, 0, 0, 1);
+					setWalls(tile + COLS * 2, 1, 1, 0, 0);
+					setWalls(tile + COLS - 1, 0, 0, 1, 1);
+					setWalls(tile + COLS, 0, 1, 1, 0);
+				}
+				break;
+			case West:
+				if (left && right) {
+					setWalls(tile - 2, 1, 0, 0, 1);
+					setWalls(tile - 1, 1, 1, 0, 0);
+					setWalls(tile + COLS - 2, 0, 0, 1, 1);
+					setWalls(tile + COLS - 1, 0, 1, 1, 0);
+				}
+				else if (left && !right) {
+					setWalls(tile + COLS - 2, 1, 0, 0, 1);
+					setWalls(tile + COLS - 1, 1, 1, 0, 0);
+					setWalls(tile + COLS * 2 - 2, 0, 0, 1, 1);
+					setWalls(tile + COLS * 2 - 1, 0, 1, 1, 0);
+				}
+				else if (right && !left) {
+					setWalls(tile - COLS - 2, 1, 0, 0, 1);
+					setWalls(tile - COLS - 1, 1, 1, 0, 0);
+					setWalls(tile - 2, 0, 0, 1, 1);
+					setWalls(tile - 1, 0, 1, 1, 0);
+				}
+				break;
+		}
 
-	switch (bot.getDirection()) {
-		case North:
-			if (left) {
-				setWalls(tile, 1, 0, 0, 1);
-				//field[tile - COLS].visited = 1;
-			}
-			if (frontleft) {
-				setWalls(tile, 1, 0, 0, 0);
-				/*field[tile].E = 1;
-				field[tile].N = 1;*/
-				//field[tile - COLS].visited = 1;
-			}
-			if (frontright) {
-				setWalls(tile + 1, 1, 0, 0, 0);
-				/*field[tile].E = 1;
-				field[tile].N = 1;
-				field[tile - COLS].visited = 1;*/
-			}			
-			if (right) {
-				setWalls(tile + 1, 1, 1, 0, 0);
-				/*field[tile + 1].N = 1;
-				field[tile + 1].E = 1;
-				field[tile - COLS + 1].visited = 1;*/
-			}
-			break;
-		case East:
-			if (left) {
-				setWalls(tile + 1, 1, 1, 0, 0);
-			}
-			if (frontleft) {
-				setWalls(tile + 1, 0, 1, 0, 0);
-			}
-			if (frontright) {
-				setWalls(tile + COLS + 1, 0, 1, 0, 0);
-			}
-			if (right) {
-				setWalls(tile + COLS + 1, 0, 1, 1, 0);
-			}
-			/*if (left) {
-				field[tile + 1].N = 1;
-				field[tile + 1].E = 1;
-				field[tile + 2].visited = 1;
-			}
-			if (right) {
-				field[tile + COLS + 1].E = 1;
-				field[tile + COLS + 1].S = 1;
-				field[tile + COLS + 2].visited = 1;
-			}*/
-			break;
-		case South:
-			if (left) {
-				setWalls(tile + COLS + 1, 0, 1, 1, 0);
-			}
-			if (frontleft) {
-				setWalls(tile + COLS + 1, 0, 0, 1, 0);
-			}
-			if (frontright) {
-				setWalls(tile + COLS, 0, 0, 1, 0);
-			}
-			if (right) {
-				setWalls(tile + COLS, 0, 0, 1, 1);
-			}
-			/*if (left) {
-				field[tile + COLS + 1].S = 1;
-				field[tile + COLS + 1].E = 1;
-				field[tile + COLS * 2 + 1].visited = 1;
-			}
-			if (right) {
-				field[tile + COLS].S = 1;
-				field[tile + COLS].W = 1;
-				field[tile + COLS * 2].visited = 1;
-			}*/
-			break;
-		case West:
-			if (left) {
-				setWalls(tile + COLS, 0, 0, 1, 1);
-			}
-			if (frontleft) {
-				setWalls(tile + COLS, 0, 0, 0, 1);
-			}
-			if (frontright) {
-				setWalls(tile, 0, 0, 0, 1);
-			}
-			if (right) {
-				setWalls(tile, 1, 0, 0, 1);
-			}
-			/*if (left) {
-				field[tile + COLS].S = 1;
-				field[tile + COLS].W = 1;
-				field[tile + COLS - 1].visited = 1;
-			}
-			if (right) {
-				field[tile].N = 1;
-				field[tile].W = 1;
-				field[tile - 1].visited = 1;
-			}*/
-			break;
-	}
-
-	if (left || right || frontleft || frontright) return true;
+	if (left || right) return true;
 	return false;
 }
 
