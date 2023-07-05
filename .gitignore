@@ -1,7 +1,10 @@
+logs
 *.opendb
 *.vscode
+*.zip
 x64
 .vs
 *.pyc
 *.exe
+*.wbproj
 *.pdb

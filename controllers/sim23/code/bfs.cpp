@@ -68,11 +68,11 @@ int bfs(int tile) {
 
 		// check all directions
 		for (int i = North; i <= West; i++) {
-			printf("in loop %d\n", i);
+			//printf("in loop %d\n", i);
 			neighbor = findNeighbor(*cur, i); // find neighbor
 			if (neighbor >= 0) { // valid neighbor
 				if (parent[neighbor] < 0) {
-					printf("cur %d neighbor %d parent of neighbor %d\n", *cur, neighbor, parent[neighbor]);
+					//printf("cur %d neighbor %d parent of neighbor %d\n", *cur, neighbor, parent[neighbor]);
 					
 					parent[neighbor] = *cur; // neighbor came from cur
 					*next++ = neighbor; // add neighbor to worker array
@@ -91,10 +91,10 @@ int bfs(int tile) {
 
 		}
 		for (int i = 0; worker[i] >= 0; i++) {
-			printf("%d %d\n", i, worker[i]);
+			//printf("%d %d\n", i, worker[i]);
 		}
 		cur = &worker[++curIdx]; // advance worker
-		printf("cur = %d\n", *cur);
+		//printf("cur = %d\n", *cur);
 
 		if (target != -1) return target; // if it found a target tile, return it
 	}
@@ -200,7 +200,7 @@ int move2Tile(int cur, int target) {
 	if (bot.getDirection() != i) bot.turn(i);
 
 	// Drive forward
-	switch (bot.getDirection()) {
+	/*switch (bot.getDirection()) {
 		case North:
 			targetPos = bot.getTargetPos(diffX, diffY -= 1).y;
 			break;
@@ -213,7 +213,10 @@ int move2Tile(int cur, int target) {
 		case West:
 			targetPos = bot.getTargetPos(diffX -= 1, diffY).x;
 			break;
-	}
+	}*/
+	if (bot.getDirection() % 2 == 0) targetPos = bot.tileToCoords(target).y;
+	else targetPos = bot.tileToCoords(target).x;
+	
 	//bot.stop();
 
 	while (bot.update()) {
@@ -245,20 +248,20 @@ int move2Tile(int cur, int target) {
 			bot.stop();
 
 			// get the walls of the black hole tile
-			//bot.delay(100);
 			if (left == Hole && right == Hole) getBlackHole(cur);
 
 			// back up to prev pos
 			bot.speed(-6, -6);
-			printf("theres a black hole, backing up\n");
+			printf("theres a black hole, backing up to %f %f\n", bot.getPrevPos().x, bot.getPrevPos().y);
 
-			if (bot.getDirection() == North || bot.getDirection() == South)
+			/*if (bot.getDirection() == North || bot.getDirection() == South)
 				if (bot.getPos().y < bot.getPrevPos().y) while (bot.update() && bot.getPos().y < bot.getPrevPos().y);
 				else while (bot.update() && bot.getPos().y > bot.getPrevPos().y);
 			else
 				if (bot.getPos().x < bot.getPrevPos().x) while (bot.update() && bot.getPos().x < bot.getPrevPos().x);
-				else while (bot.update() && bot.getPos().x > bot.getPrevPos().x);
+				else while (bot.update() && bot.getPos().x > bot.getPrevPos().x);*/
 
+			bot.move(-0.2);
 			bot.stop();
 
 			//						tl					tr			bl			br
@@ -373,12 +376,26 @@ int move2Tile(int cur, int target) {
 		}
 
 		// reached target pos
-		if (bot.getDirection() == North && bot.getPos().y < targetPos) break;
-		if (bot.getDirection() == South && bot.getPos().y > targetPos) break;
-		if (bot.getDirection() == East && bot.getPos().x > targetPos) break;
-		if (bot.getDirection() == West && bot.getPos().x < targetPos) break;
-		if (bot.getLidarPoint(3, 0) < distFromWall) break;
-
+		if (bot.getDirection() == North && bot.getPos().y < targetPos) { 
+			//printf("north\n"); 
+			break; 
+		}
+		if (bot.getDirection() == South && bot.getPos().y > targetPos) { 
+			//printf("east\n"); 
+			break; 
+		}
+		if (bot.getDirection() == East && bot.getPos().x > targetPos)  { 
+			//printf("south\n"); 
+			break; 
+		}
+		if (bot.getDirection() == West && bot.getPos().x < targetPos)  { 
+			//printf("west\n"); 
+			break; 
+		}
+		if (bot.getLidarPoint(3, 0) < distFromWall) {
+			//bot.move(-0.2);
+			break;
+		}
 		// IMU Straighten
 		switch (bot.getDirection()) {
 			case North:

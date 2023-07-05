@@ -37,3 +37,5 @@ void mapVictim(int tile, int direction, char code);
 void mapAngledVictim(int tile, int direction, char code);
 void editMapTile(int tile);
 bool obstacle(int target);
+bool compareCoords(double x1, double y1, double x2, double y2);
+int coordToTile(double x, double y);

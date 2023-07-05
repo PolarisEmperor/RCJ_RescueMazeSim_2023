@@ -6,47 +6,6 @@ void LOP() {
 	bot.robot->step(bot.robot->getBasicTimeStep());
 }
 
-bool compareCoords(double x1, double y1, double x2, double y2) {
-	printf("X: %f Y: %f\n", fabs(x1) - fabs(x2), fabs(y1) - fabs(y2));
-	if (fabs(x1) - fabs(x2) > 0.05 || fabs(x1) - fabs(x2) < -0.05) {
-		return 0;
-	}
-	if (fabs(y1) - fabs(y2) > 0.05 || fabs(y1) - fabs(y2) < -0.05) {
-		return 0;
-	}
-
-	return 1;
-}
-
-int coordToTile(double x, double y) {
-	int tile = bot.startTile;
-	if (bot.startPos.x < x) {
-		while (!compareCoords(x, y, bot.startPos.x, bot.startPos.y)) {
-			x -= 0.06;
-			tile++;
-		}
-	}
-	else {
-		while (!compareCoords(x, y, bot.startPos.x, bot.startPos.y)) {
-			x += 0.06;
-			tile--;
-		}
-	}
-	if (bot.startPos.y < y) {
-		while (!compareCoords(x, y, bot.startPos.x, bot.startPos.y)) {
-			y -= 0.06;
-			tile+=COLS;
-		}
-	}
-	else {
-		while (!compareCoords(x, y, bot.startPos.x, bot.startPos.y)) {
-			y += 0.06;
-			tile-=COLS;
-		}
-	}
-	return tile;
-}
-
 void doRoom4() {
 	double x = bot.getPos().x;
 	double y = bot.getPos().y;
@@ -58,48 +17,61 @@ void doRoom4() {
 	int directionEntered = 0;
 	bool LOProom4 = false;
 	bool proceed = false;
+	bool lidarYes = true;
 
 	printf("start dir %d\n", startDir);
 	printf("color %d\n", color);
 	//bot.delay(1000);
 
+	getTile(bot.curTile);
+
 	// there should be walls surroundng the green/red tile.
 	// look for the checkpoint tile
-	// try north
-	if (bot.getLidarPoint(3, 481) > 9 && bot.getLidarPoint(3, 30) > 9) {
-		printf("try north\n");
+	// try front
+	for (int i = 481; i < 512; i++) {
+		if (bot.getLidarPoint(3, i) < 9) lidarYes = false;
+	}
+	for (int i = 0; i < 30; i++) {
+		if (bot.getLidarPoint(3, i) < 9) lidarYes = false;
+	}
+	if (lidarYes) {
+		printf("try front\n");
 		bot.move(6);
 		// if not checkpoint, backup and try another dir
 		if (bot.getTileColor(0, 0) == Checkpoint) {
 			proceed = true;
 		}
 		else {
+			printf("front doesn't work\n");
 			bot.move(-6);
-		}
-	}
-	else {
-		switch (bot.getDirection()) {
-			case North:
-				setWalls(bot.curTile, 1, 0, 0, 0);
-				setWalls(bot.curTile + 1, 1, 0, 0, 0);
-				break;
-			case East:
-				setWalls(bot.curTile + 1 + COLS, 0, 1, 0, 0);
-				setWalls(bot.curTile + 1, 0, 1, 0, 0);
-				break;
-			case South:
-				setWalls(bot.curTile + COLS, 0, 0, 1, 0);
-				setWalls(bot.curTile + 1 + COLS, 0, 0, 1, 0);
-				break;
-			case West:
-				setWalls(bot.curTile, 0, 0, 0, 1);
-				setWalls(bot.curTile + COLS, 0, 0, 0, 1);
-				break;
+			switch (bot.getDirection()) {
+				case North:
+					setWalls(bot.curTile, 1, 0, 0, 0);
+					setWalls(bot.curTile + 1, 1, 0, 0, 0);
+					break;
+				case East:
+					setWalls(bot.curTile + 1 + COLS, 0, 1, 0, 0);
+					setWalls(bot.curTile + 1, 0, 1, 0, 0);
+					break;
+				case South:
+					setWalls(bot.curTile + COLS, 0, 0, 1, 0);
+					setWalls(bot.curTile + 1 + COLS, 0, 0, 1, 0);
+					break;
+				case West:
+					setWalls(bot.curTile, 0, 0, 0, 1);
+					setWalls(bot.curTile + COLS, 0, 0, 0, 1);
+					break;
+			}
 		}
 	}
 
+	lidarYes = true;
+	for (int i = 97; i < 157; i++) {
+		if (bot.getLidarPoint(3, i) < 9) lidarYes = false;
+	}
+
 	// try right side
-	if (bot.getLidarPoint(3, 157) > 9 && bot.getLidarPoint(3, 225) > 9 && !proceed) {
+	if (lidarYes && !proceed) {
 		printf("try right\n");
 		bot.turn(bot.getDirection() + 1); // turn
 		bot.move(6);
@@ -107,33 +79,37 @@ void doRoom4() {
 			proceed = true;
 		}
 		else {
+			printf("right didnt work\n");
 			bot.move(-6);
-			bot.turn(bot.getDirection() - 1);
-		}
-	}
-	else {
-		switch (bot.getDirection()) {
-			case North:
-				setWalls(bot.curTile + 1 + COLS, 0, 1, 0, 0);
-				setWalls(bot.curTile + 1, 0, 1, 0, 0);
-				break;
-			case East:
-				setWalls(bot.curTile + COLS, 0, 0, 1, 0);
-				setWalls(bot.curTile + 1 + COLS, 0, 0, 1, 0);
-				break;
-			case South:
-				setWalls(bot.curTile, 0, 0, 0, 1);
-				setWalls(bot.curTile + COLS, 0, 0, 0, 1);
-				break;
-			case West:
-				setWalls(bot.curTile, 1, 0, 0, 0);
-				setWalls(bot.curTile + 1, 1, 0, 0, 0);
-				break;
+			switch (startDir) {
+				case North:
+					setWalls(bot.curTile + 1 + COLS, 0, 1, 0, 0);
+					setWalls(bot.curTile + 1, 0, 1, 0, 0);
+					break;
+				case East:
+					setWalls(bot.curTile + COLS, 0, 0, 1, 0);
+					setWalls(bot.curTile + 1 + COLS, 0, 0, 1, 0);
+					break;
+				case South:
+					setWalls(bot.curTile, 0, 0, 0, 1);
+					setWalls(bot.curTile + COLS, 0, 0, 0, 1);
+					break;
+				case West:
+					setWalls(bot.curTile, 1, 0, 0, 0);
+					setWalls(bot.curTile + 1, 1, 0, 0, 0);
+					break;
+			}
+			bot.turn(startDir); // go back to initial position
 		}
 	}
 
+	lidarYes = true;
+	for (int i = 353; i < 413; i++) {
+		if (bot.getLidarPoint(3, i) < 9) lidarYes = false;
+	}
+
 	// try left side
-	if (bot.getLidarPoint(3, 353) > 9 && bot.getLidarPoint(3, 413) > 9 && !proceed) {
+	if (lidarYes && !proceed) {
 		printf("try left\n");
 		bot.turn(bot.getDirection() - 1); // turn
 		bot.move(6);
@@ -141,32 +117,27 @@ void doRoom4() {
 			proceed = true;
 		}
 		else {
+			printf("left didnt work\n");
 			bot.move(-6);
-			bot.turn(bot.getDirection() + 1);
-		}
-	}
-	else {
-		switch (bot.getDirection()) {
-			case North:
-				setWalls(bot.curTile, 0, 0, 0, 1);
-				setWalls(bot.curTile + COLS, 0, 0, 0, 1);
-				
-				break;
-			case East:
-				setWalls(bot.curTile, 1, 0, 0, 0);
-				setWalls(bot.curTile + 1, 1, 0, 0, 0);
-				
-				break;
-			case South:
-				setWalls(bot.curTile + 1 + COLS, 0, 1, 0, 0);
-				setWalls(bot.curTile + 1, 0, 1, 0, 0);
-				
-				
-				break;
-			case West:
-				setWalls(bot.curTile + COLS, 0, 0, 1, 0);
-				setWalls(bot.curTile + 1 + COLS, 0, 0, 1, 0);
-				break;
+			switch (startDir) {
+				case North:
+					setWalls(bot.curTile, 0, 0, 0, 1);
+					setWalls(bot.curTile + COLS, 0, 0, 0, 1);
+					break;
+				case East:
+					setWalls(bot.curTile, 1, 0, 0, 0);
+					setWalls(bot.curTile + 1, 1, 0, 0, 0);
+					break;
+				case South:
+					setWalls(bot.curTile + 1 + COLS, 0, 1, 0, 0);
+					setWalls(bot.curTile + 1, 0, 1, 0, 0);
+					break;
+				case West:
+					setWalls(bot.curTile + COLS, 0, 0, 1, 0);
+					setWalls(bot.curTile + 1 + COLS, 0, 0, 1, 0);
+					break;
+			}
+			bot.turn(startDir);
 		}
 	}
 
@@ -177,8 +148,8 @@ void doRoom4() {
 		checkpointX = bot.getPos().x;
 		checkpointY = bot.getPos().y;
 		directionEntered = bot.getDirection();
-		// bot is on checkpoint tile, set as checkpoint
-		
+
+		// DHRUVA PUT YOUR SLAM HERE!		
 		// trace
 		while (bot.update() && !LOProom4) {
 			printf("first\n");
@@ -206,7 +177,6 @@ void doRoom4() {
 				case 4: case 5: bot.turn(North); break;
 				case 6: case 7: bot.turn(East); break;
 			}
-
 			// wall trace until it's at the entrance
 			while (bot.update()) {
 				if (room4_wallTrace() == color) {
@@ -399,50 +369,48 @@ void doRoom4() {
 		}
 		else {
 			int exitColor;
+			startDir = bot.getDirection();
+			proceed = false;
+			lidarYes = true;
 			if (color == Red) exitColor = Green;
 			else exitColor = Red;
 
 			printf("at exit checkpint\n");
 			bot.stop();
+			bot.delay(1000);
+			bot.updatePrevPos();
 			printf("estimated tile %d\n", coordToTile(bot.getPos().x, bot.getPos().y));
 
 			int checkpoint = coordToTile(bot.getPos().x, bot.getPos().y);
 
+			for (int i = 481; i < 512; i++) {
+				if (bot.getLidarPoint(3, i) < 9) lidarYes = false;
+			}
+			for (int i = 0; i < 30; i++) {
+				if (bot.getLidarPoint(3, i) < 9) lidarYes = false;
+			}
+
 			// search for red/green tile
-			if (bot.getLidarPoint(3, 481) > 9 && bot.getLidarPoint(3, 30) > 9) {
-				printf("try north\n");
+			if (lidarYes) {
+				printf("try front\n");
+
 				bot.move(3);
-				// if not checkpoint, backup and try another dir
+				// if not exit, backup and try another dir
 				if (bot.getTileColor(0, 0) == exitColor) {
 					proceed = true;
 				}
 				else {
+					printf("not front\n");
 					bot.move(-3);
 				}
 			}
-			/*else {
-				switch (bot.getDirection()) {
-					case North:
-						setWalls(bot.curTile, 1, 0, 0, 0);
-						setWalls(bot.curTile + 1, 1, 0, 0, 0);
-						break;
-					case East:
-						setWalls(bot.curTile + 1 + COLS, 0, 1, 0, 0);
-						setWalls(bot.curTile + 1, 0, 1, 0, 0);
-						break;
-					case South:
-						setWalls(bot.curTile + COLS, 0, 0, 1, 0);
-						setWalls(bot.curTile + 1 + COLS, 0, 0, 1, 0);
-						break;
-					case West:
-						setWalls(bot.curTile, 0, 0, 0, 1);
-						setWalls(bot.curTile + COLS, 0, 0, 0, 1);
-						break;
-				}
-			}*/
 
+			lidarYes = true;
+			for (int i = 97; i < 157; i++) {
+				if (bot.getLidarPoint(3, i) < 9) lidarYes = false;
+			}
 			// try right side
-			if (bot.getLidarPoint(3, 157) > 9 && bot.getLidarPoint(3, 225) > 9 && !proceed) {
+			if (lidarYes && !proceed) {
 				printf("try right\n");
 				bot.turn(bot.getDirection() + 1); // turn
 				bot.move(3);
@@ -450,33 +418,18 @@ void doRoom4() {
 					proceed = true;
 				}
 				else {
+					printf("not right\n");
 					bot.move(-3);
-					bot.turn(bot.getDirection() - 1);
+					bot.turn(startDir);
 				}
 			}
-			/*else {
-				switch (bot.getDirection()) {
-					case North:
-						setWalls(bot.curTile + 1 + COLS, 0, 1, 0, 0);
-						setWalls(bot.curTile + 1, 0, 1, 0, 0);
-						break;
-					case East:
-						setWalls(bot.curTile + COLS, 0, 0, 1, 0);
-						setWalls(bot.curTile + 1 + COLS, 0, 0, 1, 0);
-						break;
-					case South:
-						setWalls(bot.curTile, 0, 0, 0, 1);
-						setWalls(bot.curTile + COLS, 0, 0, 0, 1);
-						break;
-					case West:
-						setWalls(bot.curTile, 1, 0, 0, 0);
-						setWalls(bot.curTile + 1, 1, 0, 0, 0);
-						break;
-				}
-			}*/
 
+			lidarYes = true;
+			for (int i = 353; i < 413; i++) {
+				if (bot.getLidarPoint(3, i) < 9) lidarYes = false;
+			}
 			// try left side
-			if (bot.getLidarPoint(3, 353) > 9 && bot.getLidarPoint(3, 413) > 9 && !proceed) {
+			if (lidarYes && !proceed) {
 				printf("try left\n");
 				bot.turn(bot.getDirection() - 1); // turn
 				bot.move(3);
@@ -484,41 +437,58 @@ void doRoom4() {
 					proceed = true;
 				}
 				else {
+					printf("not left\n");
 					bot.move(-3);
-					bot.turn(bot.getDirection() + 1);
+					bot.turn(startDir);
 				}
 			}
-			/*else {
-				switch (bot.getDirection()) {
-					case North:
-						setWalls(bot.curTile, 0, 0, 0, 1);
-						setWalls(bot.curTile + COLS, 0, 0, 0, 1);
 
-						break;
-					case East:
-						setWalls(bot.curTile, 1, 0, 0, 0);
-						setWalls(bot.curTile + 1, 1, 0, 0, 0);
-
-						break;
-					case South:
-						setWalls(bot.curTile + 1 + COLS, 0, 1, 0, 0);
-						setWalls(bot.curTile + 1, 0, 1, 0, 0);
-
-
-						break;
-					case West:
-						setWalls(bot.curTile + COLS, 0, 0, 1, 0);
-						setWalls(bot.curTile + 1 + COLS, 0, 0, 1, 0);
-						break;
+			lidarYes = true;
+			for (int i = 225; i < 285; i++) {
+				if (bot.getLidarPoint(3, i) < 9) lidarYes = false;
+			}
+			// try left side
+			if (lidarYes && !proceed) {
+				printf("try back\n");
+				bot.turn(bot.getDirection() + 2); // turn
+				bot.move(3);
+				if (bot.getTileColor(0, 0) == exitColor) {
+					proceed = true;
 				}
-			}*/
+				else {
+					bot.move(-3);
+					bot.turn(startDir);
+					printf("not back\n");
+					// if this fails something rly bad happened
+				}
+			}
 
 			if (proceed) {
+				bot.move(9);
 				printf("direction = %d\n", bot.getDirection());
 				bot.stop();
-				bot.delay(10000);
+				bot.curTile = checkpoint;
+				
+				/*field[bot.curTile].visited = 1;
+				field[bot.curTile + 1].visited = 1;
+				field[bot.curTile + COLS].visited = 1;
+				field[bot.curTile + COLS + 1].visited = 1;*/
+				if (bot.getTileColor(0, 0) == Red) {
+					bot.redTile = bot.curTile;
+					field[bot.curTile].color = Red;
+					bot.curRoom = 3;
+				}
+				else if (bot.getTileColor(0, 0) == Green) {
+					bot.greenTile = bot.curTile;
+					field[bot.curTile].color = Green;
+					bot.curRoom = 1;
+				}
+				bot.LOProom4 = true;
+				bot.room4done = true;
+				
+				editMapTile(bot.curTile);
+				bot.updatePrevPos();
 			}
-
 		}
 		
 		break;

@@ -48,6 +48,7 @@ public:
 	int redTile;		// Room 3 -> Room 4
 	int greenTile;		// Room 1 -> Room 4
 	bool room4done;		// has it traversed room 4 yet
+	bool LOProom4;
 
 	Bot();
 	~Bot();
@@ -57,7 +58,8 @@ public:
 	const float* getLidarLayer(int layer);
 	Pos getPos();
 	Pos getPrevPos();
-	Pos getTargetPos(int diffX, int diffY);
+	Pos tileToCoords(int tile);
+	Pos getTargetPos(int, int);
 	double getAngle();
 	int getDirection();
 	void speed(double lSpd, double rSpd);

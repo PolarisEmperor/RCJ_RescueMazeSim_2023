@@ -34,6 +34,7 @@ Bot::Bot() {
 	checkpointRoom = curRoom;
 	blueTile = purpleTile =	redTile = greenTile = -1;
 	room4done = false;
+	LOProom4 = false;
 
 	startPos = { -9999, -9999 };
 }
@@ -96,6 +97,29 @@ Bot::Pos Bot::getTargetPos(int diffX, int diffY) {
 	targetPos.y += diffY * 0.06;
 
 	return targetPos;
+}
+
+Bot::Pos Bot::tileToCoords(int tile) {
+	Pos pos = bot.startPos;
+	while (tile != bot.startTile) {
+		if (tile - bot.startTile <= COLS * -1) {
+			tile += COLS;
+			pos.y -= 0.06;
+		}
+		else if (tile - bot.startTile < 0) {
+			tile++;
+			pos.x -= 0.06;
+		}
+		if (tile - bot.startTile >= COLS) {
+			tile -= COLS;
+			pos.y += 0.06;
+		}
+		else if (tile - bot.startTile > 0) {
+			tile--;
+			pos.x += 0.06;
+		}
+	}
+	return pos;
 }
 
 // Get lidar readings from specified point and layer in cm
@@ -212,8 +236,6 @@ void Bot::turn(int dir, double spd) {
 
 	if (dir < 0) dir += 4;
 	else if (dir > 3) dir -= 4;
-
-	printf("DIRECTION %d\n", dir);
 
 	int prevDir = getDirection();
 	while (update()) {
@@ -338,7 +360,7 @@ int Bot::getGameTime() {
 		if (receivedData[0] == 'G') {
 			memcpy(&score, receivedData + 4, 4); // Score stored in bytes 4 to 7
 			memcpy(&time, receivedData + 8, 4);  // Remaining time stored in bytes 8 to 11
-			cout << "Game Score: " << score << " Remaining time: " << time << endl;
+			//cout << "Game Score: " << score << " Remaining time: " << time << endl;
 			receiver->nextPacket(); // Discard the current data packet
 		}
 	}
