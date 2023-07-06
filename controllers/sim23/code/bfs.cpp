@@ -199,6 +199,8 @@ int move2Tile(int cur, int target) {
 	// Turn to the right direction
 	if (bot.getDirection() != i) bot.turn(i);
 
+	bot.updatePrevPos();
+
 	// Drive forward
 	/*switch (bot.getDirection()) {
 		case North:
@@ -344,17 +346,21 @@ int move2Tile(int cur, int target) {
 		}
 		if (obstacle(cur)) {
 			bot.stop();
-
 			// back up to prev pos
 			bot.speed(-6, -6);
 			printf("OBSTACLE!!!\n");
 
-			if (bot.getDirection() == North || bot.getDirection() == South)
+			if (bot.getDirection() == North || bot.getDirection() == South) {
+				printf("north/south\n");
+				printf("%f %f\n", bot.getPos().y, bot.tileToCoords(cur).y);
 				if (bot.getPos().y < bot.getPrevPos().y) while (bot.update() && bot.getPos().y < bot.getPrevPos().y);
 				else while (bot.update() && bot.getPos().y > bot.getPrevPos().y);
-			else
+			}
+			else {
+				printf("east/west\n");
 				if (bot.getPos().x < bot.getPrevPos().x) while (bot.update() && bot.getPos().x < bot.getPrevPos().x);
 				else while (bot.update() && bot.getPos().x > bot.getPrevPos().x);
+			}
 
 			bot.stop();
 			printf("there was an obstacle. robot on tile %d\n", bot.curTile);
@@ -392,10 +398,10 @@ int move2Tile(int cur, int target) {
 			//printf("west\n"); 
 			break; 
 		}
-		//if (bot.getLidarPoint(3, 0) < distFromWall) {
-		//	//bot.move(-0.2);
-		//	break;
-		//}
+		if (bot.getLidarPoint(3, 0) < distFromWall) {
+			//bot.move(-0.2);
+			break;
+		}
 		// IMU Straighten
 		switch (bot.getDirection()) {
 			case North:
@@ -503,9 +509,11 @@ int move2Tile(int cur, int target) {
 			}
 			break;
 		case Checkpoint:
-			bot.checkpointTile = target;
-			bot.checkpointRoom = bot.curRoom;
-			printf("checkpoint %d\n", bot.checkpointTile);
+			if (target % 2 == 0 && ((curRow % 2 == 0 && curCol % 2 == 0))) {
+					bot.checkpointTile = target;
+					bot.checkpointRoom = bot.curRoom;
+					printf("checkpoint %d\n", bot.checkpointTile);
+			}
 		default:
 			if (tileColor != 0 && target % 2 == 0 && ((curRow % 2 == 0 && curCol % 2 == 0))) {
 				field[target].color = tileColor;
