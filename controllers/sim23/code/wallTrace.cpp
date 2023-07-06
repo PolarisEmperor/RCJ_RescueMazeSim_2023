@@ -46,7 +46,7 @@ int room4_wallTrace() {
                     frontwall = true;
                 }
             }
-            else if (rangeImage[i] < 0.02) {
+            else if (rangeImage[i] < 0.025) {
                 frontwall = true;
             }
         }
@@ -55,7 +55,7 @@ int room4_wallTrace() {
     if (frontwall) {
         bot.speed(-5.0, 5.0);
         cout << "frontwall" << endl;
-        bot.delay(100);
+        bot.delay(125);
     }
     else {
         rms = 3.5 + kp * err;
