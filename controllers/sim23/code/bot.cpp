@@ -101,22 +101,26 @@ Bot::Pos Bot::getTargetPos(int diffX, int diffY) {
 
 Bot::Pos Bot::tileToCoords(int tile) {
 	Pos pos = bot.startPos;
-	while (tile != bot.startTile) {
-		if (tile - bot.startTile <= COLS * -1) {
-			tile += COLS;
+	// get tile to the same row as start tile
+	while (tile / 100 != bot.startTile / 100) {
+		if (tile / 100 < bot.startTile / 100) {
 			pos.y -= 0.06;
+			tile += COLS;
 		}
-		else if (tile - bot.startTile < 0) {
-			tile++;
-			pos.x -= 0.06;
-		}
-		if (tile - bot.startTile >= COLS) {
-			tile -= COLS;
+		else {
 			pos.y += 0.06;
+			tile -= COLS;
 		}
-		else if (tile - bot.startTile > 0) {
-			tile--;
+	}
+	// get tile to the same col as the start tile
+	while (tile % 100 != bot.startTile % 100) {
+		if (tile % 100 < bot.startTile % 100) {
+			pos.x -= 0.06;
+			tile ++;
+		}
+		else {
 			pos.x += 0.06;
+			tile --;
 		}
 	}
 	return pos;

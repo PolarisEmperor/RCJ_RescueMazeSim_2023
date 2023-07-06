@@ -86,6 +86,8 @@ int main() {
 		/*bot.curRoom = 3;
 		getTile(bot.curTile);
 		field[bot.curTile].visited = 0;*/
+		//printf("%f %f\n", bot.tileToCoords(4552).x, bot.tileToCoords(4552).y);
+
 
 		if (bot.checkLOPemitter()) {
 			bot.curTile = bot.checkpointTile;

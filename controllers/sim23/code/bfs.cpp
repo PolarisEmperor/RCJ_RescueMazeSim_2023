@@ -392,10 +392,10 @@ int move2Tile(int cur, int target) {
 			//printf("west\n"); 
 			break; 
 		}
-		if (bot.getLidarPoint(3, 0) < distFromWall) {
-			//bot.move(-0.2);
-			break;
-		}
+		//if (bot.getLidarPoint(3, 0) < distFromWall) {
+		//	//bot.move(-0.2);
+		//	break;
+		//}
 		// IMU Straighten
 		switch (bot.getDirection()) {
 			case North:
