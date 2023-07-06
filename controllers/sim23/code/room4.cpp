@@ -377,8 +377,9 @@ void doRoom4() {
 
 			printf("at exit checkpint\n");
 			bot.stop();
-			bot.delay(1000);
+			bot.delay(50);
 			bot.updatePrevPos();
+			bot.turn(directionEntered);
 			printf("estimated tile %d\n", coordToTile(bot.getPos().x, bot.getPos().y));
 
 			int checkpoint = coordToTile(bot.getPos().x, bot.getPos().y);
@@ -395,6 +396,8 @@ void doRoom4() {
 				printf("try front\n");
 
 				bot.move(3);
+				bot.stop();
+				bot.delay(1000);
 				// if not exit, backup and try another dir
 				if (bot.getTileColor(0, 0) == exitColor) {
 					proceed = true;
@@ -402,6 +405,8 @@ void doRoom4() {
 				else {
 					printf("not front\n");
 					bot.move(-3);
+					bot.stop();
+					bot.delay(50);
 				}
 			}
 
@@ -414,12 +419,16 @@ void doRoom4() {
 				printf("try right\n");
 				bot.turn(bot.getDirection() + 1); // turn
 				bot.move(3);
+				bot.stop();
+				bot.delay(50);
 				if (bot.getTileColor(0, 0) == exitColor) {
 					proceed = true;
 				}
 				else {
 					printf("not right\n");
 					bot.move(-3);
+					bot.stop();
+					bot.delay(50);
 					bot.turn(startDir);
 				}
 			}
@@ -433,12 +442,16 @@ void doRoom4() {
 				printf("try left\n");
 				bot.turn(bot.getDirection() - 1); // turn
 				bot.move(3);
+				bot.stop();
+				bot.delay(50);
 				if (bot.getTileColor(0, 0) == exitColor) {
 					proceed = true;
 				}
 				else {
 					printf("not left\n");
-					bot.move(-3);
+					bot.move(-3); 
+					bot.stop();
+					bot.delay(50);
 					bot.turn(startDir);
 				}
 			}
