@@ -79,7 +79,7 @@ int main() {
 	parent[bot.startTile] = bot.startTile; // set starting point
 	bot.startingtime = time(0);
 	bot.seconds = 0;
-	bot.realseconds = 35;
+	bot.realseconds = 600;
 	bot.buffertime = 10;
 	// SIMULATION LOOP
 	while (bot.update()) {
