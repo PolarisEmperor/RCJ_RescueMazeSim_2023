@@ -61,21 +61,22 @@ void emergency() {
 }
 
 int main() {
-	time_t startingtime = time(0);
-	int seconds = difftime(time(0), startingtime), dummy = seconds + 1;
-	int gameseconds = 600, buffertime = 15;
-	int target = -1;
-	parent[bot.startTile] = bot.startTile; // set starting point
 	for (int i = 0; i < 3 * ROWS + ROWS + 1; i++) {
 		for (int j = 0; j < 3 * ROWS + ROWS + 1; j++) {
 			bigmap[i][j] = "0";
 		}
 	}
 	field[bot.startTile].color = Start;
-
+	int target = -1;
+	parent[bot.startTile] = bot.startTile; // set starting point
+	bot.startingtime = time(0);
+	bot.seconds = 0;
+	bot.realseconds = 600;
+	bot.buffertime = 10;
 	// SIMULATION LOOP
 	while (bot.update()) {
-		if ((bot.getGameTime() < 20) || (seconds >= (gameseconds - buffertime))) {
+		bot.checkRT();
+		if (bot.getGameTime() < 20) {
 			mapBonus();
 			// Send the letter 'E' to signify exit
 			char message = 'E';
@@ -84,12 +85,7 @@ int main() {
 			while (bot.robot->step(bot.robot->getBasicTimeStep()) != -1);
 			break;
 		}
-		seconds = difftime(time(0), startingtime);
-		if (seconds >= dummy)
-		{
-			dummy = seconds + 1;
-			printf("real seconds: %d \n", seconds);
-		}
+		
 		// testing stuff
 		/*bot.curRoom = 3;
 		getTile(bot.curTile);
@@ -144,6 +140,7 @@ int main() {
 			}
 			break;
 		}	
+		
 	}
 	if (!compareCoords(bot.startPos.x, bot.startPos.y, bot.getPos().x, bot.getPos().y)) {
 		char message[1] = { 'L' }; // message = 'L' to activate lack of progress
@@ -153,7 +150,6 @@ int main() {
 	}
 	mapBonus();
 	printf("done\n");
-	printf("seconds: %d\n", seconds);
 	// Send the letter 'E' to signify exit
 	char message = 'E';
 	bot.emitter->send(&message, 1);

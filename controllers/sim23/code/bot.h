@@ -49,6 +49,10 @@ public:
 	int greenTile;		// Room 1 -> Room 4
 	bool room4done;		// has it traversed room 4 yet
 	bool LOProom4;
+	int seconds;
+	int realseconds;
+	int buffertime;
+	time_t startingtime;
 
 	Bot();
 	~Bot();
@@ -71,6 +75,7 @@ public:
 	bool checkLOPemitter();
 	int roundAngle();
 	int getGameTime();
+	void checkRT();
 };
 
 extern class Bot bot;

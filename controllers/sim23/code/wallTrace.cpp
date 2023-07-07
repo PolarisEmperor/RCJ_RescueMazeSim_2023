@@ -3,6 +3,7 @@
 using namespace std;
 
 int room4_wallTrace() {
+    bot.checkRT();
     const float *rangeImage = bot.getLidarLayer(3);
 
     float err = 0, kp = 200, rms = 0, lms = 0;

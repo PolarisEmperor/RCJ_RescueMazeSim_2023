@@ -48,6 +48,7 @@ Bot::~Bot() {
 void Bot::delay(int ms) {
 	double initTime = robot->getTime();
 	while (update()) {
+		bot.checkRT();
 		if ((robot->getTime() - initTime) * 1000.0 > ms) {
 			break;
 		}
@@ -195,6 +196,7 @@ void Bot::move(double cm, double spd) {
 			if (curDir == East && pos.x >= target) break;
 			if (curDir == West && pos.x <= target) break;
 			speed(spd, spd);
+			checkRT();
 		}
 	else if (cm < 0)
 		while (update()) {
@@ -203,6 +205,7 @@ void Bot::move(double cm, double spd) {
 			if (curDir == East && pos.x <= target) break;
 			if (curDir == West && pos.x >= target) break;
 			speed(-spd, -spd);
+			checkRT();
 		}
 
 	stop();
@@ -243,6 +246,7 @@ void Bot::turn(int dir, double spd) {
 
 	int prevDir = getDirection();
 	while (update()) {
+		checkRT();
 		if (bot.getLidarPoint(3, 127) < 7 && !field[bot.curTile].victimChecked) {
 			char victim = checkVisualVictim(bot.camR);
 			if (victim > 0) {
@@ -369,4 +373,29 @@ int Bot::getGameTime() {
 		}
 	}
 	return time;
+}
+
+void Bot::checkRT() {
+	int dummy = seconds + 1;
+	seconds = difftime(time(0), startingtime);
+	if (seconds == dummy)
+	{
+		dummy = seconds + 1;
+		printf("real seconds: %d \n", seconds);
+		printf("real seconds: %d \n", seconds);
+		printf("real seconds: %d \n", seconds);
+		printf("real seconds: %d \n", seconds);
+		printf("real seconds: %d \n", seconds);
+		printf("real seconds: %d \n", seconds);
+		printf("real seconds: %d \n", seconds);
+		printf("%d \n", seconds >= (realseconds - buffertime));
+	}
+	if (seconds >= (realseconds - buffertime))
+	{
+		mapBonus();
+		printf("done\n");
+		char message = 'E';
+		bot.emitter->send(&message, 1);
+		exit(0);
+	}
 }
