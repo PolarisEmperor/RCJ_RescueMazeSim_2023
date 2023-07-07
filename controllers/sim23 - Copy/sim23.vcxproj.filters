@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="code\bfs.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\bot.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\main.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\tile.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\victim.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Accelerometer.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Altimeter.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Brake.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Camera.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Compass.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Connector.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Device.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Display.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\DistanceSensor.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Emitter.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Field.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\GPS.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Gyro.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\InertialUnit.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Joystick.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Keyboard.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\LED.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Lidar.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\LightSensor.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Motion.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Motor.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Mouse.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Node.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Pen.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\PositionSensor.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Radar.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\RangeFinder.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Receiver.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Robot.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Skin.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Speaker.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Supervisor.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\TouchSensor.cpp">
+      <Filter>Webots Files</Filter>
+    </ClCompile>
+    <ClCompile Include="code\cumulative_map.cpp">
+      <Filter>Code\room4-full</Filter>
+    </ClCompile>
+    <ClCompile Include="code\map_tile.cpp">
+      <Filter>Code\room4-full</Filter>
+    </ClCompile>
+    <ClCompile Include="code\point.cpp">
+      <Filter>Code\room4-full</Filter>
+    </ClCompile>
+    <ClCompile Include="code\snapshot.cpp">
+      <Filter>Code\room4-full</Filter>
+    </ClCompile>
+    <ClCompile Include="code\wallTrace.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="code\room4.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Code">
+      <UniqueIdentifier>{5f27818a-28a4-4c58-8a04-aaa1bf6154e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Webots Files">
+      <UniqueIdentifier>{e7cad9ab-78be-4d9f-a251-45d62975e70c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\room4-full">
+      <UniqueIdentifier>{6a293f85-a168-4e1d-9c18-62f0ceeddeb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\room4-bootleg">
+      <UniqueIdentifier>{e0eebe9d-b58e-4df3-8d8c-9566bf2d3bb9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="code\bfs.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="code\bot.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="code\lib.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="code\tile.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="code\victim.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="code\cumulative_map.h">
+      <Filter>Code\room4-full</Filter>
+    </ClInclude>
+    <ClInclude Include="code\map_tile.h">
+      <Filter>Code\room4-full</Filter>
+    </ClInclude>
+    <ClInclude Include="code\point.h">
+      <Filter>Code\room4-full</Filter>
+    </ClInclude>
+    <ClInclude Include="code\snapshot.h">
+      <Filter>Code\room4-full</Filter>
+    </ClInclude>
+    <ClInclude Include="code\wallTrace.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="code\room4.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

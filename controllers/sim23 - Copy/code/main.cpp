@@ -13,14 +13,6 @@ void emergency() {
 
 	bot.curRoom = bot.checkpointRoom;
 	bot.curTile = coordToTile(bot.getPos().x, bot.getPos().y);
-	if (bot.checkpointTile < 0) {
-		printf("done\n");
-		// Send the letter 'E' to signify exit
-		char message = 'E';
-		bot.emitter->send(&message, 1);
-		while (bot.robot->step(bot.robot->getBasicTimeStep()) != -1);
-		exit(0);
-	}
 	printf("EMERGENCY at %d\n", bot.curTile);
 	bot.stop();
 	bot.delay(4000);
@@ -79,7 +71,7 @@ int main() {
 	parent[bot.startTile] = bot.startTile; // set starting point
 	bot.startingtime = time(0);
 	bot.seconds = 0;
-	bot.realseconds = 35;
+	bot.realseconds = 600;
 	bot.buffertime = 10;
 	// SIMULATION LOOP
 	while (bot.update()) {
