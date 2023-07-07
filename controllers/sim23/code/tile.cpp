@@ -354,7 +354,7 @@ bool obstacle(int tile) {
 					setWalls(tile + COLS * 2 + 3, 1, 1, 1, 1);
 				}
 				break;
-			case South: // fix this
+			case South:
 				if (left && right) {
 					setWalls(tile + COLS * 2, 1, 1, 1, 1);
 					setWalls(tile + COLS * 2 + 1, 1, 1, 1, 1);

@@ -30,7 +30,7 @@ Bot::Bot() {
 	// Set room values
 	curRoom = 1;
 	curTile = startTile = (ROWS / 2 * COLS) + (COLS / 2);
-	checkpointTile = curTile;
+	checkpointTile = -1;
 	checkpointRoom = curRoom;
 	blueTile = purpleTile =	redTile = greenTile = -1;
 	room4done = false;
