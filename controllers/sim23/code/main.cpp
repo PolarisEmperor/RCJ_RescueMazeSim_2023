@@ -61,8 +61,10 @@ void emergency() {
 }
 
 int main() {
+	time_t startingtime = time(0);
+	int seconds = difftime(time(0), startingtime), dummy = seconds + 1;
+	int gameseconds = 600, buffertime = 15;
 	int target = -1;
-
 	parent[bot.startTile] = bot.startTile; // set starting point
 	for (int i = 0; i < 3 * ROWS + ROWS + 1; i++) {
 		for (int j = 0; j < 3 * ROWS + ROWS + 1; j++) {
@@ -73,7 +75,7 @@ int main() {
 
 	// SIMULATION LOOP
 	while (bot.update()) {
-		if (bot.getGameTime() < 20) {
+		if ((bot.getGameTime() < 20) || (seconds >= (gameseconds - buffertime))) {
 			mapBonus();
 			// Send the letter 'E' to signify exit
 			char message = 'E';
@@ -81,6 +83,12 @@ int main() {
 
 			while (bot.robot->step(bot.robot->getBasicTimeStep()) != -1);
 			break;
+		}
+		seconds = difftime(time(0), startingtime);
+		if (seconds >= dummy)
+		{
+			dummy = seconds + 1;
+			printf("real seconds: %d \n", seconds);
 		}
 		// testing stuff
 		/*bot.curRoom = 3;
@@ -145,6 +153,7 @@ int main() {
 	}
 	mapBonus();
 	printf("done\n");
+	printf("seconds: %d\n", seconds);
 	// Send the letter 'E' to signify exit
 	char message = 'E';
 	bot.emitter->send(&message, 1);
